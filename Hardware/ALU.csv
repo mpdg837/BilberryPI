@@ -1,0 +1,45 @@
+# Copyright (C) 2018  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and its AMPP partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details.
+
+# Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
+# File: C:\FPGAProjects\Console\ALU.csv
+# Generated on: Tue Aug 02 22:23:32 2022
+
+# Note: The column header names should not be changed if you wish to import this .csv file into the Quartus Prime software.
+
+To,Direction,Location,I/O Bank,VREF Group,I/O Standard,Reserved,Current Strength,Slew Rate,Differential Pair,Strict Preservation
+B,Output,PIN_104,6,B6_N0,2.5 V,as output driving an unspecified signal,,0,,
+G,Output,PIN_105,6,B6_N0,2.5 V,as output driving an unspecified signal,,0,,
+R,Output,PIN_106,6,B6_N0,2.5 V,as output driving an unspecified signal,,0,,
+clk,Input,PIN_23,1,B1_N0,,,,,,
+cs_sd,Output,PIN_28,2,B2_N0,2.5 V,,,,,
+hsync,Output,PIN_101,6,B6_N0,2.5 V,as output driving an unspecified signal,,0,,
+kin1,Input,PIN_88,5,B5_N0,,,,,,
+kin2,Input,PIN_89,5,B5_N0,,,,,,
+kin3,Input,PIN_90,6,B6_N0,,,,,,
+kin4,Input,PIN_91,6,B6_N0,,,,,,
+krst,Input,PIN_25,2,B2_N0,,,,,,
+led[3],Output,PIN_84,5,B5_N0,,,,,,
+led[2],Output,PIN_85,5,B5_N0,,,,,,
+led[1],Output,PIN_86,5,B5_N0,,,,,,
+led[0],Output,PIN_87,5,B5_N0,,,,,,
+miso_sd,Output,PIN_31,2,B2_N0,2.5 V,,,,,
+mosi_sd,Input,PIN_33,2,B2_N0,2.5 V,,,,,
+ps2clk,Input,PIN_119,7,B7_N0,,,,,,
+ps2data,Input,PIN_120,7,B7_N0,,,,,,
+sck_sd,Output,PIN_38,3,B3_N0,2.5 V,,,,,
+sound,Output,PIN_110,7,B7_N0,,,,,,
+uart_rxd,Input,PIN_115,7,B7_N0,,,,,,
+uart_txd,Output,PIN_114,7,B7_N0,,,,,,
+vsync,Output,PIN_103,6,B6_N0,2.5 V,,,0,,

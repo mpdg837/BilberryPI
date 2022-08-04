@@ -1,0 +1,173 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2020  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and any partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details, at
+# https://fpgasoftware.intel.com/eula.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 20.1.1 Build 720 11/11/2020 Patches 1.49 SJ Lite Edition
+# Date created = 16:03:05  September 16, 2021
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		ALU_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name DEVICE EP4CE6E22C8
+set_global_assignment -name TOP_LEVEL_ENTITY main
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION "20.1.1 SP1.49"
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:03:05  SEPTEMBER 16, 2021"
+set_global_assignment -name LAST_QUARTUS_VERSION "18.1.0 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_RUN_TOOL_AUTOMATICALLY OFF -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_timing
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name ENABLE_OCT_DONE OFF
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name CYCLONEII_RESERVE_NCEO_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_25 -to krst
+set_location_assignment PIN_23 -to clk
+set_location_assignment PIN_104 -to B
+set_location_assignment PIN_105 -to G
+set_location_assignment PIN_106 -to R
+set_location_assignment PIN_101 -to hsync
+set_location_assignment PIN_88 -to kin1
+set_location_assignment PIN_89 -to kin2
+set_location_assignment PIN_90 -to kin3
+set_location_assignment PIN_91 -to kin4
+set_location_assignment PIN_119 -to ps2clk
+set_location_assignment PIN_120 -to ps2data
+set_location_assignment PIN_103 -to vsync
+set_location_assignment PIN_110 -to sound
+set_location_assignment PIN_84 -to led[3]
+set_location_assignment PIN_85 -to led[2]
+set_location_assignment PIN_86 -to led[1]
+set_location_assignment PIN_87 -to led[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to B
+set_instance_assignment -name IO_STANDARD "2.5 V" -to G
+set_instance_assignment -name IO_STANDARD "2.5 V" -to R
+set_instance_assignment -name IO_STANDARD "2.5 V" -to vsync
+set_instance_assignment -name IO_STANDARD "2.5 V" -to hsync
+set_global_assignment -name RESERVE_DATA0_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_DATA1_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_global_assignment -name RESERVE_FLASH_NCE_AFTER_CONFIGURATION "USE AS REGULAR IO"
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to R
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to G
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to B
+set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to hsync
+set_instance_assignment -name SLEW_RATE 0 -to G
+set_instance_assignment -name SLEW_RATE 0 -to hsync
+set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
+set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
+set_global_assignment -name OUTPUT_IO_TIMING_ENDPOINT "FAR END"
+set_instance_assignment -name SLEW_RATE 0 -to B
+set_instance_assignment -name SLEW_RATE 0 -to R
+set_instance_assignment -name SLEW_RATE 0 -to vsync
+set_instance_assignment -name IO_STANDARD "2.5 V" -to cs_sd
+set_instance_assignment -name IO_STANDARD "2.5 V" -to miso_sd
+set_instance_assignment -name IO_STANDARD "2.5 V" -to mosi_sd
+set_instance_assignment -name IO_STANDARD "2.5 V" -to sck_sd
+set_location_assignment PIN_28 -to cs_sd
+set_location_assignment PIN_31 -to miso_sd
+set_location_assignment PIN_33 -to mosi_sd
+set_location_assignment PIN_38 -to sck_sd
+set_location_assignment PIN_115 -to uart_rxd
+set_location_assignment PIN_114 -to uart_txd
+set_global_assignment -name VERILOG_FILE main.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/stack.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/output.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/operations.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/multiplier.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/muldivB.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/memoryModule.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/MemController.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/insideTimer.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/inProcesor.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/divider.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/CPUHelpCmp.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/CPU2.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/CPU.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/counterAddr.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/coprocesor.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/connector.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/comparer.v
+set_global_assignment -name VERILOG_FILE PROCESSOR/aluX.v
+set_global_assignment -name VERILOG_FILE MEMORIES/RAMController.v
+set_global_assignment -name VERILOG_FILE MEMORIES/RAM.v
+set_global_assignment -name VERILOG_FILE MEMORIES/Kernal.v
+set_global_assignment -name VERILOG_FILE MEMORIES/charset.v
+set_global_assignment -name VERILOG_FILE IO/test.v
+set_global_assignment -name VERILOG_FILE IO/przycisk.v
+set_global_assignment -name VERILOG_FILE IO/keypress.v
+set_global_assignment -name VERILOG_FILE IO/keyDevice.v
+set_global_assignment -name VERILOG_FILE IO/keyboard.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/VRAMController.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/VRAM.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/Video16.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/VGAGen.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/UI.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/sprites.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/SpriteManager.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/SpriteGen.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/SpriteControllerModule.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/SpriteController.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/shiftSprite.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/PaletteController.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/GraphicsBuffering.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/Graphics.v
+set_global_assignment -name VERILOG_FILE GRAPHICS/Background.v
+set_global_assignment -name VERILOG_FILE BUZZER/buzzer.v
+set_global_assignment -name VERILOG_FILE SPISD/transmitter.v
+set_global_assignment -name VERILOG_FILE SPISD/spi.v
+set_global_assignment -name VERILOG_FILE SPISD/receiver.v
+set_global_assignment -name VERILOG_FILE SPISD/prepare.v
+set_global_assignment -name VERILOG_FILE SPISD/managerSPI.v
+set_global_assignment -name VERILOG_FILE SPISD/initizer.v
+set_global_assignment -name VERILOG_FILE SPISD/diskmanager.v
+set_global_assignment -name VERILOG_FILE SPISD/diskcontroller.v
+set_global_assignment -name VERILOG_FILE SPISD/crc.v
+set_global_assignment -name SOURCE_FILE db/ALU.cmp.rdb
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
