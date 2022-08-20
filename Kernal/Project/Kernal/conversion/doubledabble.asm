@@ -11,18 +11,15 @@
 
                     loopLoadDableNumberLoop:
                     uram ecx
-
-                        set edx 0x0
-                        save edx
+                        savea 0x0
 
                     inc ecx
                         cmpa ecx 0x1fad
                             jlt loopLoadDableNumberLoop
 
 
-            ram 0x1fad // Koniec napisu cyfry
-                set edx 0xf
-                save edx
+            ram 0x1fad // Koniec napisu cyfry=
+                savea 0xf
 
             loopDable:
 

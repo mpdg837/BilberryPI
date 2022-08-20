@@ -36,7 +36,7 @@
             call regbackinter // Powrot do stanu pierwotnego
             ret
 
-    initdisk:
+        initdisk:
             set eax 0x1 // init
             set ebx 0x0
                 call sendDisk
@@ -55,15 +55,20 @@
 
             ret
 
+        diskstarter:
+            call regcopy
+            call startdisk
+            call initdisk
+            call regback
+            ret
+
         diskloader:
             call regcopy
 
-            call startdisk
-            call initdisk
-
             set eax 0x2 // Wybranie bloku
-            set ebx 0x0
-                 call sendDisk
+                ram 0x2118
+                read ebx
+                    call sendDisk
 
             set edx 0x0
             set ecx 0x0
@@ -74,8 +79,7 @@
 
                  call waitforansw
 
-            ram 0x2113
-                savea 0x2800
+
 
             ram 0x2114
                 savea 0x0
@@ -93,7 +97,6 @@
                         set eax 0x7
                         set ebx 0x0
                             call sendDisk
-                            call waitforansw
 
                             ram 0x2114
                                 read eax
@@ -152,13 +155,41 @@
 
             finishdiskloaderloopread:
 
-            ram 0x2802
-                read eax
 
-
-            ram 0x1fe1
-                save eax
 
             call closedisk
             call regback
             ret
+
+    programloader:
+            ram 0x2113 // Poczatek
+                savea 0x1000
+
+            ram 0x2118 // Blok
+                set eax 0x0
+                save eax
+
+            loopprogramloader:
+                call diskloader
+
+                ram 0x2113
+                    read eax
+                        cmpa eax 0x13ff
+
+                        jgt eloopprogramloader
+                        jeq eloopprogramloader
+
+                    ram 0x2118
+                        read eax
+                        inc eax
+                        save eax
+                    jmp loopprogramloader
+
+            eloopprogramloader:
+
+            ram 0x10ff // Odczyt
+                read eax
+
+            ram 0x1fe1
+                save eax
+        ret

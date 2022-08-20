@@ -19,7 +19,7 @@ module RAMController(
 	input s,
 	
 	
-	input[7:0] stackAddr,
+	input[15:0] stackAddr,
 	input wStackAddr,
 	
 	output reg[15:0] toRAM,
@@ -157,11 +157,10 @@ always@(*)begin
 	n_off = f_off;
 	
 	n_offset = offset;
-	n_progoffset = progoffset;
+	n_progoffset = 0;
 	
 	if(wStackAddr)
-		if(inter) n_RAMaddri = {8'b00010011,stackAddr};
-		else n_RAMaddrn = {8'b00010011,stackAddr};
+		n_RAMaddrn = {stackAddr};
 	else if(s)begin
 		
 		case(mOper)
@@ -176,7 +175,6 @@ always@(*)begin
 								end
 							1: n_offset = {edata[7:0]};
 							2: n_offset = {edata[5:0],2'b0};
-							3: n_progoffset = {edata[7:0]};
 						endcase
 					end
 						
@@ -191,7 +189,6 @@ always@(*)begin
 								end
 							1: n_offset = {num1[7:0]};
 							2: n_offset = {num1[5:0],2'b0};
-							3: n_progoffset = {num1[7:0]};
 						endcase
 					end
 						

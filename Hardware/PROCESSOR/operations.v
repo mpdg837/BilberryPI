@@ -85,7 +85,9 @@ module controller(
 	output reg[1:0] sAddrBank,
 	
 	output reg save,
-	output reg read
+	output reg read,
+	
+	output reg[1:0] stackArg
 );
 
 reg n_sBank;
@@ -157,6 +159,8 @@ reg[1:0] n_cmprNum2;
 
 reg n_save;
 reg n_read;
+
+reg[1:0] n_stackArg;
 
 reg n_cmprStart;
 // Rozkazy procesora
@@ -256,8 +260,13 @@ always@(posedge clk or posedge rst)begin
 		sBank <= 0;
 		
 		cmprarg <= 0;
+		
+		stackArg <= 0;
 	end else
 	begin
+	
+		stackArg <= n_stackArg;
+		
 		areg1 <= n_areg1;
 		areg2 <= n_areg2;
 		dataALU <= n_dataALU;
@@ -327,6 +336,8 @@ end
 
 always@(*)begin
 		n_cmprarg = cmprarg;
+		
+		n_stackArg = 0;
 		
 		n_areg1 = areg1;
 		n_areg2 = areg2;
@@ -522,9 +533,9 @@ always@(*)begin
 					n_mOperCOU = 4'd5;
 					n_dataAddr = edata;
 					
+					n_creg1 = ereg1;
+					n_creg2 = ereg2;
 					
-					n_creg1 = 0;
-					n_creg2 = 0;
 					
 					n_sCOU = 1;
 				end
@@ -865,7 +876,8 @@ always@(*)begin
 					n_push = 1;
 
 					n_streg1 = ereg1;
-			
+					
+					n_stackArg = ereg1;
 					// Next
 					
 					n_mOperCOU = 4'd6;
@@ -878,6 +890,9 @@ always@(*)begin
 					n_sCOU = 1;
 					end
 				POP:begin
+				
+					n_stackArg = ereg1;
+				
 					n_sSTA = 1;
 					n_pop = 1;
 					n_push = 0;

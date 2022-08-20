@@ -2,6 +2,7 @@ package Assembelr.Compilator;
 
 import Assembelr.Compilator.Tools.Starter;
 import Assembelr.Compilator.Tools.Szum;
+import Assembelr.Compilator.Types.Character;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ public class BinaryConverter {
     boolean loop = false;
 
     public ArrayList<String> linijki;
+    public ArrayList<Character> bineries = new ArrayList<>();
 
     public String nullMe(){
         StringBuilder build = new StringBuilder();
@@ -29,11 +31,47 @@ public class BinaryConverter {
         status = !status;
 
     }
+
+    Character znak(String str){
+        if(str.length()<=8) {
+            int liczba = 0;
+            char[] znaki = str.toCharArray();
+
+            for (int n = 0; n < str.length(); n++) {
+                int k = str.length() -1 - n;
+                if (znaki[k] == '1') liczba = liczba + (1 << (n));
+            }
+
+            return new Character((byte) liczba);
+        }else{
+            return  new Character((byte)255);
+        }
+    }
     public void printLine(String str){
 
         int nindex = index;
 
         linijki.add("11'd"+index+": out <= 32'b"+str+";");
+        char[] znaki = str.toCharArray();
+
+
+        for(int n=2;n<4;n++){
+            StringBuilder build = new StringBuilder();
+            for(int k=0;k<8;k++){
+                int index = n*8 + k;
+                build.append(znaki[index]);
+            }
+            bineries.add(znak(build.toString()));
+        }
+
+        for(int n=0;n<2;n++){
+            StringBuilder build = new StringBuilder();
+            for(int k=0;k<8;k++){
+                int index = n*8 + k;
+                build.append(znaki[index]);
+            }
+            bineries.add(znak(build.toString()));
+        }
 
         index ++;
 
@@ -46,6 +84,8 @@ public class BinaryConverter {
 
         linijki = Starter.start(linijki);
 
+        Szum szum1 = new Szum(index,data);
+        int n = 0;
         for(String linia : lista) {
 
             if(linia.length()>0) {
@@ -54,15 +94,20 @@ public class BinaryConverter {
                 Translator trns = new Translator();
 
                 switch (nrozkaz.instrukcja){
+                    case "random" ->{
+                        printLine(szum1.makeNewLine(n));
+
+                    }
                     case "sot" ->{ printLine(trns.makeLineRegArg("00000","edx",nrozkaz.num)); }
                     case "hlt" ->{ printLine(trns.makeLineArg("00000",true,false,"0")); }
-                    case "rst" ->{ printLine(trns.makeLineArg("00000",false,true,"0"));  }
+                    case "addr" ->{ printLine(trns.makeLineArg("00000",false,true,"0"));  }
                     case "set" ->{ printLine(trns.makeLineRegArg("00001",nrozkaz.regs.get(0),nrozkaz.num));}
                     case "in" ->{ printLine(trns.makeLineRegArg("00010",nrozkaz.regs.get(0),nrozkaz.num));}
                     case "out" ->{ printLine(trns.makeLineRegArg("00011",nrozkaz.regs.get(0),nrozkaz.num));}
 
                     case "inc" ->{ printLine(trns.makeLineOneReg("00100",nrozkaz.regs.get(0),false));}
-                    case "jmp" ->{ printLine(trns.makeLineArg("00101",false,false,nrozkaz.num));}
+                    case "jmp" ->{    printLine(trns.makeLineArg("00101",false,false,nrozkaz.num));}
+                    case "jmpr" ->{printLine(trns.makeLineTwoReg("00101",nrozkaz.regs.get(0),"eax",false));}
                     case "save" ->{ printLine(trns.makeLineOneReg("00110",nrozkaz.regs.get(0),false));}
                     case "savea" ->{ printLine(trns.makeLineRegArg("00110","eax",nrozkaz.num));}
                     case "ram" ->{ printLine(trns.makeLineArg("00111",false,false,nrozkaz.num));}
@@ -111,8 +156,9 @@ public class BinaryConverter {
                     case "emul" ->{ printLine(trns.makeLineTwoReg("11100",nrozkaz.regs.get(0),nrozkaz.regs.get(1),true));}
                     case "rem" ->{ printLine(trns.makeLineTwoReg("11101",nrozkaz.regs.get(0),nrozkaz.regs.get(1),true));}
                     case "call" ->{ printLine(trns.makeLineArg("11110",false,false,nrozkaz.num));}
+                    case "callr" -> {printLine(trns.makeLineTwoReg("11110",nrozkaz.regs.get(0),"eax",false));}
                     case "ret" ->{ printLine(trns.makeLineArg("11111",false,false,"0")); }
-
+                    case "retr" ->{ printLine(trns.makeLineRegArg("11111",nrozkaz.regs.get(0),"3")); }
                     case "int" ->{ printLine(trns.makeLineArg("11111",false,false,"1")); }
                     case "nint" ->{ printLine(trns.makeLineArg("11111",false,false,"2")); }
                     default ->{printLine(nullMe());}
@@ -120,7 +166,7 @@ public class BinaryConverter {
             }else{
                 printLine(nullMe());
             }
-
+            n++;
 
         }
         Szum szum = new Szum(index,data);

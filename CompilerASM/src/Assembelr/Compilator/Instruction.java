@@ -19,7 +19,7 @@ public class Instruction {
 
         if (!linia.equals("")) {
 
-            String[] rozkazy = new String[]{"savea","cmpa","nint","int","off","uoff","adda","suba","anda","eora","xora","sot","nop","hlt","rst","set","in","out","inc","jmp","save","ram","uram","exp","rexp","not","add","sub","and","eor","shl","shr","xor","jeq","jeeq","res","jgt","jegt","jlt","jelt","dec","cmp","read","mov","pop","push","mul","emul","div","rem","call","ret"};
+            String[] rozkazy = new String[]{"retr","jmpr","callr","random","savea","cmpa","nint","int","off","uoff","adda","suba","anda","eora","xora","sot","nop","hlt","addr","set","in","out","inc","jmp","save","ram","uram","exp","rexp","not","add","sub","and","eor","shl","shr","xor","jeq","jeeq","res","jgt","jegt","jlt","jelt","dec","cmp","read","mov","pop","push","mul","emul","div","rem","call","ret"};
             ArrayList<String> rozkL = new ArrayList<>();
 
             rozkL.addAll(Arrays.asList(rozkazy));

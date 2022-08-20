@@ -640,7 +640,7 @@ module sender(
 	
 	input[4:0] p_tim,
 	input[2:0] p_ttim,
-	
+
 	input ready,
 	input[7:0] into,
 	
@@ -657,14 +657,6 @@ reg[4:0] tim = 0;
 
 reg[2:0] f_ttim = 0;
 reg[2:0] ttim = 0;
-
-reg waitforread;
-reg f_waitforread;
-
-always@(posedge clk or posedge rst)begin
-	if(rst) f_waitforread <= 0;
-	else f_waitforread <= waitforread;
-end
 
 always@(posedge clk or posedge rst)begin
 	if(rst)begin
@@ -687,8 +679,6 @@ always@(*) begin
 	rdy1 = 0;
 	
 	rdyread_in = 0;
-	if(f_cmd == 6'd17) waitforread = 1;
-	else waitforread = 0;
 	
 	if(f_ttim != 0)begin
 		ttim = f_ttim - 1;
@@ -855,11 +845,7 @@ always@(*) begin
 
 			25: begin
 					if(ready) begin
-					
-						if(into == 8'hFE) tim = 26;
-						else if(waitforread) tim = 27;
-						else tim = 26;
-						
+						tim = 26;
 						rdyread_in = 1;
 						end
 				end
@@ -867,16 +853,6 @@ always@(*) begin
 						rdy1 =1;
 						tim = 0;
 					end
-			27: begin
-					in1 = 8'd255;
-					start1 = 1;
-					tim = 28;
-			end
-			28: begin
-					if(ready)
-						if(into == 8'hFE) tim = 26;
-						else tim = 27;
-			end
 		endcase
 end
 

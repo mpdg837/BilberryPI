@@ -164,45 +164,6 @@
         ret
 
 
-    spriteload:
-            set eax 0x16
-            set ebx 0x1
-                call sendGraphics
-
-            set eax 0x17
-            set ebx 0x50
-                call sendGraphics
-
-            set eax 0x18
-            set ebx 0x50
-                call sendGraphics
-
-            set eax 0x19
-            set ebx 0xb
-                call sendGraphics
-
-            set eax 0x1a
-            set ebx 0xd
-                call sendGraphics
-
-            set eax 0x1e
-            set ebx 0x8
-                call sendGraphics
-
-
-            set eax 0x20
-            set ebx 0x12
-                call sendGraphics
-
-            set eax 0x21
-            set ebx 0x16
-                call sendGraphics
-
-            set eax 0x22
-            set ebx 0x11
-                call sendGraphics
-        ret
-
 
 
 

@@ -84,7 +84,7 @@ irqcollector iCola(.clk(clk),
 						.irq4(irq4),
 						.irq5(irq5),
 						.irq6(irq6),
-						.irq7(pexp),
+						.irq7(irq7),
 						
 						.irq(irq)
 	
@@ -103,7 +103,7 @@ interCont iCo(.clk(clk),
 
 core QDP(.clk(clk),
 		   .clk_tim(clk_tim),
-			.rst(rst | prsts),
+			.rst(rst),
 			
 			.eirq(eirq),
 			
@@ -137,7 +137,6 @@ core QDP(.clk(clk),
 			.status(status),
 			
 			.work(work),
-			.prst(prsts),
 			
 			.outsel(outsel)
 			

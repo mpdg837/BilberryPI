@@ -1,45 +1,72 @@
 module RTC(
 	input clk,
-	
-	input dclk,
+
 	
 	input rst,
 	
 	input start,
 	input[23:0] in,
 	
+	output reg[1:0] sel,
+	
 	output reg[3:0] led,
 	
 	output reg rdy,
-	output reg[23:0] out
+	output reg[23:0] out,
+	
+	output reg[15:0] gpio_out,
+	input[15:0] gpio_in,
+	
+	output reg wrst,
+	
+	// UART
+	
+	output reg send,
+	output reg[7:0] out1,
+	
+	input rdy1,
+	input[7:0] in1
 );
 
+reg[15:0] b_gpio_out;
+reg[15:0] b_gpio_in;
+
+always@(posedge clk)
+	gpio_out <= b_gpio_out;
+	
+always@(posedge clk)
+	b_gpio_in <= gpio_in;
+	
 reg f_start;
 reg n_start;
 
-reg[15:0] f_tim;
-reg[15:0] n_tim;
-
-reg[15:0] n_ttim;
 
 reg[3:0] n_led;
 reg[3:0] f_led;
 
+reg[1:0] f_sel;
 
 reg[23:0] f_out;
 
+reg[15:0] f_gpio_out;
 
-localparam RUN = 8'd1;
-localparam STOP = 8'd2;
-localparam SET = 8'd3;
-localparam GET = 8'd4;
+localparam RST = 8'd1;
 
 localparam ON = 8'd5;
 localparam OFF = 8'd6;
 
-always@(posedge dclk or posedge rst)
-	if(rst) f_start <= 0;
-	else f_start <= n_start;
+localparam GPIOOUT = 8'd7;
+localparam GPIOIN = 8'd8;
+
+localparam UARTSEND = 8'd9;
+localparam UARTSEL = 8'd10;
+
+	
+always@(posedge clk or posedge rst)
+	if(rst) f_gpio_out <= 0;
+	else f_gpio_out <= b_gpio_out;
+	
+
 	
 always@(posedge clk or posedge rst)
 	if(rst) f_led <= 0;
@@ -49,27 +76,23 @@ always@(posedge clk or posedge rst)
 	if(rst) f_out <= 0;
 	else f_out <= out;
 
-always@(posedge dclk or posedge rst)
-	if(rst) f_tim <= 0;
-	else f_tim <= n_tim;
-	
 	
 always@(*)begin
-	n_start = f_start;
 	out = f_out;
 	n_led = f_led;
+	
+	b_gpio_out = f_gpio_out;
 	
 	out = 0;
 	rdy = 0;
 	
+	send = 0;
+	out1 = 0;
+	
+	wrst = 0;
+	
 	if(start) begin
 		case(in[23:16])
-			RUN: n_start = 1;
-			STOP: n_start = 0;
-			GET: begin
-					out = {GET,n_ttim};
-					rdy = 1;
-					end
 			ON:case(in[1:0])
 					0: n_led = {f_led[3:1],1'b1};
 					1: n_led = {f_led[3:2],1'b1,f_led[0]};
@@ -85,31 +108,32 @@ always@(*)begin
 					3: n_led = {1'b0,f_led[2:0]};
 					default:;
 				endcase
+			GPIOOUT: b_gpio_out = {1'b1,in[14:0]};
+			GPIOIN: begin
+				rdy = 1;
+				out = b_gpio_in;
+			end
+			UARTSEND: begin
+				send = 1;
+				out1 = in[7:0];
+			end	
+			UARTSEL: begin
+				sel = in[1:0];
+			end
+			RST: begin
+				wrst = 1;
+			end
 			default:;
 		endcase
+	end
+	
+	if(rdy1)begin
+		rdy = 1;
+		
+		out = {16'b0,in1[7:0]};
 	end
 	
 	led = ~f_led;
-	
-end
-
-always@(posedge clk)begin
-	n_ttim <= f_tim;
-end
-
-always@(*) begin
-	n_tim = f_tim;
-		
-	if(f_start)begin
-		n_tim = f_tim + 1;
-	end 
-	
-	if(start) begin
-		case(in[23:16])
-			SET: n_tim = in[15:0];
-			default:;
-		endcase
-	end
 	
 end
 

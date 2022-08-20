@@ -33,31 +33,32 @@ public class Szum {
         }
         return losline.toString();
     }
+
+    public String makeNewLine(int index){
+        int hindex0 = index*2 ;
+        int hindex1 = index*2 +1;
+
+        String data0="";
+        String data1="";
+
+        if(data.keySet().contains(hindex0)){
+            data0 = data.get(hindex0);
+        }else{
+            data0 = szumnaLini();
+        }
+        if(data.keySet().contains(hindex1)){
+            data1 = data.get(hindex1);
+        }else{
+            data1 = szumnaLini();
+        }
+
+        return data1 + "" + data0;
+    }
     public void szumMe(BinaryConverter conv){
 
-        while(conv.index < 2048){
+        while(conv.index < 3072){
 
-
-            int hindex0 = conv.index*2 ;
-            int hindex1 = conv.index*2 +1;
-
-            String data0="";
-            String data1="";
-
-            if(data.keySet().contains(hindex0)){
-                data0 = data.get(hindex0);
-            }else{
-                data0 = szumnaLini();
-            }
-            if(data.keySet().contains(hindex1)){
-                data1 = data.get(hindex1);
-            }else{
-                data1 = szumnaLini();
-            }
-
-            String suma = data1 + "" + data0;
-
-            conv.printLine(suma);
+            conv.printLine(makeNewLine(conv.index));
 
         }
     }

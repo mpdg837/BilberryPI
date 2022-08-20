@@ -130,7 +130,7 @@ initizer ini(.clk(clk),
 wire rdy;
 wire csz;
 
-dclk dclka(
+dclkb dclka(
 	.clk(clk),
 	.rst(rst),
 	.dclk(ddclk)

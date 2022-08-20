@@ -1,0 +1,3 @@
+include Project\Kernal\resources\space.dat
+include Project\main\boot.asm
+

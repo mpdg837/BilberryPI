@@ -86,6 +86,9 @@ module muldivB(
 	input clk,
 	input rst,
 	
+	input gaddr,
+	input[15:0] addr,
+	
 	input s,
 	
 	input inter,
@@ -173,7 +176,7 @@ divider dvd(.clk(clk),
 multiplier mu(.clk(clk),
 				  .rst(rst),
 				  .start(doMul),
-					
+				
 				  .mode(n_m),
 				
 				  .num1(num1),
@@ -242,8 +245,12 @@ wire[15:0] excp=0;
 regExtra reEx(.clk(clk),
 				  .rst(rst),
 	
-				  .mOper(mOper),
+					.gaddr(gaddr),
+					.addr(addr),
 				
+				  .mOper(mOper),
+					.inter(inter),
+					
 				  .shiftres(shiftres),
 				  .shiftsave(sshi),
 				
@@ -266,6 +273,7 @@ endmodule
 module regExtra(
 	input clk,
 	input rst,
+	input inter,
 	
 	input[1:0] mOper,
 	
@@ -278,6 +286,8 @@ module regExtra(
 	input[15:0] mulRes,
 	input[15:0] divRes,
 	
+	input gaddr,
+	input[15:0] addr,
 	
 	input s,
 
@@ -290,30 +300,44 @@ module regExtra(
 reg[15:0] n_muldiv;
 reg[15:0] mmuldiv;
 
+reg[15:0] b_muldiv;
 
-
+reg[15:0] ni_muldiv;
+reg[15:0] i_muldiv;
 
 always@(posedge clk or posedge rst)begin
 	if(rst) begin
 		n_muldiv <=0;
 	end
 	else begin
-		n_muldiv <= muldiv;
+		n_muldiv <= b_muldiv;
+		
+	end
+end
+
+always@(posedge clk or posedge rst)begin
+	if(rst) begin
+		ni_muldiv <=0;
+	end
+	else begin
+		ni_muldiv <= i_muldiv;
 		
 	end
 end
 
 
 always@(*)begin
-	muldiv = n_muldiv;
 	
-	if(shiftsave) muldiv = shiftres;
-	
-	if(mrdy) muldiv = mulRes;
-	else if(rdy) muldiv = divRes;
-	
+	b_muldiv = n_muldiv;
+	i_muldiv = ni_muldiv;
+
+		if(gaddr) b_muldiv = addr;
+		if(shiftsave) b_muldiv = shiftres;
+		if(mrdy) b_muldiv = mulRes;
+		else if(rdy) b_muldiv = divRes;
 end
 
+always@(*) muldiv <= b_muldiv;
 	
 endmodule
 
@@ -349,6 +373,9 @@ endmodule
 module exceptCollector(
 	input clk,
 	input rst,
+	input inter,
+	
+	input clr,
 	
 	input divbyzero,
 	input stackoverflow,
@@ -359,21 +386,43 @@ module exceptCollector(
 	output reg expirq
 );
 
+reg[15:0] n_excp;
+reg[15:0] n_eexcp;
+
 reg[15:0] f_out;
+reg[15:0] f_oout;
 
 always@(posedge clk or posedge rst)begin
 	if(rst) f_out <= 0;
-	else f_out <= excp;
+	else f_out <= n_excp;
+end
+
+always@(posedge clk or posedge rst)begin
+	if(rst) f_oout <= 0;
+	else f_oout <= n_eexcp;
 end
 
 always@(*)begin
-	excp = f_out;
+	n_excp = f_out;
+	n_eexcp = f_oout;
 	
-	if(divbyzero) excp = 16'd1;
-	if(stackoverflow) excp = 16'd2;
-	if(overflow) excp = 16'd3;
+	if(inter)begin
+		if(divbyzero) n_eexcp = 16'd1;
+		if(stackoverflow) n_eexcp = 16'd2;
+		if(overflow) n_eexcp = 16'd3;
+		if(clr) n_eexcp = 0;
+	end else
+	begin
+		if(divbyzero) n_excp = 16'd1;
+		if(stackoverflow) n_excp = 16'd2;
+		if(overflow) n_excp = 16'd3;
+		if(clr) n_excp = 0;	
+	end
 	
 end
+
+always@(*)
+	excp <= inter ? n_eexcp : n_excp;
 
 endmodule
 

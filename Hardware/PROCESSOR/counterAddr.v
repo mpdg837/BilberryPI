@@ -73,6 +73,8 @@ module counter(
 	input clk,
 	input rst,
 	
+	input prst,
+	
 	input irq1,
 	input irq2,
 	input irq3,
@@ -110,7 +112,9 @@ module counter(
 	input cmpStart,
 	
 	input read,
-	input save
+	input save,
+	
+	output[15:0] stackaddr
 );
 
 wire[15:0] toSave;
@@ -153,6 +157,20 @@ wire rem;
 
 wire ieirq;
 
+wire[15:0] num;
+
+numcountsel ncs(
+	.clk(clk),
+	.rst(rst),
+	
+	.reg1(reg1),
+	.sreg1(sreg1),
+	.sreg2(sreg2),
+	.sreg3(sreg3),
+	.sreg4(sreg4),
+	
+	.num1(num)
+);
 
 przebuffer pba1(.rst(rst),
 					 .clk(clk),
@@ -196,10 +214,14 @@ saveAddr sA(.s(s),
 				.offset(offset),
 				.rst(rst),
 				
+				.prst(prst),
+				
 				.gt(gt),
 				.lt(lt),
 				.eq(eq),
-
+			
+				.num(num),
+				
 				.irq1(oirq1),
 				.irq2(oirq2),
 				.irq3(oirq3),
@@ -243,6 +265,29 @@ saveAddr sA(.s(s),
 );
 
 assign addr = s_addr;
+assign stackaddr = toCont;
+endmodule
+
+module numcountsel(
+	input clk,
+	input rst,
+	
+	input[1:0] reg1,
+	input[15:0] sreg1,
+	input[15:0] sreg2,
+	input[15:0] sreg3,
+	input[15:0] sreg4,
+	
+	output reg[15:0] num1
+);
+
+always@(*)
+	case(reg1)
+		0: num1 <= sreg1;
+		1: num1 <= sreg2;
+		2: num1 <= sreg3;
+		3: num1 <= sreg4;
+	endcase
 
 endmodule
 
@@ -309,6 +354,8 @@ module saveAddr(
 	input clk,
 	input rst,
 	
+	input prst,
+	
 	input s,
 	
 	input[7:0] offset,
@@ -331,7 +378,7 @@ module saveAddr(
 	input[3:0] mOper,
 	input[14:0] dataAddr,
 	
-
+	input[15:0] num,
 	
 	input[7:0] s_stackAddr,
 	input[7:0] s_irq,
@@ -405,7 +452,7 @@ always@(*) begin
 	
 	if(s_irq != 0) 
 		if(~stack2) inter = 1;
-	
+		
 	if(s) begin
 		
 			
@@ -449,7 +496,8 @@ always@(*) begin
 				JGT:  if(isaeq | gt) i_addr = dataAddr;
 						else i_addr = s_addr + 15'b1;	
 				
-				JMP: i_addr = dataAddr + {offset,5'd0};
+				JMP: if(dataAddr == 0) i_addr = num;
+						else i_addr = dataAddr;
 				
 				NEX: begin
 						if(hlt) begin
@@ -466,20 +514,29 @@ always@(*) begin
 								
 							
 								i_stackAddr = s_stackAddr + 8'b1;
-								i_addr = dataAddr + {offset,5'd0};
+								
+								if(dataAddr == 0) i_addr = num;
+								else i_addr = dataAddr;
 						
 						end
 				RET:  begin
 							case(dataAddr)
-								0: begin
+								default: begin
 									if(s_stackAddr == s_irq && (inter)) begin
 										i_irq = 0;
 										eirq = 1;
 									end
-									
-									i_stackAddr = s_stackAddr - 8'b1;
-									pop = 1;
-									i_addr = toCont;
+		
+									if(dataAddr == 0) begin
+										i_addr = toCont;
+										i_stackAddr = s_stackAddr - 8'b1;
+										pop = 1;
+									end
+									else begin
+										i_addr = num;
+										i_stackAddr = 0;
+										pop = 0;
+									end
 								end
 								1: begin
 									n_int = 1;

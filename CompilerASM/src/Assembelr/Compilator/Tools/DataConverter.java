@@ -1,5 +1,7 @@
 package Assembelr.Compilator.Tools;
 
+import Assembelr.Compilator.Data.CharTable;
+
 import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +10,7 @@ public class DataConverter {
 
     public ArrayList<String> nlist;
     public HashMap<String,String> zmienne;
+
 
     public DataConverter(){
         nlist = new ArrayList<>();
@@ -82,7 +85,9 @@ public class DataConverter {
                     int n=0;
                     for(char znakix : datax.toCharArray()){
                         n++;
-                        if(!(znakix+"").equals("0") && !(znakix+"").equals("1")) zlyznak = true;
+                        if(!(znakix+"").equals("0") && !(znakix+"").equals("1")){
+                            zlyznak = true;
+                        }
                     }
 
                     if(n!=16) throw new Exception();

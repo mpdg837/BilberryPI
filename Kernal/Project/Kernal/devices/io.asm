@@ -1,8 +1,9 @@
 
-    include Kernal\devices\buzzer.asm
-    include Kernal\devices\graphics.asm
-    include Kernal\devices\keyboard.asm
-    include Kernal\devices\sddisk.asm
+    include Project\Kernal\devices\timer.asm
+    include Project\Kernal\devices\buzzer.asm
+    include Project\Kernal\devices\graphics.asm
+    include Project\Kernal\devices\keyboard.asm
+    include Project\Kernal\devices\sddisk.asm
 
     sendCopper: // Wyslanie wiadomosci
             call regcopyn
@@ -18,6 +19,24 @@
     outputcontroller:
             call regcopyinter // Zapis rejestrow
 
+            sot 0x1
+                in eax 0x0
+                anda eax 0x8000
+                    cmpa eax 0x8000
+                    jeq gpiooutput
+
+                    in eax 0x0
+                        ram 0x211f // UART
+                        save eax
+
+                    jmp egpiooutput
+                gpiooutput:
+
+                    in eax 0x0
+                        ram 0x211e// GPIO
+                        save eax
+
+                    egpiooutput:
 
             call regbackinter // Powrot do stanu pierwotnego
             ret

@@ -14,7 +14,11 @@
 
 
     loadPalette:
-        set edx 0x07a0
+        call regcopy
+
+        ram 0x2107
+            read edx
+
         set ecx 0x0
                looploadPalette:
                     set eax 0x3 // GET PALETTE.NUMBER
@@ -43,6 +47,7 @@
                jmp looploadPalette
                elooploadPalette:
 
+        call regback
         ret
 
 
@@ -129,14 +134,14 @@
         ram 0x2110
             read edx // Adresowanie komórki tekstury
 
-                ram 0x1020 // Zerowanie pierwotnej petli
+                ram 0x2119 // Zerowanie pierwotnej petli
                     set ebx 0x0
                     save ebx
 
 
                 looptypechar: // Wybieranie typu znaku
 
-                    ram 0x1020
+                    ram 0x2119
                         read ebx
 
                     set eax 0x6
@@ -170,7 +175,7 @@
 
                     endloopchar:
 
-                    ram 0x1020 // Wcyztanie licznika znakow
+                    ram 0x2119 // Wcyztanie licznika znakow
                         read ebx
 
                     // Sprawdzenie przekroczenia
@@ -183,7 +188,7 @@
 
                 endlooptypechar:
 
-            ram 0x1020
+            ram 0x2119
             set eax 0x0
             save eax
 
@@ -276,3 +281,22 @@
                   jmp clearspritesloop
          clearspritesloope:
          ret
+
+
+    waitingforloopgrph:
+        call regcopy
+
+        ram 0x1fc2 // Sprawdzanie zgloszenia przerwania przez uklad graficzny
+                set eax 0x0
+                save eax
+
+            waitForGraphics:
+                read eax
+                // Wartosc oczekiwana
+                cmpa eax 0xffff
+                    jeq renderGraphics // Przekierowanie wrazie wykrycia rozpoczecia nowej klatki
+                jmp waitForGraphics
+
+            renderGraphics: // Render nowej klatki
+        call regback
+        ret

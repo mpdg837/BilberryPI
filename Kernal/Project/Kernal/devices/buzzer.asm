@@ -11,7 +11,7 @@
         ret
 
     playingsound:
-
+        call regcopy
         ram 0x2010
             read eax
 
@@ -48,6 +48,7 @@
                 call sendBuzzer
         endanalysestartupsound:
 
+        call regback
         ret
 
     buzzerVolume:

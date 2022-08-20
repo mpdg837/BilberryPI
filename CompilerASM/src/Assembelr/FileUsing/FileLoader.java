@@ -1,5 +1,7 @@
 package Assembelr.FileUsing;
 
+import Assembelr.Compilator.Data.CharTable;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,7 +13,44 @@ public class FileLoader {
 
     ArrayList<String> zaw= new ArrayList<>();
 
-    public void ladujPlik(File file) throws IOException {
+    public char[] analyse(String linia) throws Exception{
+        String[] splited = linia.split("\\s+");
+        StringBuilder buildSplit = new StringBuilder();
+
+        for(String word : splited){
+            buildSplit.append(word);
+        }
+
+        char[] split = buildSplit.toString().toCharArray();
+        StringBuilder build = new StringBuilder();
+
+        boolean detected = false;
+        boolean dete = false;
+        boolean stop = false;
+
+        for(char character : split){
+            if(detected){
+                if(character == '~'){
+                    dete = true;
+                }else
+                if(character == '/'){
+                    stop = true;
+                }else if(!stop){
+                    if (dete) {
+                        build.append(CharTable.getNumberBinaryString(character));
+                        dete = true;
+                    } else build.append(character);
+                }
+            }else{
+                build.append(character);
+            }
+            if(character == '<') detected = true;
+        }
+
+        if(!dete) return linia.toLowerCase(Locale.ROOT).toCharArray();
+        else return build.toString().toLowerCase(Locale.ROOT).toCharArray();
+    }
+    public void ladujPlik(File file) throws Exception{
 
 
         FileReader read = new FileReader(file);
@@ -19,7 +58,10 @@ public class FileLoader {
 
         String linia = "";
         while((linia = reader.readLine()) !=null){
-            char[] znak = linia.toLowerCase(Locale.ROOT).toCharArray();
+
+
+
+            char[] znak = analyse(linia);
 
             StringBuilder build = new StringBuilder();
             boolean start = false;

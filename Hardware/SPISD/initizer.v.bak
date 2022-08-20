@@ -103,9 +103,7 @@ always@(*)begin
 				
 				init = 0;
 				startx = 0;
-				if(rdy) 
-					if(out == 1) tim = 4;
-					else tim = 3;
+				if(rdy) tim = 4;
 				else tim = 3;
 				start40x = 0;
 				readit = 0;

@@ -1,10 +1,10 @@
 
-    include Kernal\devices\io.asm
-    include Kernal\memory.asm
-    include Kernal\out.asm
-    include Kernal\program.asm
-
-    include Kernal\resources.dat
+    include Project\Kernal\devices\io.asm
+    include Project\Kernal\system\memory.asm
+    include Project\Kernal\system\out.asm
+    include Project\Kernal\program.asm
+    include Project\Kernal\system\executive.asm
+    include Project\Kernal\resources\resources.dat
 
     // Inicjator
     int
@@ -17,7 +17,7 @@
         jmp grphstart // Przerwanie 0x4
         jmp grphcleared // Przerwanie 0x5
         jmp diskrdy // Przerwanie 0x6
-        jmp exception // Wyjatki
+        jmp timer // Wyjatki
 
     clearreg:
         set eax 0x0 // Czyszczenie rejestrow
@@ -27,27 +27,20 @@
         ret
 
     regcopyn: // Kopia rejestrów w pamięci
-        ram 0x1ff0
+
+        push eax
             save eax // Zapis rejestru a
-        ram 0x1ff1
+        push eax
             save ebx // Zapis rejestru a
-        ram 0x1ff2
+        push eax
             save ecx // Zapis rejestru a
-        ram 0x1ff3
+        push eax
             save edx // Zapis rejestru a
 
         ret
 
     regcopy: // Kopia rejestrów w pamięci
-        ram 0x1ff0
-            save eax // Zapis rejestru a
-        ram 0x1ff1
-            save ebx // Zapis rejestru a
-        ram 0x1ff2
-            save ecx // Zapis rejestru a
-        ram 0x1ff3
-            save edx // Zapis rejestru a
-
+        call regcopyn
         call clearreg
 
         ret
@@ -67,14 +60,14 @@
         ret
 
     regback: // Powrót pierwornych rejestrów
-        ram 0x1ff0
-            read eax // Odzysk rejestru a
-        ram 0x1ff1
-            read ebx // Odzysk rejestru b
-        ram 0x1ff2
-            read ecx // Odzysk rejestru c
-        ram 0x1ff3
-            read edx // Odzysk rejestru d
+        pop eax
+            read edx // Odzysk rejestru a
+        pop eax
+            read ecx // Odzysk rejestru b
+        pop eax
+            read ebx // Odzysk rejestru c
+        pop eax
+            read eax // Odzysk rejestru d
 
         ret
 
@@ -87,10 +80,6 @@
             read ecx // Odzysk rejestru c
         ram 0x1ff7
             read edx // Odzysk rejestru d
-
-        ret
-
-    exception:
 
         ret
 

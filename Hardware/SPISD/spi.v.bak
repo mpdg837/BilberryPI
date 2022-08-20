@@ -138,14 +138,14 @@ reg[7:0] f_out = 0;
 endmodule
 
 
-module dclkb(
+module dclk(
 	input clk,
 	input rst,
 	
 	output reg dclk = 0
 );
 
-localparam tima = 1;
+localparam tima = 6;
 
 reg f_dclk = 0;
 

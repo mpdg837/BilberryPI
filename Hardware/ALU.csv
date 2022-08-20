@@ -13,8 +13,8 @@
 # refer to the applicable agreement for further details.
 
 # Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
-# File: C:\FPGAProjects\Console\ALU.csv
-# Generated on: Tue Aug 02 22:23:32 2022
+# File: C:\FPGAProjects\BliberryPI\BliberryPI\Hardware\ALU.csv
+# Generated on: Sun Aug 07 16:12:07 2022
 
 # Note: The column header names should not be changed if you wish to import this .csv file into the Quartus Prime software.
 
@@ -24,6 +24,38 @@ G,Output,PIN_105,6,B6_N0,2.5 V,as output driving an unspecified signal,,0,,
 R,Output,PIN_106,6,B6_N0,2.5 V,as output driving an unspecified signal,,0,,
 clk,Input,PIN_23,1,B1_N0,,,,,,
 cs_sd,Output,PIN_28,2,B2_N0,2.5 V,,,,,
+gpio_in[15],Input,PIN_11,1,B1_N0,,,,,,
+gpio_in[14],Input,PIN_7,1,B1_N0,,,,,,
+gpio_in[13],Input,PIN_2,1,B1_N0,,,,,,
+gpio_in[12],Input,PIN_144,8,B8_N0,,,,,,
+gpio_in[11],Input,PIN_142,8,B8_N0,,,,,,
+gpio_in[10],Input,PIN_138,8,B8_N0,,,,,,
+gpio_in[9],Input,PIN_136,8,B8_N0,,,,,,
+gpio_in[8],Input,PIN_133,8,B8_N0,,,,,,
+gpio_in[7],Input,PIN_129,8,B8_N0,,,,,,
+gpio_in[6],Input,PIN_127,7,B7_N0,,,,,,
+gpio_in[5],Input,PIN_125,7,B7_N0,,,,,,
+gpio_in[4],Input,PIN_121,7,B7_N0,,,,,,
+gpio_in[3],Input,PIN_24,2,B2_N0,,,,,,
+gpio_in[2],Input,PIN_10,1,B1_N0,,,,,,
+gpio_in[1],Input,PIN_3,1,B1_N0,,,,,,
+gpio_in[0],Input,PIN_1,1,B1_N0,,,,,,
+gpio_out[15],Output,PIN_143,8,B8_N0,,,,,,
+gpio_out[14],Output,PIN_141,8,B8_N0,,,,,,
+gpio_out[13],Output,PIN_137,8,B8_N0,,,,,,
+gpio_out[12],Output,PIN_135,8,B8_N0,,,,,,
+gpio_out[11],Output,PIN_132,8,B8_N0,,,,,,
+gpio_out[10],Output,PIN_128,8,B8_N0,,,,,,
+gpio_out[9],Output,PIN_126,7,B7_N0,,,,,,
+gpio_out[8],Output,PIN_124,7,B7_N0,,,,,,
+gpio_out[7],Output,PIN_30,2,B2_N0,,,,,,
+gpio_out[6],Output,PIN_32,2,B2_N0,,,,,,
+gpio_out[5],Output,PIN_34,2,B2_N0,,,,,,
+gpio_out[4],Output,PIN_39,3,B3_N0,,,,,,
+gpio_out[3],Output,PIN_43,3,B3_N0,,,,,,
+gpio_out[2],Output,PIN_46,3,B3_N0,,,,,,
+gpio_out[1],Output,PIN_50,3,B3_N0,,,,,,
+gpio_out[0],Output,PIN_52,3,B3_N0,,,,,,
 hsync,Output,PIN_101,6,B6_N0,2.5 V,as output driving an unspecified signal,,0,,
 kin1,Input,PIN_88,5,B5_N0,,,,,,
 kin2,Input,PIN_89,5,B5_N0,,,,,,

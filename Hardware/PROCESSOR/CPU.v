@@ -43,10 +43,14 @@ module core(
 	output prst
 );
 
+wire[15:0] stackaddr;
+
+wire[1:0] stackArg;
+
 wire[15:0] fexp;
 wire[15:0] cmprarg;
 
-wire[7:0] stackAddr1;
+wire[15:0] stackAddr1;
 wire wStackAddr1;
 wire readIt;
 
@@ -81,7 +85,11 @@ wire[15:0] excp;
 wire[7:0] progoffset;
 
 exceptCollector exCol(.clk(clk),
-							 .rst(rst|rstTim),
+							 .rst(rst),
+							 
+							 .clr(rstTim),
+							 
+							 .inter(inter),
 							 
 							 .divbyzero(divbyzero),
 							 .overflow(overflow),
@@ -126,6 +134,7 @@ wire[15:0] insIn;
 
 inselector inss(.clk(clk),
 					 .rst(rst),
+					 
 					 .insel(inselin),
 					 .insIn1(insIn1),
 					 .insIn2(insIn2),
@@ -277,6 +286,8 @@ controller con(.clk(clk),
 					
 					.save(save),
 					.read(read),
+					
+					.stackArg(stackArg)
 		
 
 );
@@ -316,7 +327,10 @@ comparer cmp(.clk(clk),
 
 muldivB mdB(.clk(clk),
 				.rst(rst),
-	
+				
+				.gaddr(prst),
+				.addr(stackaddr),
+				.inter(inter),
 				.divbrk(divbrk),
 				.s(sMUL),
 				.mOper(mOperMUL),
@@ -339,10 +353,12 @@ muldivB mdB(.clk(clk),
 
 wire[15:0] fstack;
 
-
 stack sta(.clk(clk),
+		.clr(rstTim),
+		
 		.rst(rst),
 		
+		.arg(stackArg),
 		
 		.s(sSTA),
 		
@@ -413,6 +429,7 @@ outputX ouX(.clk(clk),
 
 counter cou(.s(sCOU),
 				
+				.prst(prst),
 				.inter(inter),
 				.offset(progoffset),
 				
@@ -448,7 +465,9 @@ counter cou(.s(sCOU),
 				.cmpStart(cmprStart),
 				
 				.save(save),
-				.read(read)
+				.read(read),
+				
+				.stackaddr(stackaddr)
 );
 
 
@@ -491,7 +510,16 @@ bankManager bMa(.clk(clk),
 assign outsel = bank;
 endmodule
 
+module bufferInA(
+	input clk,
+	input in,
+	output reg out
+);
 
+always@(posedge clk)
+	out <= in;
+	
+endmodule
 module bankManager(
 	input clk,
 	input rst,

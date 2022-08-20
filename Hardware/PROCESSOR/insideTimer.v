@@ -36,10 +36,10 @@ always@(*)begin
 end
 
 always@(*)begin
-	clkm = clka;
+	clkm = 0;
 	
 	if(f_licz == 25000)begin
-		clkm = ~clka;
+		clkm = 1;
 	end
 	
 end
