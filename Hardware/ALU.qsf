@@ -81,7 +81,7 @@ set_location_assignment PIN_91 -to kin4
 set_location_assignment PIN_119 -to ps2clk
 set_location_assignment PIN_120 -to ps2data
 set_location_assignment PIN_103 -to vsync
-set_location_assignment PIN_110 -to sound
+set_location_assignment PIN_112 -to sound
 set_location_assignment PIN_84 -to led[3]
 set_location_assignment PIN_85 -to led[2]
 set_location_assignment PIN_86 -to led[1]

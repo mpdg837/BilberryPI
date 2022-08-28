@@ -68,7 +68,7 @@ bufferconnector bc(
 
 singleBuffer sB(
 	.clk(clk),
-	.insnd(insnd),
+	.insnd(~insnd),
 	.snd(sound)
 );
 endmodule

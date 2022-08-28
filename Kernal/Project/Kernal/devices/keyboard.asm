@@ -148,24 +148,49 @@
 
          call regcopyinter // Zapis rejestrow
 
-         ram 0x2111 // Aby przyspieszyc procesy ladowania
-             read eax
-             cmpa eax 0xffff
-             jeq ignorekeyboard
-
+        ram 0x2141
+            read eax
+            cmpa eax 0xffff
+                jeq ignorekeyboard
          sot 0x3
-
          in eax 0x0
 
         call keydetectxx
+        call keyboardstack
+
         ignorekeyboard:
+
         call regbackinter
 
         ret
 
+    keyboardstack:
 
+        ram 0x2106
+            read eax
+            cmpa eax 0xffff
+                jeq doitkeyboardstack
+                jmp eloopkeyboardstack
 
+        doitkeyboardstack:
 
+            set eax 0x2130
+        loopkeyboardstack:
+            uram eax
+                read ebx
+                cmpa ebx 0x0
+                    jeq analysekeykeyboardstack
 
+                cmpa eax 0x213e
+                    jeq eloopkeyboardstack
+            inc eax
+            jmp loopkeyboardstack
 
+        analysekeykeyboardstack:
+            ram 0x1fe1
+                read ebx
+            uram eax
+                save ebx
+        eloopkeyboardstack:
+        ret
 

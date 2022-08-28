@@ -1,4 +1,4 @@
-            
+
     keydetect:
             call regcopy
             ram 0x2105
@@ -23,18 +23,17 @@
 
                 ram 0x2010
                     savea 0x1380
+                ram 0x212a
+                    set edx 0x0
+                    save edx
 
                     nosoundplayme:
                 call putchar
             iputcharfunctiontest:
 
-            ram 0x2105
-                set eax 0x0
-                save eax
-
             call regback
         ret
-        
+
     spriteload:
             set eax 0x16
             set ebx 0x1
@@ -74,10 +73,43 @@
                 call sendGraphics
         ret
 
+
+    startup:
+            ram 0x17b0
+                savea 0x3e
+            ram 0x17b1
+                savea 0xf
+
+            set ecx 0x1360 // Adres Spritea
+            set ebx 0x8 // Numer
+                call loadSpriteTex
+
+            call spriteload
+
+//
+            ram 0x2125 // Pole tekstowe
+                savea 0x17b0
+            ram 0x2126
+                 savea 0x1a
+
+            ram 0x2118
+                set eax 0x0
+                save eax
+
+            ram 0x211b
+                savea 0x4
+            ram 0x2128
+                savea 0x1
+
+            call calltoblock
+//
+
+        jmp main
+
     main: // Petla glowna systemu
 
-            ram 0x210a
-                savea 0x1
+
+
 
             set eax 0x8
             set ebx 0x3
@@ -86,7 +118,7 @@
             ram 0x2116
                  savea 0x0
             ram 0x1fc3 // Wskzanik strigna do wartosci konwertowaej
-                 savea 0x13b0
+                 savea 0x17b0
 
             call prints // tekst
 
@@ -103,10 +135,6 @@
 
             ram 0x1fa4
                 save eax
-
-                addr
-                res edx
-                save edx
             ram 0x1fe1
                 set ebx 0x0
                 save eax
@@ -124,31 +152,24 @@
 
             call sendBuzzer
 
-        call deltascreen
         call playingsound // Odgrywanie dzwieku
+        call deltascreen
+//
+              ram 0x2118
+                  set eax 0x0
+                  save eax
 
-        call waitingforloopgrph
-        call loadBuffer
+              ram 0x211b
+                  savea 0x4
+              ram 0x2128
+                  savea 0x2
 
-        set ebx 0x0 // Czysczenie wartosci rejestru detekotora
-        save ebx
+              call calltoblock
+  //
+
+
 
         jmp main // Zapetlenie
 
 
     // String
-    &data 0x13b0 < 0000000000111110
-    &data 0x13b1 < 0000000000100111
-    &data 0x13b2 < 0000000000100100
-    &data 0x13b3 < 0000000000101011
-    &data 0x13b4 < 0000000000101011
-    &data 0x13b5 < 0000000000101110
-    &data 0x13b6 < 0000000000000000
-    &data 0x13b7 < 0000000000110110
-    &data 0x13b8 < 0000000000101110
-    &data 0x13b9 < 0000000000110001
-    &data 0x13ba < 0000000000101011
-    &data 0x13bb < 0000000000100011
-    &data 0x13bc < 0000000010000011
-    &data 0x13bd < 0000000011000011
-    &data 0x13be < 0000000000001111

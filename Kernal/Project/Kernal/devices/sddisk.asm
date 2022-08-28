@@ -22,8 +22,21 @@
 
         ret
 
+    quickwait:
+        set ebx 0x0
+        loopquickwait:
+
+            cmpa ebx 0x3a
+                jeq eloopquickwait
+            inc ebx
+            jmp loopquickwait
+        eloopquickwait:
+
+        ret
+
     diskrdy:
-            call regcopyinter // Zapis rejestrow
+            ram 0x1ff4
+                save eax // Zapis rejestru a
 
             sot 0x0
                 in eax 0x0
@@ -33,7 +46,8 @@
             ram 0x2112
                 savea 0xffff
 
-            call regbackinter // Powrot do stanu pierwotnego
+            ram 0x1ff4
+                 read eax // Zapis rejestru a
             ret
 
         initdisk:
@@ -90,7 +104,7 @@
                     set ebx 0x0
                          call sendDisk
 
-                         call waitforansw
+                         call quickwait
 
                     set edx 0x0
                     diskloaderloopreade: // Ladowanie symboli
@@ -160,36 +174,3 @@
             call closedisk
             call regback
             ret
-
-    programloader:
-            ram 0x2113 // Poczatek
-                savea 0x1000
-
-            ram 0x2118 // Blok
-                set eax 0x0
-                save eax
-
-            loopprogramloader:
-                call diskloader
-
-                ram 0x2113
-                    read eax
-                        cmpa eax 0x13ff
-
-                        jgt eloopprogramloader
-                        jeq eloopprogramloader
-
-                    ram 0x2118
-                        read eax
-                        inc eax
-                        save eax
-                    jmp loopprogramloader
-
-            eloopprogramloader:
-
-            ram 0x10ff // Odczyt
-                read eax
-
-            ram 0x1fe1
-                save eax
-        ret

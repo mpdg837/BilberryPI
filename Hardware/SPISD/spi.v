@@ -145,12 +145,10 @@ module dclkb(
 	output reg dclk = 0
 );
 
-localparam tima = 1;
-
 reg f_dclk = 0;
 
-reg[tima:0] f_tim = 0;
-reg[tima:0] n_tim = 0;
+reg[1:0] f_tim = 0;
+reg[1:0] n_tim = 0;
  
 always@(posedge clk or posedge rst)begin
 	if(rst) begin
@@ -167,8 +165,9 @@ always@(*)begin
 	n_tim = f_tim + 1;
 	f_dclk = dclk;
 	
-	if(f_tim == 0)begin
+	if(f_tim == 2)begin
 		f_dclk = ~dclk;
+		n_tim = 0;
 	end
 		
 end

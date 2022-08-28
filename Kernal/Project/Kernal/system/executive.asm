@@ -15,6 +15,10 @@
             ram 0x2118 // Blok
                 save eax
 
+            ram 0x2129
+                set eax 0x0
+                    save eax
+
             call loadprogramsector
             call start
 
@@ -39,6 +43,9 @@
                 set eax 0x0
                 save eax
 
+            ram 0x2129
+                save eax
+
             ram 0x211b
                 savea 0x0
 
@@ -54,10 +61,23 @@
 
                     ram 0x2113
                         read eax
-                            cmpa eax 0x13ff
+                    ram 0x2129
+                        read edx
+                        cmpa edx 0xffff
 
-                            jgt eloopprogramloader
-                            jeq eloopprogramloader
+                        jeq smallamountofdataloadprogramsector
+                        // big
+                            cmpa eax 0x13ff
+                        jmp eamountofdataloadprogramsector
+                            smallamountofdataloadprogramsector:
+                            // small
+                                cmpa eax 0x11ff
+                            eamountofdataloadprogramsector:
+
+
+
+                                jgt eloopprogramloader
+                                jeq eloopprogramloader
 
                         ram 0x2118
                             read eax
@@ -67,11 +87,10 @@
 
                 eloopprogramloader:
 
-                ram 0x10ff // Odczyt
-                    read eax
-
-                ram 0x1fe1
-                    save eax
+                nop
+                nop
+                nop
+                nop
 
         // Awaryjny jump
             ram 0x17fe

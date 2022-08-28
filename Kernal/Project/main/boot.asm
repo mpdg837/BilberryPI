@@ -32,24 +32,22 @@ include Project\main\program.asm
 
             ram 0x2010 // Dzwiek poczatkowy
                 savea 0x1380
+            ram 0x212a
+                set eax 0x0
+                save eax
 
-            set ecx 0x1360 // Adres Spritea
-            set ebx 0x8 // Numer
-                call loadSpriteTex
 
-            call spriteload
-
-            jmp main
+            jmp startup
 
 
     // Palette
-    &data 0x13a0 < 0000 0000 0001 0111
+    &data 0x13a0 < 0000 0000 0000 1100
     &data 0x13a1 < 0000 0000 0000 0000
 
-    &data 0x13a2 < 0000 0000 0000 0011
+    &data 0x13a2 < 0000 0000 0000 0100
     &data 0x13a3 < 0000 0000 0000 0000
 
-    &data 0x13a2 < 0000 0000 0000 1100
+    &data 0x13a2 < 0000 0000 0000 1001
     &data 0x13a3 < 0000 0000 0000 0000
 
     &data 0x13a4 < 0000 0000 0001 1101
