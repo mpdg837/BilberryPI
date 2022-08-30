@@ -35,8 +35,9 @@ public class Assembelr {
 
             BinaryConverter conv = new BinaryConverter(lista,etykiety,data);
 
-            SaveToVer.SaveToVerilog(conv.linijki,"kernal.v");
-            SaveToVer.SaveToBin(conv.bineries,"kernal.bin");
+            SaveToVer.SaveToVerilog(conv.linijki,"bios.hex",0,1024);
+            SaveToVer.SaveToVerilog(conv.linijki,"charset.hex",1024,1280);
+            SaveToVer.SaveToBin(conv.bineries,"program.bin",8192,14336);
         }catch (IOException err){
             System.out.println(err);
         }catch (Exception err){

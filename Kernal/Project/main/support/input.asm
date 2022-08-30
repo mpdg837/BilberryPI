@@ -1,6 +1,10 @@
 
     enableinput:
         call regcopy
+        ram 0x2160
+            savea 0xffff
+
+        call setcursortexture
 
             ram 0x2125 // Pole tekstowe
                 read eax // adres
@@ -16,53 +20,13 @@
                 jmp activeinputloop
             finishactiveinputloop:
 
-                savea 0x90
+                savea 0x41
             inc eax // add cursor
                 uram eax
                 savea 0xf
 
         call regback
         ret
-
-    waitingforloopgrphandinput:
-        call regcopy
-            ram 0x1fc2 // Sprawdzanie zgloszenia przerwania przez uklad graficzny
-                set eax 0x0
-                save eax
-
-            inputwaitForGraphics:
-                loopreadkeyinpause:
-                    call getfromstackkey
-
-                    ram 0x213f
-                        read edx
-                            cmpa edx 0xffff
-                            jeq eloopreadkeyinpause
-
-                            call stdinput
-
-                    jmp loopreadkeyinpause
-                eloopreadkeyinpause:
-
-
-
-                ram 0x1fc2
-                    read eax
-                // Wartosc oczekiwana
-                cmpa eax 0xffff
-                    jeq inputrenderGraphics // Przekierowanie wrazie wykrycia rozpoczecia nowej klatki
-                jmp inputwaitForGraphics
-
-            inputrenderGraphics: // Render nowej klatki
-
-        call loadBuffer
-
-        set ebx 0x0 // Czysczenie wartosci rejestru detekotora
-        save ebx
-
-        call regback
-        ret
-
 
     saveoneinput:
        uram eax
@@ -129,7 +93,7 @@
             uram eax
                 read ebx
 
-                cmpa ebx 0x90
+                cmpa ebx 0x41
                     jeq eloopfinishstdinput
 
             inc eax
@@ -159,6 +123,11 @@
                 savea 0x1
             ram 0x2126
                 savea 0x1
+            ram 0x2162
+                savea 0xffff
+            ram 0x1fc2
+                set eax 0x0
+                save eax
         call regback
         ret
 
@@ -183,7 +152,7 @@
 
                         uram eax
                             read ebx
-                            cmpa ebx 0x90 // CURSOR
+                            cmpa ebx 0x41 // CURSOR
                                 jeq inputeloopdetectendkey
 
                             inc eax
@@ -196,9 +165,9 @@
                     cmpa 0x10 ebx
                         jeq inputenterpresskey
                     cmpa 0x11 ebx // up
-                        jeq inputnopresskeykeyboard
+                        jeq inputenterpresskey
                     cmpa 0x12 ebx // down
-                        jeq inputnopresskeykeyboard
+                        jeq inputenterpresskey
                     cmpa 0x13 ebx //left
                         jeq inputleftmovecursor
                     cmpa 0x14 ebx //right
@@ -280,7 +249,7 @@
                             cmp eax ecx
                             jlt eloopinputbackspace // Aby nie wyjsc poza zakres wyswietlania
                         uram eax
-                        savea 0x90
+                        savea 0x41
 
                     adda eax 0x2
 
@@ -333,7 +302,7 @@
                                 read ecx
                                 read ebx
 
-                                cmpa ebx 0x90 // Kursor
+                                cmpa ebx 0x41 // Kursor
                                     jeq eloopinputcharactershift
 
                                 inc eax
@@ -363,7 +332,7 @@
                         save ebx
                         inc eax
                             uram eax
-                            savea 0x90 // nast kon
+                            savea 0x41 // nast kon
 
                 einputnopresskeykeyboard:
                     nop

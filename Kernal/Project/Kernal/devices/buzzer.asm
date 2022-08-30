@@ -20,12 +20,26 @@
 
                 ram 0x212a
                     read edx
-                    set ecx 0x3c
+                    set ecx 0x1e
                         div edx ecx
                         res edx
 
                     add eax edx
+            ram 0x2010
+                read edx
 
+            loopplayingsoundcheck: // Sprawdzenie przekroczenia
+
+                uram edx
+                    read ecx
+                    cmpa ecx 0xff
+                        jeq endstartupsound
+                    cmp edx eax
+                        jeq eloopplayingsoundcheck
+
+                inc edx
+                jmp loopplayingsoundcheck
+            eloopplayingsoundcheck:
 
             uram eax // Odczyt dzwieku
                 read eax

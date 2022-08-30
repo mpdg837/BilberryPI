@@ -29,7 +29,6 @@
                         ram 0x211f // UART
                         save eax
 
-                        call gpiostack
 
                     jmp egpiooutput
                 gpiooutput:
@@ -42,29 +41,6 @@
 
             call regbackinter // Powrot do stanu pierwotnego
             ret
-
-    gpiostack:
-        set eax 0x2142
-
-        loopgpiostack:
-            uram eax
-                read ebx
-                cmpa ebx 0x0
-                    jeq addloopgpiostack
-                cmpa eax 0x215e
-                    jeq eloopgpiostack
-            inc eax
-            jmp loopgpiostack
-
-        addloopgpiostack:
-            ram 0x211e
-                read ebx
-            uram eax
-                anda ebx 0xf
-                save ebx
-        eloopgpiostack:
-
-        ret
 
     keysets:  // Obsługa wyjątku
 

@@ -51,7 +51,7 @@ public class BinaryConverter {
 
         int nindex = index;
 
-        linijki.add("11'd"+index+": out <= 32'b"+str+";");
+        linijki.add(str);
         char[] znaki = str.toCharArray();
 
 

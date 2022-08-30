@@ -67,11 +67,11 @@
 
                         jeq smallamountofdataloadprogramsector
                         // big
-                            cmpa eax 0x13ff
+                            cmpa eax 0x1bff
                         jmp eamountofdataloadprogramsector
                             smallamountofdataloadprogramsector:
                             // small
-                                cmpa eax 0x11ff
+                                cmpa eax 0x17ff
                             eamountofdataloadprogramsector:
 
 

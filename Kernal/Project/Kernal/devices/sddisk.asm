@@ -26,7 +26,7 @@
         set ebx 0x0
         loopquickwait:
 
-            cmpa ebx 0x3a
+            cmpa ebx 0x7
                 jeq eloopquickwait
             inc ebx
             jmp loopquickwait

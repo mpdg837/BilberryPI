@@ -18,7 +18,7 @@ reg nn_readed;
 
 reg nreaded;
 reg[7:0] nin;
-always@(posedge dclk or posedge rst)
+always@(posedge clk or posedge rst)
 	if(rst) begin
 		nreaded <= 0;
 		nin <= 0;

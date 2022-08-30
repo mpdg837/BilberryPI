@@ -12,7 +12,7 @@ include Project\main\program.asm
                     save edx
 
             ram 0x2107
-                savea 0x13a0
+                savea 0x1ba0
             call loadPalette
 
             call clearreg
@@ -31,7 +31,7 @@ include Project\main\program.asm
             call deltascreen
 
             ram 0x2010 // Dzwiek poczatkowy
-                savea 0x1380
+                savea 0x1b80
             ram 0x212a
                 set eax 0x0
                 save eax
@@ -41,26 +41,26 @@ include Project\main\program.asm
 
 
     // Palette
-    &data 0x13a0 < 0000 0000 0000 1100
-    &data 0x13a1 < 0000 0000 0000 0000
+    &data 0x1ba0 < 0000 0000 0000 1100
+    &data 0x1ba1 < 0000 0000 0000 0000
 
-    &data 0x13a2 < 0000 0000 0000 0100
-    &data 0x13a3 < 0000 0000 0000 0000
+    &data 0x1ba2 < 0000 0000 0000 0100
+    &data 0x1ba3 < 0000 0000 0000 0000
 
-    &data 0x13a2 < 0000 0000 0000 1001
-    &data 0x13a3 < 0000 0000 0000 0000
+    &data 0x1ba2 < 0000 0000 0000 1001
+    &data 0x1ba3 < 0000 0000 0000 0000
 
-    &data 0x13a4 < 0000 0000 0001 1101
-    &data 0x13a5 < 0000 0000 0000 0000
+    &data 0x1ba4 < 0000 0000 0001 1101
+    &data 0x1ba5 < 0000 0000 0000 0000
 
-    &data 0x13a6 < 0000 0000 0001 0000
-    &data 0x13a7 < 0000 0000 0000 0000
+    &data 0x1ba6 < 0000 0000 0001 0000
+    &data 0x1ba7 < 0000 0000 0000 0000
 
-    &data 0x13aa < 0000 0000 0001 0011
-    &data 0x13ab < 0000 0000 0000 0000
+    &data 0x1baa < 0000 0000 0001 0011
+    &data 0x1bab < 0000 0000 0000 0000
 
-    &data 0x13ac < 0000 0000 0001 1010
-    &data 0x13ad < 0000 0000 0000 0000
+    &data 0x1bac < 0000 0000 0001 1010
+    &data 0x1bad < 0000 0000 0000 0000
 
-    &data 0x13ae < 0000 0000 0001 1001
-    &data 0x13af < 0000 0000 0000 0000
+    &data 0x1bae < 0000 0000 0001 1001
+    &data 0x1baf < 0000 0000 0000 0000

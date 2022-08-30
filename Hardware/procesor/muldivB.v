@@ -70,11 +70,13 @@ always@(*)begin
 		endcase
 	end
 	
+	
 	if(f_tim !=0) begin
 		n_tim = f_tim + 1;
 		
 		shabrk = 1;
 	end
+	
 end
 
 endmodule
@@ -310,7 +312,7 @@ always@(posedge clk or posedge rst)begin
 		n_muldiv <=0;
 	end
 	else begin
-		n_muldiv <= b_muldiv;
+		n_muldiv <= muldiv;
 		
 	end
 end
@@ -328,16 +330,15 @@ end
 
 always@(*)begin
 	
-	b_muldiv = n_muldiv;
+	muldiv = n_muldiv;
 	i_muldiv = ni_muldiv;
 
-		if(gaddr) b_muldiv = addr;
-		if(shiftsave) b_muldiv = shiftres;
-		if(mrdy) b_muldiv = mulRes;
-		else if(rdy) b_muldiv = divRes;
+		if(gaddr) muldiv = addr;
+		if(shiftsave) muldiv = shiftres;
+		if(mrdy) muldiv = mulRes;
+		else if(rdy) muldiv = divRes;
 end
 
-always@(*) muldiv <= b_muldiv;
 	
 endmodule
 

@@ -2,7 +2,7 @@
     singletimer:
         uram edx // Postep czasomierza
                 read eax
-                cmpa eax 0x7530
+                cmpa eax 0xffff
                     jeq ignoretimer
 
                 inc eax

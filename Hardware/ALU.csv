@@ -14,7 +14,7 @@
 
 # Quartus Prime Version 18.1.0 Build 625 09/12/2018 SJ Lite Edition
 # File: C:\FPGAProjects\BliberryPI\BliberryPI\Hardware\ALU.csv
-# Generated on: Sun Aug 07 16:12:07 2022
+# Generated on: Tue Aug 30 14:53:09 2022
 
 # Note: The column header names should not be changed if you wish to import this .csv file into the Quartus Prime software.
 
@@ -71,7 +71,9 @@ mosi_sd,Input,PIN_33,2,B2_N0,2.5 V,,,,,
 ps2clk,Input,PIN_119,7,B7_N0,,,,,,
 ps2data,Input,PIN_120,7,B7_N0,,,,,,
 sck_sd,Output,PIN_38,3,B3_N0,2.5 V,,,,,
-sound,Output,PIN_110,7,B7_N0,,,,,,
+sound,Output,PIN_112,7,B7_N0,,,,,,
 uart_rxd,Input,PIN_115,7,B7_N0,,,,,,
+uart_rxd1,Input,,,,,,,,,
 uart_txd,Output,PIN_114,7,B7_N0,,,,,,
+uart_txd1,Output,,,,,,,,,
 vsync,Output,PIN_103,6,B6_N0,2.5 V,,,0,,

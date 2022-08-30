@@ -5,8 +5,8 @@ module div_input(
 	output reg clkm
 );
 
-reg[14:0] f_licz;
-reg[14:0] n_licz;
+reg[15:0] f_licz;
+reg[15:0] n_licz;
 reg clka = 0;
 
 always@(posedge clk or posedge rst)begin
@@ -30,7 +30,7 @@ end
 always@(*)begin
 	n_licz = f_licz + 15'b1;
 	
-	if(f_licz == 25000)begin
+	if(f_licz == 50000)begin
 		n_licz = 0;
 	end
 end
@@ -38,7 +38,7 @@ end
 always@(*)begin
 	clkm = 0;
 	
-	if(f_licz == 25000)begin
+	if(f_licz == 50000)begin
 		clkm = 1;
 	end
 	

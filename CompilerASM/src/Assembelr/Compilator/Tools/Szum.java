@@ -56,7 +56,7 @@ public class Szum {
     }
     public void szumMe(BinaryConverter conv){
 
-        while(conv.index < 3072){
+        while(conv.index < 4096){
 
             conv.printLine(makeNewLine(conv.index));
 

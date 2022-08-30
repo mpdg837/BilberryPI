@@ -130,12 +130,6 @@ initizer ini(.clk(clk),
 wire rdy;
 wire csz;
 
-dclkb dclka(
-	.clk(clk),
-	.rst(rst),
-	.dclk(ddclk)
-);
-
 wire gets;
 wire[7:0] outputstream;
 
@@ -147,7 +141,7 @@ wire rdycrc;
 
 crc7spi c7s(
 	.rst(irst),
-	.clk(ddclk),
+	.clk(clk),
 	
 	.in(incrc), 
 	.start(startcrc),
@@ -195,7 +189,7 @@ insideconnector ica(
 
 prepare prp(
 	.clk(clk),
-	.dclk(ddclk),
+	.dclk(clk),
 	.rst(irst),
 	
 	// wejscie
@@ -224,7 +218,7 @@ prepare prp(
 );
 
 managerx man(
-	.dclk(ddclk),
+	.dclk(clk),
 	.clk(clk),
 	.rst(irst),
 	
@@ -254,7 +248,7 @@ managerx man(
 
 receiver rec(.clk(clk),
 			.rst(irst),
-			.dclk(ddclk),
+			.dclk(clk),
 	
 			.reset(start401 | start1),
 		
@@ -266,7 +260,7 @@ receiver rec(.clk(clk),
 );
 
 spi spix(
-	.clk(ddclk),
+	.clk(clk),
 	.rst(irst),
 	
 	.in(in),

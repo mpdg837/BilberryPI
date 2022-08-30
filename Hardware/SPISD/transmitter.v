@@ -7,55 +7,11 @@ module initbuffer(
 	output reg n_init
 );
 
-reg f_init = 0;
-reg f_dclk = 0;
-reg n_dclk = 0;
-
-reg[1:0] f_start = 0;
-reg[1:0] n_start = 0;
-
-reg b_init;
-
-reg nn_init;
 
 always@(posedge clk or posedge rst)
-	if(rst) b_init <= 0;
-	else b_init <= init;
-	
-always@(posedge clk or posedge rst)
-	if(rst)begin
-		f_init <= 0;
-		f_dclk <= 0;
-		f_start <= 0;
-	end
-	else begin
-		f_dclk <= n_dclk;
-		f_init <= nn_init;
-		f_start <= n_start;
-	end
-
-always@(*)begin
-	nn_init = f_init; 
-	n_dclk = dclk;
-	n_start = f_start;
-	
-	case(f_start)
-		0: if(b_init)begin
-				n_start = 1;
-				nn_init = 1;
-			end
-		1: if(~f_dclk & dclk) n_start = 2;
-		2: if(f_dclk & ~dclk) begin
-				n_start = 0;
-				nn_init = 0;
-				end
-		default:;
-	endcase
-end
-
-always@(posedge dclk or posedge rst)
 	if(rst) n_init <= 0;
-	else n_init <= nn_init;
+	else n_init <= init;
+	
 	
 endmodule
 
@@ -75,28 +31,9 @@ reg nout = 0;
 reg nin = 0;
 
 always@(posedge dclk or posedge rst)begin
-	if(rst) nin <= 0;
-	else nin <= in;
-end
-
-always@(posedge clk or posedge rst)
-	if(rst) begin
-		f_in <= 0;
-	end
-	else begin
-		f_in <= n_in;
-	end
-
-always@(*)begin
-	nout = 0;
-	n_in = nin;
-	
-	if(~f_in && nin) nout = 1;
-end
-
-always@(posedge clk or posedge rst)
 	if(rst) out <= 0;
-	else out <= nout;
+	else out <= in;
+end
 
 endmodule
 

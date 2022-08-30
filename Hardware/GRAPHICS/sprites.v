@@ -729,7 +729,7 @@ collector cola(.d1(d1),
 					.d4(d4),
 					.d5(d5),
 					.d6(d6),
-					.d7(d7 & 0),
+					.d7(d7),
 					.d8(d8 & 0),
 					
 					.bcgcol(bcgcol),
@@ -740,7 +740,7 @@ collector cola(.d1(d1),
 					.ecol4(ecol4), 
 					.ecol5(ecol5), 
 					.ecol6(ecol6),
-					.ecol7(ecol7 & 0),
+					.ecol7(ecol7),
 					.ecol8(ecol8 & 0),
 
 					.out(endcol)  	
