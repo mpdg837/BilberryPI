@@ -8,6 +8,14 @@ module collector(
 	input d6,
 	input d7,
 	input d8,
+	input d9,
+	input d10,
+	input d11,
+	input d12,
+	input d13,
+	input d14,
+	input d15,
+	input d16,
 	
 	input[4:0] bcgcol,
 	
@@ -19,7 +27,15 @@ module collector(
 	input[4:0] ecol6,
 	input[4:0] ecol7,
 	input[4:0] ecol8,
-
+	input[4:0] ecol9, 
+	input[4:0] ecol10,
+	input[4:0] ecol11,
+	input[4:0] ecol12,
+	input[4:0] ecol13, 
+	input[4:0] ecol14,
+	input[4:0] ecol15,
+	input[4:0] ecol16,
+	
 	output reg[4:0] out  	
 );
 
@@ -32,6 +48,14 @@ always@(*)begin
 	else if(d6) out <= ecol6;
 	else if(d7) out <= ecol7;
 	else if(d8) out <= ecol8;
+	else if(d9) out <= ecol9;
+	else if(d10) out <= ecol10;
+	else if(d11) out <= ecol11;
+	else if(d12) out <= ecol12;
+	else if(d13) out <= ecol13;
+	else if(d14) out <= ecol14;
+	else if(d15) out <= ecol15;
+	else if(d16) out <= ecol16;
 	else out <= bcgcol;
 end
 endmodule

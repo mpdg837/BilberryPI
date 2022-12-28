@@ -45,7 +45,7 @@ module core(
 
 wire[15:0] stackaddr;
 
-wire[1:0] stackArg;
+wire[3:0] stackArg;
 
 wire[15:0] fexp;
 wire[15:0] cmprarg;

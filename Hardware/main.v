@@ -33,7 +33,7 @@ module main(
 	output vsync,
 	
 	// SOUND
-	output sound,
+	output[7:0] sound,
 	
 	// LEDS 
 	
@@ -42,13 +42,7 @@ module main(
 	// INTERFACE
 
 	output uart_txd,
-	input uart_rxd,
-	
-	output uart_txd1,
-	input uart_rxd1,
-	
-	input[15:0] gpio_in,
-	output[15:0] gpio_out
+	input uart_rxd
 );
 
 wire inclk;

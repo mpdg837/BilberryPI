@@ -38,7 +38,7 @@
 
 
 set_global_assignment -name FAMILY "Cyclone IV E"
-set_global_assignment -name DEVICE EP4CE6E22C8
+set_global_assignment -name DEVICE EP4CE10E22C8
 set_global_assignment -name TOP_LEVEL_ENTITY main
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION "20.1.1 SP1.49"
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:03:05  SEPTEMBER 16, 2021"
@@ -81,7 +81,6 @@ set_location_assignment PIN_91 -to kin4
 set_location_assignment PIN_119 -to ps2clk
 set_location_assignment PIN_120 -to ps2data
 set_location_assignment PIN_103 -to vsync
-set_location_assignment PIN_112 -to sound
 set_location_assignment PIN_84 -to led[3]
 set_location_assignment PIN_85 -to led[2]
 set_location_assignment PIN_86 -to led[1]
@@ -94,10 +93,6 @@ set_instance_assignment -name IO_STANDARD "2.5 V" -to hsync
 set_global_assignment -name RESERVE_DATA0_AFTER_CONFIGURATION "USE AS REGULAR IO"
 set_global_assignment -name RESERVE_DATA1_AFTER_CONFIGURATION "USE AS REGULAR IO"
 set_global_assignment -name RESERVE_FLASH_NCE_AFTER_CONFIGURATION "USE AS REGULAR IO"
-set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to R
-set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to G
-set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to B
-set_instance_assignment -name RESERVE_PIN AS_OUTPUT_DRIVING_AN_UNSPECIFIED_SIGNAL -to hsync
 set_instance_assignment -name SLEW_RATE 0 -to G
 set_instance_assignment -name SLEW_RATE 0 -to hsync
 set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
@@ -116,38 +111,6 @@ set_location_assignment PIN_33 -to mosi_sd
 set_location_assignment PIN_38 -to sck_sd
 set_location_assignment PIN_115 -to uart_rxd
 set_location_assignment PIN_114 -to uart_txd
-set_location_assignment PIN_11 -to gpio_in[15]
-set_location_assignment PIN_7 -to gpio_in[14]
-set_location_assignment PIN_2 -to gpio_in[13]
-set_location_assignment PIN_144 -to gpio_in[12]
-set_location_assignment PIN_142 -to gpio_in[11]
-set_location_assignment PIN_138 -to gpio_in[10]
-set_location_assignment PIN_136 -to gpio_in[9]
-set_location_assignment PIN_133 -to gpio_in[8]
-set_location_assignment PIN_129 -to gpio_in[7]
-set_location_assignment PIN_127 -to gpio_in[6]
-set_location_assignment PIN_125 -to gpio_in[5]
-set_location_assignment PIN_121 -to gpio_in[4]
-set_location_assignment PIN_24 -to gpio_in[3]
-set_location_assignment PIN_10 -to gpio_in[2]
-set_location_assignment PIN_3 -to gpio_in[1]
-set_location_assignment PIN_1 -to gpio_in[0]
-set_location_assignment PIN_143 -to gpio_out[15]
-set_location_assignment PIN_141 -to gpio_out[14]
-set_location_assignment PIN_137 -to gpio_out[13]
-set_location_assignment PIN_135 -to gpio_out[12]
-set_location_assignment PIN_132 -to gpio_out[11]
-set_location_assignment PIN_128 -to gpio_out[10]
-set_location_assignment PIN_126 -to gpio_out[9]
-set_location_assignment PIN_124 -to gpio_out[8]
-set_location_assignment PIN_30 -to gpio_out[7]
-set_location_assignment PIN_32 -to gpio_out[6]
-set_location_assignment PIN_34 -to gpio_out[5]
-set_location_assignment PIN_39 -to gpio_out[4]
-set_location_assignment PIN_43 -to gpio_out[3]
-set_location_assignment PIN_46 -to gpio_out[2]
-set_location_assignment PIN_50 -to gpio_out[1]
-set_location_assignment PIN_52 -to gpio_out[0]
 set_global_assignment -name VERILOG_FILE spisd/transmitter.v
 set_global_assignment -name VERILOG_FILE spisd/spi.v
 set_global_assignment -name VERILOG_FILE spisd/receiver.v
@@ -203,4 +166,15 @@ set_global_assignment -name VERILOG_FILE graphics/GraphicsBuffering.v
 set_global_assignment -name VERILOG_FILE graphics/Graphics.v
 set_global_assignment -name VERILOG_FILE graphics/Background.v
 set_global_assignment -name VERILOG_FILE buzzer/buzzer.v
+set_global_assignment -name VERILOG_FILE BUZZER/generator.v
+set_global_assignment -name VERILOG_FILE BUZZER/generators.v
+set_global_assignment -name VERILOG_FILE BUZZER/sampleGen.v
+set_location_assignment PIN_64 -to sound[7]
+set_location_assignment PIN_66 -to sound[6]
+set_location_assignment PIN_68 -to sound[5]
+set_location_assignment PIN_70 -to sound[4]
+set_location_assignment PIN_72 -to sound[3]
+set_location_assignment PIN_74 -to sound[2]
+set_location_assignment PIN_76 -to sound[1]
+set_location_assignment PIN_80 -to sound[0]
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -53,7 +53,7 @@ module controller(
 	output reg pop,
 	output reg push,
 
-	output reg[1:0] streg1,
+	output reg[3:0] streg1,
 	
 	
 	output reg[15:0] RAMdata,
@@ -87,7 +87,7 @@ module controller(
 	output reg save,
 	output reg read,
 	
-	output reg[1:0] stackArg
+	output reg[3:0] stackArg
 );
 
 reg n_sBank;
@@ -135,7 +135,7 @@ reg n_sSTA;
 reg n_pop;
 reg n_push;
 
-reg[1:0] n_streg1;
+reg[3:0] n_streg1;
 
 reg[15:0] n_RAMdata;
 reg[1:0] n_mOperRAM;
@@ -160,7 +160,7 @@ reg[1:0] n_cmprNum2;
 reg n_save;
 reg n_read;
 
-reg[1:0] n_stackArg;
+reg[3:0] n_stackArg;
 
 reg n_cmprStart;
 // Rozkazy procesora
@@ -875,9 +875,9 @@ always@(*)begin
 					n_pop = 0;
 					n_push = 1;
 
-					n_streg1 = ereg1;
+					n_streg1 = {ereg2,ereg1};
 					
-					n_stackArg = ereg1;
+					n_stackArg = {ereg2,ereg1};
 					// Next
 					
 					n_mOperCOU = 4'd6;
@@ -891,13 +891,13 @@ always@(*)begin
 					end
 				POP:begin
 				
-					n_stackArg = ereg1;
+					n_stackArg = {ereg2,ereg1};
 				
 					n_sSTA = 1;
 					n_pop = 1;
 					n_push = 0;
 
-					n_streg1 = ereg1;
+					n_streg1 = {ereg2,ereg1};
 					
 					// ALU
 					

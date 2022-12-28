@@ -232,39 +232,44 @@ always@(*)begin
 	status = 0;
 	f_selector = selector;
 	
-	status = addrMemory[12] | addrMemory[11];
+	status = addrMemory[13] |addrMemory[12] | addrMemory[11];
 	
-	if(startRead || w) f_selector = addrMemory[12] | addrMemory[11];
+	if(startRead || w) f_selector = addrMemory[13] |addrMemory[12] | addrMemory[11];
 
 	end
 	
 
 always@(*)begin
-	startReadRAM <= startRead & status;
-	startReadROM <= startRead & (~status);
+	startReadRAM = startRead & status;
+	startReadROM = startRead & (~status);
 end
 
 always@(*)begin
 
-	if(status == 0) addrROM <= addrMemory[10:0];
-	else addrROM <= 0;
+	if(status == 0) addrROM = addrMemory[10:0];
+	else addrROM = 0;
 	
 end
 	
 
 always@(*)begin
 	if(status == 1) begin
-		if(addrMemory[12:11] == 2'b10) addrRAM8 <= {1'b1,addrMemory[10:0]};
-		else addrRAM8 <= {addrMemory[10:0]};
-			
-		wRAM8 <= wCPU;
-		toRAM8 <= toMemory;	
+		case(addrMemory[14:11])
+			3'b100: addrRAM8 = {2'd3,addrMemory[10:0]};
+			3'b011: addrRAM8 = {2'd2,addrMemory[10:0]};
+			3'b010: addrRAM8 = {2'd1,addrMemory[10:0]};
+			3'b001: addrRAM8 = {2'd0,addrMemory[10:0]};
+			default: addrRAM8 = 0;
+		endcase
+	
+		wRAM8 = wCPU;
+		toRAM8 = toMemory;	
 	end else
 	begin
-		addrRAM8 <= 0;
+		addrRAM8 = 0;
 
-		wRAM8 <= 0;
-		toRAM8 <= 0;
+		wRAM8 = 0;
+		toRAM8 = 0;
 	end
 end
 

@@ -37,7 +37,7 @@ public class Assembelr {
 
             SaveToVer.SaveToVerilog(conv.linijki,"bios.hex",0,1024);
             SaveToVer.SaveToVerilog(conv.linijki,"charset.hex",1024,1280);
-            SaveToVer.SaveToBin(conv.bineries,"program.bin",8192,14336);
+            SaveToVer.SaveToBin(conv.bineries,"program.bin",8192,16384);
         }catch (IOException err){
             System.out.println(err);
         }catch (Exception err){

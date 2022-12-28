@@ -18,7 +18,6 @@ module shal(
 assign out = in << {13'b0,arg};
 
 endmodule
-
 module shifter(
 	input clk,
 	input rst,
@@ -36,47 +35,38 @@ module shifter(
 );
 
 reg[15:0] n_shiftreg;
+reg n_save;
 
-reg[2:0] n_tim;
-reg[2:0] f_tim;
-
-always@(posedge clk or posedge rst)
-	if(rst) begin
-		n_shiftreg <= 0;
-		f_tim <= 0;
-		end
-	else begin
-		n_shiftreg <= shiftreg;
-		f_tim <= n_tim;
-		end
 always@(*)begin
-	save = 0;
-	shiftreg = n_shiftreg;
-	n_tim = f_tim;
+	n_save = 0;
+	n_shiftreg = 0;
 	shabrk = 0;
 	
 	if(s)begin
 		case(mOper)
 			2'b00: begin
-				shiftreg = num1 << (num2 + 1);
-				save = 1;
-				n_tim = 1;
+				n_shiftreg = num1 << (num2 + 1);
+				n_save = 1;
 			end
 			2'b11: begin
-				shiftreg = num1 >> (num2 + 1);
-				save = 1;
-				n_tim = 1;
+				n_shiftreg = num1 >> (num2 + 1);
+				n_save = 1;
 			end
 		endcase
 	end
 	
 	
-	if(f_tim !=0) begin
-		n_tim = f_tim + 1;
-		
-		shabrk = 1;
+end
+
+always@(posedge clk or posedge rst)begin
+	if(rst) begin
+		shiftreg <= 0;
+		save <= 0;
 	end
-	
+	else begin
+		shiftreg <= n_shiftreg;
+		save <= n_save;
+	end
 end
 
 endmodule

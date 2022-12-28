@@ -52,7 +52,7 @@ wire[31:0] inx;
 wire startx;
 
 
-tester(.clk(clk),
+tester tes(.clk(clk),
 
 		 .start(startx),
 		 .in(inx)

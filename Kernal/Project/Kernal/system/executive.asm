@@ -7,7 +7,7 @@
 
             ram 0x2118 // Dodanie sektora do stosu
                 read ebx
-            push ebx
+            push ebx eax
                 save ebx
 
             ram 0x211b
@@ -22,7 +22,7 @@
             call loadprogramsector
             call start
 
-            pop ebx // pobranie sektora z stosu
+            pop ebx eax// pobranie sektora z stosu
                 read ebx
             ram 0x2118
                 save ebx

@@ -35,8 +35,43 @@ module memCont(
 	output reg work
 );
 
+// Rozkazy procesora
+localparam NOP = 5'd0; // O
+localparam SET = 5'd1; // O
+localparam IN = 5'd2; // O
+localparam OUT = 5'd3; // O
+localparam INC = 5'd4; // O
+localparam JMP = 5'd5; // O
+localparam SAVE = 5'd6;
+localparam RAM = 5'd7;
+localparam TIM = 5'd8;
+localparam URAM = 5'd9;
+localparam NOT = 5'd10; // O
+localparam ADD = 5'd11; // O
+localparam SUB = 5'd12; // O
+localparam AND = 5'd13; // O
+localparam EOR = 5'd14; // O
 localparam MOL = 5'd15; // O
 localparam MOR = 5'd16; // O
+localparam XOR = 5'd17; // O
+localparam JEQ = 5'd18; // O
+localparam RES = 5'd19; // O
+localparam JGT = 5'd20; // O
+localparam JLT = 5'd21; // O
+localparam DEC = 5'd22; // O
+localparam CMP = 5'd23; // O
+localparam READ = 5'd24; // O
+
+localparam MOV = 5'd25; // O
+
+localparam POP = 5'd26; // O
+localparam PUSH = 5'd27; // O
+
+localparam MUL = 5'd28; // O
+localparam DIV = 5'd29; // O
+localparam CALL = 5'd30; // O
+localparam RET = 5'd31; // O
+
 
 localparam idle = 4'd0;
 localparam getPro = 4'd1;
@@ -102,7 +137,7 @@ always@(*)begin
 		idle: n_stat = getPro;
 		getPro: n_stat = savPro;
 		savPro: if(readrdy) 
-						if(toCPU[24:20] == 5'd24 || toCPU[24:20] == 5'd6) n_stat = getMem;
+						if(toCPU[24:20] == READ || toCPU[24:20] == SAVE) n_stat = getMem;
 						else n_stat = loadPro;
 		getMem: n_stat = savMem;
 		savMem: if(readrdy)n_stat = loadPro;
@@ -110,7 +145,7 @@ always@(*)begin
 		loadPro: n_stat = workMe;
 		workMe: n_stat = loadRAM;
 					
-		loadRAM: if(dataProg[24:20] == 5'd6) n_stat = saveRAM;
+		loadRAM: if(dataProg[24:20] == SAVE || dataProg[24:20] == MOR || dataProg[24:20] == MOL) n_stat = saveRAM;
 				else  n_stat = idle;
 
 		saveRAM: if(saverdy) n_stat = getPro;

@@ -1,5 +1,21 @@
 
 
+module bclk(
+	input clk,
+	input rst,
+	
+	input in,
+	output reg out
+);
+
+
+always@(posedge clk or posedge rst)begin
+	if(rst) out <= 0;
+	else out <= in;
+end
+
+endmodule
+
 module G10k(
 	input clk,
 	input rst,
@@ -17,6 +33,13 @@ module G10k(
 	output hsync,
 	output vsync
 	
+);
+
+bclk bc(.clk(clk),
+		.rst(rst),
+		
+		.in(irq3),
+		.out(irqc)
 );
 
 wire comb;
@@ -482,7 +505,6 @@ sprites sprT(.clk(clk),
 	
 );
 
-assign irqc = irq3;
 endmodule
 
 module nextA(

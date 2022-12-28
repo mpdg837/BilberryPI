@@ -41,8 +41,8 @@ module VRAM(
 	output reg[7:0] out
 );
 
-reg[3:0] memory1[6143:0];
-reg[3:0] memory2[6143:0];
+reg[3:0] memory1[8191:0];
+reg[3:0] memory2[8191:0];
 
 localparam A = 2'd0;
 localparam B = 2'd1;
@@ -54,15 +54,15 @@ localparam D = 2'd3;
 always@(posedge clk)begin
 		
 		if(ws)begin
-			if(sel) memory2[waddr-2048] <= ins;
-			else memory1[waddr-2048] <= ins;
+			if(sel) memory2[waddr] <= ins;
+			else memory1[waddr] <= ins;
 		end
 		if(w) begin
-			memory1[waddr-2048] <= in[3:0];
-			memory2[waddr-2048] <= in[7:4];
+			memory1[waddr] <= in[3:0];
+			memory2[waddr] <= in[7:4];
 		end
 		
-		out <= {memory2[addr-2048],memory1[addr-2048]};
+		out <= {memory2[addr],memory1[addr]};
 	end
 endmodule
 

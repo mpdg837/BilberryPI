@@ -28,13 +28,13 @@
 
     regcopyn: // Kopia rejestrów w pamięci
 
-        push eax
+        push eax eax
             save eax // Zapis rejestru a
-        push eax
+        push eax eax
             save ebx // Zapis rejestru a
-        push eax
+        push eax eax
             save ecx // Zapis rejestru a
-        push eax
+        push eax eax
             save edx // Zapis rejestru a
 
         ret
@@ -60,13 +60,13 @@
         ret
 
     regback: // Powrót pierwornych rejestrów
-        pop eax
+        pop eax eax
             read edx // Odzysk rejestru a
-        pop eax
+        pop eax eax
             read ecx // Odzysk rejestru b
-        pop eax
+        pop eax eax
             read ebx // Odzysk rejestru c
-        pop eax
+        pop eax eax
             read eax // Odzysk rejestru d
 
         ret

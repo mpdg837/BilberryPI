@@ -159,8 +159,9 @@ always@(*)begin
 	n_offset = offset;
 	n_progoffset = 0;
 	
-		
-	if(s)begin
+	if(wStackAddr)
+		n_RAMaddrn = {stackAddr};
+	else if(s)begin
 		
 		case(mOper)
 			NOP: ;
@@ -197,13 +198,11 @@ always@(*)begin
 	
 	end 
 	
-	if(wStackAddr)
-		n_RAMaddrn = {stackAddr};
-		
 end
 
 always@(*)
-	if(inter) RAMaddr <= RAMaddri;
+	if(wStackAddr) RAMaddr <= RAMaddrn;
+	else if(inter) RAMaddr <= RAMaddri;
 	else if(f_off) RAMaddr <= RAMaddrn + {offset,5'b0};
 	else RAMaddr <= RAMaddrn;
 endmodule
