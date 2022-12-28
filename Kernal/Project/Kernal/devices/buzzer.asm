@@ -89,7 +89,7 @@
                 jeq reduceBuzzerVolume
                 jmp ebuzzerVolume
         addBuzzerVolume:
-            cmpa ebx 0x3
+            cmpa ebx 0x7
                 jeq ebuzzerVolume
             inc ebx
             jmp finaliseBuzzerVolume
