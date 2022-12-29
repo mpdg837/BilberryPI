@@ -100,6 +100,14 @@ reg[24:0] f_bufferProg;
 reg[31:0] bufferMem;
 reg[31:0] f_bufferMem;
 
+reg[31:0] bufferMemDMA;
+reg[31:0] f_bufferMemDMA;
+
+always@(posedge clk or posedge rst)
+	if(rst) f_bufferMemDMA <= 0;
+	else f_bufferMemDMA <= bufferMemDMA;
+	
+
 always@(posedge clk or posedge rst)
 	if(rst) f_bufferMem <= 0;
 	else f_bufferMem <= bufferMem;
@@ -173,6 +181,7 @@ always@(*)begin
 	
 	bufferProg = f_bufferProg;
 	bufferMem = f_bufferMem;
+	bufferMemDMA = f_bufferMemDMA;
 	
 	brk = f_brk;
 	
@@ -197,34 +206,42 @@ always@(*)begin
 		loadPro: begin
 					brk = 0;
 					dataProg = f_bufferProg;
+					
+				
 					end
 		workMe: begin
 			
-			work = 1;
-				
-				case(RAMaddr[0])
-					0: fromRAM = f_bufferMem[15:0];
-					1: fromRAM = f_bufferMem[31:16];
-						
-				endcase
+					work = 1;
+					addr = 11;
+					readstart = 1;
+					
+					case(RAMaddr[0])
+						0: fromRAM = f_bufferMem[15:0];
+						1: fromRAM = f_bufferMem[31:16];
+							
+					endcase
 			
 			end
 		loadRAM: begin
-			
-			work = 1;
+					work = 1;
+					bufferMemDMA = toCPU;
 		end
 		
 		saveRAM: begin
-			
-			addr = {RAMaddr[15:1]}; 
-			wRAM = w;
-			case(RAMaddr[0])
-				0: fromCPU = {f_bufferMem[31:16],toRAM};
-				1: fromCPU = {toRAM,f_bufferMem[15:0]};
-			endcase
+					
+					addr = {RAMaddr[15:1]}; 
+					wRAM = w;
+					case(RAMaddr[0])
+						0: fromCPU = {f_bufferMem[31:16],toRAM};
+						1: fromCPU = {toRAM,f_bufferMem[15:0]};
+					endcase
 		end
 		default:;
 	endcase
+end
+
+always@(*)begin
+	
 end
 
 endmodule
