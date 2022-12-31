@@ -47,15 +47,9 @@ always@(*)begin
 	
 	if(in[31:30] == devaddrin) begin
 	
-		if(in[29:24] ==6'b111111)begin
-			// Get request
-			n_out = 0;
-		end else
-		begin
-			// Get
-			mstart = 1;
-			min = in[23:0];
-		end
+		mstart = 1;
+		min = in[23:0];
+		
 		
 		
 	end 

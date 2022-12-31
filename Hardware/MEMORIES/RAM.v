@@ -16,7 +16,7 @@ module BRAMI32
 	
 );
 
-BRAM #(14) ram1(
+BRAM #(blocks) ram1(
 	.addr(addr),
 	.din(din),
 	.clk(clk),
@@ -24,7 +24,7 @@ BRAM #(14) ram1(
 	.we(we),
 	
 	
-	.out(out),
+	.out(out)
 	
 	
 	
@@ -35,6 +35,7 @@ assign readRdyRAM = 1;
 assign saveRdyRAM = 1;
 	
 endmodule
+
 module BRAM
 #(
 	parameter blocks = 14
@@ -51,9 +52,9 @@ module BRAM
 	
 );
 
-wire[14:0] raddr = addr[12:0];
+wire[14:0] raddr = addr[11:0];
 
-reg[31:0] memory[blocks * 2 * 256 - 1:0];
+reg[31:0] memory[blocks * 256 - 1:0];
 reg[31:0] dout_r;
 
 reg[11:0] n;
@@ -61,12 +62,11 @@ reg[11:0] n;
 initial begin 
 	for(n=0;n< blocks * 256 - 1;n = n + 1) begin
 		memory[n] = 0;
-		memory[n+ blocks * 256] = 0;
 		end
 end
 
 
-wire[14:0] iraddr = addr[12:0];
+wire[14:0] iraddr = addr[11:0];
 
 
 always@(posedge clk) begin
@@ -82,3 +82,4 @@ end
 
 
 endmodule
+

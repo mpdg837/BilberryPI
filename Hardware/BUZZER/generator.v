@@ -261,33 +261,6 @@ generatorNoi genNoi(.clk(clk),
 wire[15:0] genSoundSam;
 wire genStartSam;
 
-generatorSam genSam(.clk(clk),
-						  .rst(rst),
-			
-						  .freq(freq),
-							
-							// SampleGen
-							.addrGen(addrSample),
-							.speedGen(speedSample),
-							.stopGen(stopSample),
-							.startGen(startSample),
-	
-							// DMA		
-							.addrDMA(addrDMA),
-							.startDMA(startDMA),
-								
-							.inDMA(inDMA),
-							.rdyDMA(rdyDMA),
-								
-							.toSaveDMA(toSaveDMA),
-							.wDMA(wDMA),
-			
-						  .out(genSoundSam),
-						  .start(genStartSam),
-						  .loopSample(loopSample)
-);
-
-
 wire[15:0] genSound;
 wire genStart;
 
@@ -335,6 +308,11 @@ chanelVolume chAV(.clk(clk),
 endmodule
 
 
+
+
+
+
+
 module genTypeBuffer(
 	input clk,
 	input rst,
@@ -372,22 +350,40 @@ module chanelVolume(
 	output reg startO
 );
 
+wire[15:0] s0 = {4'b0,soundIn[15:4]};
+wire[15:0] s1 = {2'b0,soundIn[15:2]};
+wire[15:0] s2 = {3'b0,soundIn[15:3]};
+wire[15:0] s3 = {1'b0,soundIn[15:1]};
+
+reg[15:0] soundOutx;
+reg startOx;
+	
 always@(posedge clk or posedge rst)begin
 	if(rst) begin
+		soundOutx <= 0;
+		startOx <= 0;
+	end
+	else begin
+		case(volume)
+			0: soundOutx <= s2 + s0;
+			1: soundOutx <= s1;
+			2: soundOutx <= s1 + s2;
+			3: soundOutx <= s3;
+		endcase
+		
+		startOx <= start;
+	end
+end
+
+always@(posedge clk or posedge rst)
+	if(rst)begin
 		soundOut <= 0;
 		startO <= 0;
 	end
 	else begin
-		case(volume)
-			0: soundOut <= {2'b0,soundIn[15:2]} + {3'b0,soundIn[15:3]};
-			1: soundOut <= {1'b0,soundIn[15:1]};
-			2: soundOut <= {1'b0,soundIn[15:1]} + {2'b0,soundIn[15:2]};
-			3: soundOut <= {soundIn[15:0]};
-		endcase
-		
-		startO <= start;
+		soundOut <= soundOutx;
+		startO <= startOx;
 	end
-end
 
 endmodule
 

@@ -24,6 +24,18 @@ wire[5:0] soundType;
 wire[1:0] soundVol;
 wire[2:0] genType;
 
+wire startT1;
+
+wire[5:0] soundType1;
+wire[1:0] soundVol1;
+wire[2:0] genType1;
+
+wire startT2;
+
+wire[5:0] soundType2;
+wire[1:0] soundVol2;
+wire[2:0] genType2;
+
 wire[2:0] vol;
 
 wire loopSample;
@@ -40,11 +52,17 @@ buzzerMan bMan(.clk(clk),
 			 .genType(genType),
 			 .startT(startT),
 			 
-			 .startSample(startSample),
-			 .addrSample(addrSample),
-			 .speedSample(speedSample),
-			 .stopSample(stopSample),
-			 .loopSample(loopSample)
+			 .soundType1(soundType1),
+			 .soundVol1(soundVol1),
+			 .genType1(genType1),
+			 .startT1(startT1),
+			 
+			 .soundType2(soundType2),
+			 .soundVol2(soundVol2),
+			 .genType2(genType2),
+			 .startT2(startT2)
+			 
+			 
 );
 
 wire freq;
@@ -58,10 +76,11 @@ sampling_freq fre(.clk(clk),
 wire[15:0] soundX;
 wire startX;
 
-wire startSample;
-wire[15:0] addrSample;
-wire[15:0] speedSample;
-wire stopSample;
+wire[15:0] soundXX;
+wire startXX; 
+
+wire[15:0] soundXXX;
+wire startXXX; 
 
 soundGen gen1(.clk(clk),
 				  .rst(rst),
@@ -72,36 +91,69 @@ soundGen gen1(.clk(clk),
 				  .genType(genType),
 				  .soundType({soundVol,soundType}),
 				  .startT(startT),
-	
+
+				  
 				  .soundOut(soundX),
 				  .startO(startX),
-				  
-				  // SampleGen
-				  	.startSample(startSample),
-					.addrSample(addrSample),
-					.speedSample(speedSample),
-					.stopSample(stopSample),
-					.loopSample(loopSample),
 
-					// DMA		
-					.addrDMA(addrDMA),
-					.startDMA(startDMA),
-						
-					.inDMA(inDMA),
-					.rdyDMA(rdyDMA),
-						
-					.toSaveDMA(toSaveDMA),
-					.wDMA(wDMA)
 );
 
+soundGen gen2(.clk(clk),
+				  .rst(rst),
+	
+				  .freq(freq),
+	
+					// NoteGen
+				  .genType(genType1),
+				  .soundType({soundVol1,soundType1}),
+				  .startT(startT1),
+	
+				  .soundOut(soundXX),
+				  .startO(startXX),
+
+);
+
+soundGenSimple gen3(.clk(clk),
+				  .rst(rst),
+	
+				  .freq(freq),
+	
+					// NoteGen
+				  .genType(genType2),
+				  .soundType({soundVol2,soundType2}),
+				  .startT(startT2),
+	
+				  .soundOut(soundXXX),
+				  .startO(startXXX),
+
+);
+
+wire[15:0] soundO;
+wire startO;
+
+soundSuming sum(.clk(clk),
+					 .rst(rst),	
+	
+					.soundX(soundX),
+					.startX(startX),
+
+					.soundXX(soundXX),
+					.startXX(startXX),	
+					
+					.soundXXX(soundXXX),
+					.startXXX(startXXX),	
+					
+					.soundO(soundO),
+					.startO(startO)	
+);
 
 wire pwm;
 sigmaDelta#(.sizeBuffer(16))
 		  sig1(.clk(clk),
 				.rst(rst),
 	
-				.sound(soundX),
-				.start(startX),
+				.sound(soundO),
+				.start(startO),
 	
 				.pwm(pwm)
 );
@@ -117,8 +169,85 @@ volumer volume(.clk(clk),
 				.volume(vol),
 	
 				.pwms(sound)
-	
+
 );
+
+endmodule
+
+module soundSuming(
+	input clk,
+	input rst,	
+	
+	input[15:0] soundX,
+	input startX,
+
+	input[15:0] soundXX,
+	input startXX,	
+	
+	input[15:0] soundXXX,
+	input startXXX,	
+	
+	output reg[15:0] soundO,
+	output reg startO
+);
+
+reg[15:0] f_sound1;
+reg[15:0] n_sound1;
+
+reg[15:0] f_sound2;
+reg[15:0] n_sound2;
+
+reg[15:0] f_sound3;
+reg[15:0] n_sound3;
+
+always@(posedge clk or posedge rst)
+	if(rst) f_sound1 <= 0;
+	else f_sound1 = n_sound1;
+
+always@(posedge clk or posedge rst)
+	if(rst) f_sound2 <= 0;
+	else f_sound2 = n_sound2;
+
+always@(posedge clk or posedge rst)
+	if(rst) f_sound3 <= 0;
+	else f_sound3 = n_sound3;
+
+always@(*)begin
+	n_sound1 = f_sound1;
+	
+	if(startX) n_sound1 = soundX;
+end
+
+always@(*)begin
+	n_sound2 = f_sound2;
+	
+	if(startXX) n_sound2 = soundXX;
+end
+
+always@(*)begin
+	n_sound3 = f_sound3;
+	
+	if(startXXX) n_sound3 = soundXXX;
+end
+
+reg b_start;
+
+always@(posedge clk or posedge rst)
+	if(rst) b_start = 0;
+	else b_start = startX | startXX | startXXX;
+
+always@(*)begin
+	
+	soundO = 0;
+	startO = 0;
+	
+	if(b_start) begin
+		soundO = f_sound1 + f_sound2 + f_sound3;
+		startO = 1;
+	
+	end
+	
+end
 
 endmodule
 
@@ -149,6 +278,17 @@ module buzzerMan(
 	output reg[5:0] soundType,
 	output reg[1:0] soundVol,
 	output reg[2:0] genType,
+
+	output reg startT1,
+	output reg[5:0] soundType1,
+	output reg[1:0] soundVol1,
+	output reg[2:0] genType1,
+
+	output reg startT2,
+	output reg[5:0] soundType2,
+	output reg[1:0] soundVol2,
+	output reg[2:0] genType2,
+
 	
 	// Sampler
 	output reg startSample,
@@ -160,7 +300,11 @@ module buzzerMan(
 
 
 reg[2:0] f_vol = 7;
+
 reg[2:0] f_genType;
+reg[2:0] f_genType1;
+reg[2:0] f_genType2;
+
 reg[2:0] f_playSample;
 
 localparam NOP = 8'd0;
@@ -180,9 +324,13 @@ always@(posedge clk or posedge rst)
 	if(rst) begin
 		f_vol <= 7;
 		f_genType <= 0;
+		f_genType1 <= 0;
+		f_genType2 <= 0;
 		end
 	else begin
 		f_genType <= genType;
+		f_genType1 <= genType1;
+		f_genType2 <= genType2;
 		f_vol <= vol;
 		end
 
@@ -191,9 +339,16 @@ always@(*)begin
 	
 	vol = f_vol;
 	genType = f_genType;
+	genType1 = f_genType1;
+	genType2 = f_genType2;
 	
 	startT = 0;
+	startT1 = 0;
+	startT2 = 0;
+	
 	soundType = 0;
+	soundType1 = 0;
+	soundType2 = 0;
 
 	startSample = 0;
 	addrSample = 0;
@@ -205,17 +360,52 @@ always@(*)begin
 		case(in[23:16])
 			NOP:;
 			NOTE: begin
-				soundType = in[5:0];
-				soundVol = in[7:6];
-				genType = in[10:8];
+			
+				case(in[12:11])
+					0:begin
+						soundType = in[5:0];
+						soundVol = in[7:6];
+						genType = in[10:8];
+							startT = 1;
+					end
+					1:begin
+						soundType1 = in[5:0];
+						soundVol1 = in[7:6];
+						genType1 = in[10:8];
+							startT1 = 1;
+					end
+					2:begin
+						soundType2 = in[5:0];
+						soundVol2 = in[7:6];
+						genType2 = in[10:8];
+							startT2 = 1;
+					end
+					default:;
+				endcase
 				
-				startT = 1;
+			
 				
 				end
 			STOP: begin
-				soundType = 0;
-				startT = 0;
-				genType = 0;
+				case(in[1:0])
+					0:begin
+						soundType = 0;
+						startT = 0;
+						genType = 0;
+					end
+					1:begin
+						soundType1 = 0;
+						startT1 = 0;
+						genType1 = 0;
+					end
+					2:begin
+						soundType2 = 0;
+						startT2 = 0;
+						genType2 = 0;
+					end
+					default:;
+				endcase
+				
 				end
 			VOL: vol = in[2:0];
 			

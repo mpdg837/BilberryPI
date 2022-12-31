@@ -168,10 +168,8 @@ module keyrstmodule(
 	input in,
 	input tclk,
 	
-	output reg rst
+	output rst
 );
-
-wire irst;
 
 keyrst k1(.mode(0),
 			.in(in),
@@ -179,30 +177,8 @@ keyrst k1(.mode(0),
 			.rspress(irst)
 );
 
-wire iirst = ~irst;
+assign rst = ~irst;
 
-reg f_p;
-reg n_p;
-
-always@(posedge clk)
-	f_p <= n_p;
-	
-always@(*)begin
-
-	n_p = f_p;
-	rst = 0;
-	
-	if(iirst)begin
-		if(~f_p) begin
-			n_p = 1;
-			rst = 1;
-		end
-	end
-	else
-	begin
-		n_p = 0;
-	end
-end 
 endmodule
 
 

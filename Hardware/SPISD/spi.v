@@ -58,6 +58,9 @@ buffspi bs(
 	.b_start(b_start)
 );
 
+
+reg b_mosi;
+
 reg f_sck = 0;
 reg f_miso = 0;
 
@@ -90,8 +93,9 @@ reg[7:0] f_out = 0;
 	always@(*)begin
 		
 		sck = f_sck;
-		if(csz) cs = 1;
-		else cs = 0;
+		
+		cs = 0;
+		
 		miso = f_miso;
 		tim = f_tim;
 		mem = f_mem;
@@ -110,8 +114,8 @@ reg[7:0] f_out = 0;
 		
 			sck = ~f_sck;
 			
-			if(sck && ~f_sck)begin
-				out = {f_out[6:0],mosi};
+			if(~sck && f_sck)begin
+				out = {f_out[6:0],b_mosi};
 			end
 			
 			if(f_sck)begin
@@ -135,6 +139,11 @@ reg[7:0] f_out = 0;
 
 	end
 
+	always@(posedge clk or posedge rst)
+		if(rst) b_mosi <= 0;
+		else b_mosi <= mosi;
+		
+	
 endmodule
 
 

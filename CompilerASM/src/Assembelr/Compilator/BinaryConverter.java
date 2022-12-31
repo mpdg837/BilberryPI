@@ -149,8 +149,8 @@ public class BinaryConverter {
                     case "cmpa" ->{printLine(trns.makeLineRegDoubleArg("10111",nrozkaz.regs.get(0),nrozkaz.num));}
                     case "read" ->{ printLine(trns.makeLineOneReg("11000",nrozkaz.regs.get(0),false));}
                     case "mov" ->{ printLine(trns.makeLineTwoReg("11001",nrozkaz.regs.get(0),nrozkaz.regs.get(1),false)); }
-                    case "pop" ->{ printLine(trns.makeLineTwoReg("11010",nrozkaz.regs.get(0),nrozkaz.regs.get(1),false));}
-                    case "push" ->{ printLine(trns.makeLineTwoReg("11011",nrozkaz.regs.get(0),nrozkaz.regs.get(1),false));}
+                    case "pop" ->{ printLine(trns.makeLineOneReg("11010",nrozkaz.regs.get(0),false));}
+                    case "push" ->{ printLine(trns.makeLineOneReg("11011",nrozkaz.regs.get(0),false));}
                     case "mul" ->{ printLine(trns.makeLineTwoReg("11100",nrozkaz.regs.get(0),nrozkaz.regs.get(1),false));}
                     case "div" ->{ printLine(trns.makeLineTwoReg("11101",nrozkaz.regs.get(0),nrozkaz.regs.get(1),false));}
                     case "emul" ->{ printLine(trns.makeLineTwoReg("11100",nrozkaz.regs.get(0),nrozkaz.regs.get(1),true));}

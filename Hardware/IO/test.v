@@ -108,31 +108,13 @@ always@(*)begin
 					3: n_led = {1'b0,f_led[2:0]};
 					default:;
 				endcase
-			GPIOOUT: b_gpio_out = {1'b1,in[14:0]};
-			GPIOIN: begin
-				rdy = 1;
-				out = b_gpio_in;
-			end
-			UARTSEND: begin
-				send = 1;
-				out1 = in[7:0];
-			end	
-			UARTSEL: begin
-				sel = in[1:0];
-			end
+	
 			RST: begin
 				wrst = 1;
 			end
 			default:;
 		endcase
 	end
-	
-	if(rdy1)begin
-		rdy = 1;
-		
-		out = {16'b0,in1[7:0]};
-	end
-	
 	led = ~f_led;
 	
 end

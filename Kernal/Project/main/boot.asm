@@ -12,7 +12,7 @@ include Project\main\program.asm
                     save edx
 
             ram 0x2107
-                savea 0x1ba0
+                savea 0x1ea0
             call loadPalette
 
             call clearreg
@@ -30,37 +30,41 @@ include Project\main\program.asm
 
             call deltascreen
 
-            ram 0x2010 // Dzwiek poczatkowy
-                savea 0x1b80
-            ram 0x212a
-                set eax 0x0
-                save eax
+            set eax 0x4
+            set ebx 0x1600
+                call sendBuzzer
+            set eax 0x5
+            set ebx 0x100
+                 call sendBuzzer
+            set eax 0x9
+            set ebx 0x0
+                call sendBuzzer
 
 
             jmp startup
 
 
     // Palette
-    &data 0x1ba0 < 0000 0000 0000 1100
-    &data 0x1ba1 < 0000 0000 0000 0000
+    &data 0x1ea0 < 0000 0000 0000 1100
+    &data 0x1ea1 < 0000 0000 0000 0000
 
-    &data 0x1ba2 < 0000 0000 0000 0100
-    &data 0x1ba3 < 0000 0000 0000 0000
+    &data 0x1ea2 < 0000 0000 0000 0100
+    &data 0x1ea3 < 0000 0000 0000 0000
 
-    &data 0x1ba2 < 0000 0000 0000 1001
-    &data 0x1ba3 < 0000 0000 0000 0000
+    &data 0x1ea2 < 0000 0000 0000 1001
+    &data 0x1ea3 < 0000 0000 0000 0000
 
-    &data 0x1ba4 < 0000 0000 0001 1101
-    &data 0x1ba5 < 0000 0000 0000 0000
+    &data 0x1ea4 < 0000 0000 0001 1101
+    &data 0x1ea5 < 0000 0000 0000 0000
 
-    &data 0x1ba6 < 0000 0000 0001 0000
-    &data 0x1ba7 < 0000 0000 0000 0000
+    &data 0x1ea6 < 0000 0000 0001 0000
+    &data 0x1ea7 < 0000 0000 0000 0000
 
-    &data 0x1baa < 0000 0000 0001 0011
-    &data 0x1bab < 0000 0000 0000 0000
+    &data 0x1eaa < 0000 0000 0001 0011
+    &data 0x1eab < 0000 0000 0000 0000
 
-    &data 0x1bac < 0000 0000 0001 1010
-    &data 0x1bad < 0000 0000 0000 0000
+    &data 0x1eac < 0000 0000 0001 1010
+    &data 0x1ead < 0000 0000 0000 0000
 
-    &data 0x1bae < 0000 0000 0001 1001
-    &data 0x1baf < 0000 0000 0000 0000
+    &data 0x1eae < 0000 0000 0001 1001
+    &data 0x1eaf < 0000 0000 0000 0000

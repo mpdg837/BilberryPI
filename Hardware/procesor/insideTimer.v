@@ -29,19 +29,12 @@ end
 
 always@(*)begin
 	n_licz = f_licz + 15'b1;
-	
-	if(f_licz == 50000)begin
-		n_licz = 0;
-	end
-end
-
-always@(*)begin
 	clkm = 0;
 	
 	if(f_licz == 50000)begin
+		n_licz = 0;
 		clkm = 1;
 	end
-	
 end
 
 endmodule

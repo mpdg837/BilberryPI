@@ -20,26 +20,22 @@ module registers(
 
 
 
-register r1(.bank(bank),
-		
-				.clk(clk),
-				.rst(rst),
-				.save(save),
-				
-				.f_reg(f_sreg1),
-	
-				.s_reg(sreg1)
+singleregister r1(.clk(clk),
+						.rst(rst),
+						.save(save),
+						
+						.f_reg(f_sreg1),
+			
+						.s_reg(sreg1)
 );
 
-register r2(.bank(bank),
-		
-				.clk(clk),
-				.rst(rst),
+singleregister r2(.clk(clk),
+						.rst(rst),
 	
-				.f_reg(f_sreg2),
-				.save(save),
-				
-				.s_reg(sreg2)
+						.f_reg(f_sreg2),
+						.save(save),
+						
+						.s_reg(sreg2)
 );
 
 register r3(.bank(bank),
@@ -67,6 +63,35 @@ register r4(.bank(bank),
 endmodule
 
 
+
+
+module singleregister(
+	input save,
+	input clk,
+	input rst,
+	
+	input[15:0] f_reg,
+	
+	output[15:0] s_reg
+);
+
+wire[15:0] s_reg1;
+
+
+subreg sr1(.clk(clk),
+			  .rst(rst),
+			  .setBank(1'b0),
+			  .bank(0),
+			  
+			  .save(save),
+			  .f_reg(f_reg),
+
+			  .s_reg1(s_reg)
+);
+
+
+endmodule
+
 module register(
 	input[1:0] bank,
 	
@@ -81,8 +106,6 @@ module register(
 
 wire[15:0] s_reg1;
 wire[15:0] s_reg2;
-wire[15:0] s_reg3;
-wire[15:0] s_reg4;
 
 
 subreg sr1(.clk(clk),

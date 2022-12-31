@@ -9,24 +9,21 @@ module connector(
 	output reg[31:0] out
 );
 
+reg[31:0] b_out;
+
+always@(*)begin
+	b_out = out;
+	
+	if(out2 != 0) b_out = {out2,out1};
+	else b_out = 0;
+	
+end
 
 always@(posedge clk or posedge rst)begin
 	
-	if(rst) begin
-		out <= 0;
-		
-	end
-	else if(out2 !=0) begin
-		out <= {out2,out1};
+	if(rst) out <= 0;
+	else out <=  b_out;
 
-	end
-	else begin
-		out <= 0;
-
-	end
-	
-	
-	
 end
 
 

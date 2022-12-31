@@ -34,8 +34,6 @@ module memCont(
 	
 	output reg work
 );
-
-// Rozkazy procesora
 localparam NOP = 5'd0; // O
 localparam SET = 5'd1; // O
 localparam IN = 5'd2; // O
@@ -100,14 +98,6 @@ reg[24:0] f_bufferProg;
 reg[31:0] bufferMem;
 reg[31:0] f_bufferMem;
 
-reg[31:0] bufferMemDMA;
-reg[31:0] f_bufferMemDMA;
-
-always@(posedge clk or posedge rst)
-	if(rst) f_bufferMemDMA <= 0;
-	else f_bufferMemDMA <= bufferMemDMA;
-	
-
 always@(posedge clk or posedge rst)
 	if(rst) f_bufferMem <= 0;
 	else f_bufferMem <= bufferMem;
@@ -145,7 +135,7 @@ always@(*)begin
 		idle: n_stat = getPro;
 		getPro: n_stat = savPro;
 		savPro: if(readrdy) 
-						if(toCPU[24:20] == READ || toCPU[24:20] == SAVE) n_stat = getMem;
+						if(toCPU[24:20] == 5'd24 || toCPU[24:20] == 5'd6) n_stat = getMem;
 						else n_stat = loadPro;
 		getMem: n_stat = savMem;
 		savMem: if(readrdy)n_stat = loadPro;
@@ -153,7 +143,7 @@ always@(*)begin
 		loadPro: n_stat = workMe;
 		workMe: n_stat = loadRAM;
 					
-		loadRAM: if(dataProg[24:20] == SAVE || dataProg[24:20] == MOR || dataProg[24:20] == MOL) n_stat = saveRAM;
+		loadRAM: if(dataProg[24:20] == SAVE || dataProg[24:20] == MOL || dataProg[24:20] == MOR) n_stat = saveRAM;
 				else  n_stat = idle;
 
 		saveRAM: if(saverdy) n_stat = getPro;
@@ -181,7 +171,6 @@ always@(*)begin
 	
 	bufferProg = f_bufferProg;
 	bufferMem = f_bufferMem;
-	bufferMemDMA = f_bufferMemDMA;
 	
 	brk = f_brk;
 	
@@ -206,42 +195,34 @@ always@(*)begin
 		loadPro: begin
 					brk = 0;
 					dataProg = f_bufferProg;
-					
-				
 					end
 		workMe: begin
 			
-					work = 1;
-					addr = 11;
-					readstart = 1;
-					
-					case(RAMaddr[0])
-						0: fromRAM = f_bufferMem[15:0];
-						1: fromRAM = f_bufferMem[31:16];
-							
-					endcase
+			work = 1;
+				
+				case(RAMaddr[0])
+					0: fromRAM = f_bufferMem[15:0];
+					1: fromRAM = f_bufferMem[31:16];
+						
+				endcase
 			
 			end
 		loadRAM: begin
-					work = 1;
-					bufferMemDMA = toCPU;
+			
+			work = 1;
 		end
 		
 		saveRAM: begin
-					
-					addr = {RAMaddr[15:1]}; 
-					wRAM = w;
-					case(RAMaddr[0])
-						0: fromCPU = {f_bufferMem[31:16],toRAM};
-						1: fromCPU = {toRAM,f_bufferMem[15:0]};
-					endcase
+			
+			addr = {RAMaddr[15:1]}; 
+			wRAM = w;
+			case(RAMaddr[0])
+				0: fromCPU = {f_bufferMem[31:16],toRAM};
+				1: fromCPU = {toRAM,f_bufferMem[15:0]};
+			endcase
 		end
 		default:;
 	endcase
-end
-
-always@(*)begin
-	
 end
 
 endmodule

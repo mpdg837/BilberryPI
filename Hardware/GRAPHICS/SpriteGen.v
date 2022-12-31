@@ -80,9 +80,21 @@ always@(*)begin
 
 end
 
+reg[3:0] relPosXP;
+reg renderSprite;
+
 always@(*)begin
-	if(swpX) begin
-		case(f_relPosX[8:3])
+	
+	renderSprite = ~(f_relPosX[8] | f_relPosX[7]);
+	
+	if(~swpX) relPosXP = ~f_relPosX[6:3];
+	else relPosXP = f_relPosX[6:3];
+
+end
+
+always@(*)begin
+	if(renderSprite)
+		case(relPosXP)
 			15: ccol <= pcol[31:30];
 			14: ccol <= pcol[29:28];
 			13: ccol <= pcol[27:26];
@@ -101,29 +113,8 @@ always@(*)begin
 			0:  ccol <= pcol[1:0];
 			default: ccol <= 0;
 		endcase
-	
-	end else
-	begin
-		case(f_relPosX[8:3])
-			0: ccol <= pcol[31:30];
-			1: ccol <= pcol[29:28];
-			2: ccol <= pcol[27:26];
-			3: ccol <= pcol[25:24];
-			4: ccol <= pcol[23:22];
-			5: ccol <= pcol[21:20];
-			6:	 ccol <= pcol[19:18];
-			7:	 ccol <= pcol[17:16];
-			8:	 ccol <= pcol[15:14];
-			9:  ccol <= pcol[13:12];
-			10:  ccol <= pcol[11:10];
-			11:  ccol <= pcol[9:8];
-			12:  ccol <= pcol[7:6];
-			13:  ccol <= pcol[5:4];
-			14:  ccol <= pcol[3:2];
-			15:  ccol <= pcol[1:0];
-			default: ccol <= 0;
-		endcase
-	end
+	else
+		ccol <= 0;
 end
 
 always@(*)begin
@@ -160,7 +151,7 @@ module palette(
 always@(posedge clk)begin
 	case(scol)
 		2'd0: begin
-				col <= 5'd13;
+				col <= 0;
 				d <= 0;
 				end
 		2'd1: begin

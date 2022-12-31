@@ -18,6 +18,7 @@ module shal(
 assign out = in << {13'b0,arg};
 
 endmodule
+
 module shifter(
 	input clk,
 	input rst,

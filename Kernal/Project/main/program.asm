@@ -37,7 +37,7 @@ include Project\main\support\strtoint.asm
                         jeq nosoundplayme
 
                 ram 0x2010
-                    savea 0x1b80
+                    savea 0x1e80
                 ram 0x212a
                     set edx 0x0
                     save edx
@@ -95,7 +95,7 @@ include Project\main\support\strtoint.asm
             ram 0x2501
                 savea 0xf
 
-            set ecx 0x1b60 // Adres Spritea
+            set ecx 0x1e60 // Adres Spritea
             set ebx 0x8 // Numer
                 call loadSpriteTex
 

@@ -37,16 +37,18 @@ module main(
 	
 	// LEDS 
 	
-	output[3:0] led,
+	output[3:0] led
 	
-	// INTERFACE
-
-	output uart_txd,
-	input uart_rxd
+	
+	
 );
 
+wire iclk = clk;
+
+sm_altpll altpll(clk1, clk1);
+
 wire inclk;
-wire iclk  =clk;
+
 
 inputclock inclo(.clk(iclk),
 					  .rst(irst),
@@ -137,7 +139,7 @@ wire mstart;
 
 div_input dI50(.clk(iclk),.rst(irst),.clkm(clkm));
 
-keyDevice kD(.clk(clk),
+keyDevice kD(.clk(iclk),
 				 .tclk(inclk),
 				 
 				 .rst(irst),
@@ -336,16 +338,7 @@ IOmodule rtc(.clk(iclk),
 				.rdy(mrdy),
 				.out(mout),
 				
-				.led(led),
-				
-				.gpio_in(gpio_in),
-				.gpio_out(gpio_out),
-				
-				.tx1(uart_txd),
-				.rx1(uart_rxd),
-				
-				.tx2(uart_txd1),
-				.rx2(uart_rxd1)
+				.led(led)
 );
 
 
@@ -446,12 +439,7 @@ diskcontroller dk(
 	
 	.cs(cs_sd),
 	.miso(miso_sd),
-	.sck(sck_sd),
-	
-	.sck1(sck1_sd),
-	.mosi1(mosi1_sd),
-	.cs1(cs1_sd),
-	.miso1(miso1_sd)
+	.sck(sck_sd)
 );
 
 

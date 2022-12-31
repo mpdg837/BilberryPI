@@ -4,7 +4,7 @@ module RAMController(
 	input rst,
 	input inter,
 	
-	output reg[7:0] progoffset,
+	output[7:0] progoffset = 0,
 	input[1:0] ereg1,
 	input[1:0] ereg2,
 	
@@ -32,10 +32,7 @@ localparam RAM = 2'd1;
 localparam URAM = 2'd2;
 localparam SAVE = 2'd3;
 
-reg[7:0] offset;
-reg[7:0] n_offset;
 
-reg[7:0] n_progoffset;
 
 reg[15:0] n_toRAM;
 
@@ -58,23 +55,6 @@ demul4 dm5(.mreg(ereg1),
 					
 				.num(num1)
 );
-
-reg f_off;
-reg n_off;
-
-always@(posedge clk or posedge rst)
-	if(rst) f_off <= 0;
-	else f_off <= n_off;
-
-always@(posedge clk or posedge rst)
-	if(rst) begin
-		offset <= 0;
-		progoffset <= 0;
-		end
-	else begin
-		offset <= n_offset;
-		progoffset <= n_progoffset;
-		end
 
 
 always@(posedge clk or posedge rst)
@@ -154,41 +134,23 @@ end
 always@(*)begin
 	n_RAMaddri = RAMaddri;
 	n_RAMaddrn = RAMaddrn;
-	n_off = f_off;
 	
-	n_offset = offset;
-	n_progoffset = 0;
-	
-		
 	if(s)begin
 		
 		case(mOper)
 			NOP: ;
 			RAM: begin
-					if(inter) n_RAMaddri = edata[15:0];
+					if(inter) n_RAMaddri = {3'b0,edata[13:0]};
 					else begin
-						case(ereg2)
-							0: begin
-								n_RAMaddrn = edata[15:0];
-								n_off = 0;
-								end
-							1: n_offset = {edata[7:0]};
-							2: n_offset = {edata[5:0],2'b0};
-						endcase
+						n_RAMaddrn = {3'b0,edata[13:0]};
 					end
 						
 			end
 			URAM: begin
-					if(inter) n_RAMaddri = {num1[15:0]};
+					if(inter) n_RAMaddri = {3'b0,num1[13:0]};
 					else begin
-						case(ereg2)
-							0: begin
-								n_RAMaddrn = num1[15:0];
-								n_off = 1;
-								end
-							1: n_offset = {num1[7:0]};
-							2: n_offset = {num1[5:0],2'b0};
-						endcase
+						n_RAMaddrn = {3'b0,num1[13:0]};
+								
 					end
 						
 			end
@@ -196,14 +158,11 @@ always@(*)begin
 		endcase
 	
 	end 
-	
 	if(wStackAddr)
 		n_RAMaddrn = {stackAddr};
-		
 end
 
 always@(*)
 	if(inter) RAMaddr <= RAMaddri;
-	else if(f_off) RAMaddr <= RAMaddrn + {offset,5'b0};
 	else RAMaddr <= RAMaddrn;
 endmodule

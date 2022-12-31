@@ -51,14 +51,6 @@ G10k graphics(.clk(clk),
 wire[31:0] inx;
 wire startx;
 
-
-tester tes(.clk(clk),
-
-		 .start(startx),
-		 .in(inx)
-	
-
-);
 endmodule
 
 module connectorGraphics(

@@ -53,7 +53,7 @@ module controller(
 	output reg pop,
 	output reg push,
 
-	output reg[3:0] streg1,
+	output reg[1:0] streg1,
 	
 	
 	output reg[15:0] RAMdata,
@@ -135,7 +135,7 @@ reg n_sSTA;
 reg n_pop;
 reg n_push;
 
-reg[3:0] n_streg1;
+reg[1:0] n_streg1;
 
 reg[15:0] n_RAMdata;
 reg[1:0] n_mOperRAM;

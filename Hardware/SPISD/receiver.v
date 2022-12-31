@@ -68,7 +68,7 @@ module receiver(
 	input reset,
 		
 	input readed,
-	input[7:0] in,
+	input [7:0] in,
 	
 	input gets,
 	output reg rdy,
@@ -77,20 +77,6 @@ module receiver(
 
 localparam LENM = 8;
 
-wire[7:0] n_in;
-wire n_readed;
-
-receiverbuffer rb(
-	.clk(clk),
-	.dclk(dclk),
-	.rst(rst),
-	
-	.in(in),
-	.readed(readed),
-	
-	.n_in(n_in),
-	.n_readed(n_readed)
-);
 
 reg[7:0] f_memory[LENM - 1:0];
 reg[7:0] n_memory[LENM - 1:0];
@@ -123,8 +109,8 @@ always@(*)begin
 	if(reset) 
 		for(p=0;p<LENM;p = p + 1) n_memory[p] = 0;
 	
-	if(n_readed) begin
-		n_memory[0] = n_in; 
+	if(readed) begin
+		n_memory[0] = in; 
 		
 		for(p=0;p<LENM - 1;p = p + 1)begin
 			n_memory[p+1] = f_memory[p]; 

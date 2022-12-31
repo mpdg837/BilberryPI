@@ -593,7 +593,7 @@ module stackAddr(
 	
 );
 
-reg[15:0] memory[511:0];
+reg[12:0] memory[511:0];
 
 reg[8:0] f_numStack = 0;
 reg[8:0] numStack = 0;
@@ -614,7 +614,7 @@ always@(posedge clk)begin
 		memory[f_numStack + 1] = toSave;	
 	end
 		
-	out = memory[f_numStack];
+	out = {3'b0,memory[f_numStack]};
 	
 end
 

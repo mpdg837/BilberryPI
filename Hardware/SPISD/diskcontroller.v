@@ -12,19 +12,12 @@ module diskcontroller(
 	output [23:0] outi,
 	output rdyi,
 	
-	
-	input mosi,
-	
 	output dclkx,
 	
+	input mosi,
 	output cs,
 	output miso,
-	output sck,
-	
-	output sck1,
-	output mosi1,
-	output cs1,
-	output miso1
+	output sck
 );
 
 wire irst = rst;
