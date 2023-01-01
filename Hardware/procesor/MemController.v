@@ -32,7 +32,8 @@ module memCont(
 	
 	// CPU
 	
-	output reg work
+	output reg work,
+	output reg canRead
 );
 localparam NOP = 5'd0; // O
 localparam SET = 5'd1; // O
@@ -173,6 +174,7 @@ always@(*)begin
 	bufferMem = f_bufferMem;
 	
 	brk = f_brk;
+	canRead = 0;
 	
 	case(f_stat)
 		idle: begin
@@ -193,12 +195,13 @@ always@(*)begin
 
 		
 		loadPro: begin
+					
 					brk = 0;
 					dataProg = f_bufferProg;
 					end
 		workMe: begin
-			
-			work = 1;
+				canRead = 1;
+				work = 1;
 				
 				case(RAMaddr[0])
 					0: fromRAM = f_bufferMem[15:0];

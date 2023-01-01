@@ -1,12 +1,11 @@
 
-module bussystem(
+module DMA(
 	input clk,
 	input rst,
 	
 	input[1:0] outsel,
 	
 	output[31:0] toCPU,
-		
 	input[14:0] addrCPU,
 	input[31:0] fromCPU,
 	input wCPU,
@@ -54,10 +53,49 @@ module bussystem(
 	output startReadROM,
 	output startReadRAM,
 	
-	input saveRdyRAM
+	input saveRdyRAM,
 	
+	// DMA
+	input canRead,
 	
+	input startDMA,
+	input[15:0] addrDMA,
 	
+	output[15:0] fromMemDMA,
+	output rdyDMA
+	
+);
+
+
+wire[31:0] toCPU1;
+wire[14:0] addrCPU1;
+wire[31:0] fromCPU1;
+wire wCPU1;
+	
+toDevice tD(.clk(clk),
+				.rst(rst),
+				
+				.canRead(canRead),
+				
+				.toCPU(toCPU),
+				.addrCPU(addrCPU),
+				.fromCPU(fromCPU),
+				.wCPU(wCPU),
+	
+				.toCPU1(toCPU1),
+				.addrCPU1(addrCPU1),
+				.fromCPU1(fromCPU1),
+				.wCPU1(wCPU1),
+				
+				.startDMA(startDMA),
+				.addrDMA(addrDMA),
+				
+				.fromMemDMA(fromMemDMA),
+				.rdyDMA(rdyDMA),
+				
+				.toCPURAM(toCPURAM8),
+				.toCPUROM(toCPUROM),
+				.sel(selector)
 );
 
 wire selector;
@@ -66,9 +104,9 @@ toMem tM(
 	.clk(clk),
 	.rst(rst),
 	
-	.toMemory(fromCPU),
-	.addrMemory(addrCPU),
-	.wCPU(wCPU),
+	.toMemory(fromCPU1),
+	.addrMemory(addrCPU1),
+	.wCPU(wCPU1),
 	
 	.toRAM8(tomRAM8),
 	.wRAM8(wmRAM8),
@@ -93,7 +131,7 @@ toRAMCollect trC(
 	
 	.selector(selector),
 	
-	.toCPU(toCPU)
+	.toCPU(toCPU1)
 );
 
 inbuffer intopro(.clk(clk),
@@ -220,3 +258,136 @@ end
 
 endmodule
 
+module toDevice(
+	input clk,
+	input rst,
+	
+	input canRead,
+	
+	// MemPipe
+	input sel,
+	input[31:0] toCPURAM,
+	input[31:0] toCPUROM,
+	
+	output reg[31:0] toCPU,
+	input [14:0] addrCPU,
+	input [31:0] fromCPU,
+	input wCPU,
+	
+	input[31:0] toCPU1,
+	output reg[14:0] addrCPU1,
+	output reg[31:0] fromCPU1,
+	output reg wCPU1,
+	
+	// DMA
+	
+	input startDMA,
+	input[15:0] addrDMA,
+	
+	output reg[15:0] fromMemDMA,
+	output reg rdyDMA
+);
+
+reg[1:0] f_status = 0;
+reg[1:0] n_status = 0;
+
+reg[15:0] f_memAddr;
+reg[15:0] n_memAddr;
+
+reg[15:0] f_mem;
+reg[15:0] n_mem;
+
+always@(posedge clk or posedge rst)begin
+	if(rst) f_mem <= 0;
+	else f_mem <= n_mem;
+end
+
+always@(posedge clk or posedge rst)begin
+	if(rst) f_status <= 0;
+	else f_status <= n_status;
+end
+
+always@(posedge clk or posedge rst)begin
+	if(rst) f_memAddr <= 0;
+	else f_memAddr <= n_memAddr;
+end
+
+always@(*)begin
+	
+	n_mem = f_mem;
+	n_memAddr = f_memAddr;
+	n_status = f_status;
+
+	
+	
+	fromMemDMA = 0;
+	rdyDMA = 0;
+	
+	case(f_status)
+		0: begin
+		
+			if(startDMA) begin
+				n_memAddr = addrDMA[15:0];
+				n_status = 1;
+			end
+					
+			toCPU <= toCPU1;
+			addrCPU1 <= addrCPU;
+			fromCPU1 <= fromCPU;
+			wCPU1 <= wCPU;
+			
+			end
+		1: if(canRead)begin
+		
+				addrCPU1 <= f_memAddr[15:1];
+				wCPU1 <= 0;
+				fromCPU1 <= 0;
+				toCPU <= 0;
+				
+				n_status = 2;
+			end else
+			begin
+				toCPU <= toCPU1;
+				addrCPU1 <= addrCPU;
+				fromCPU1 <= fromCPU;
+				wCPU1 <= wCPU;
+			end
+		2: begin
+				toCPU <= toCPU1;
+				addrCPU1 <= addrCPU;
+				fromCPU1 <= fromCPU;
+				wCPU1 <= wCPU;
+				
+				case(f_memAddr[0])
+					0: n_mem = toCPURAM[15:0];
+					1: n_mem = toCPURAM[31:16];
+				endcase
+				
+					
+				n_status = 3;
+			end
+		3: begin
+				toCPU <= toCPU1;
+				addrCPU1 <= addrCPU;
+				fromCPU1 <= fromCPU;
+				wCPU1 <= wCPU;
+			
+				fromMemDMA =  f_mem;
+				rdyDMA = 1;
+				
+				n_status = 0;
+			end
+		default:begin
+			toCPU <= toCPU1;
+			addrCPU1 <= addrCPU;
+			fromCPU1 <= fromCPU;
+			wCPU1 <= wCPU;
+		end
+		
+	endcase
+
+	
+end
+
+
+endmodule

@@ -104,7 +104,7 @@
                     set ebx 0x0
                          call sendDisk
 
-                         call quickwait
+                         call waitforansw
 
                     set edx 0x0
                     diskloaderloopreade: // Ladowanie symboli

@@ -212,6 +212,7 @@ always@(*)begin
 						savex = 0;
 						line1 = 0;
 			end
+		default:;
 	endcase
 
 end

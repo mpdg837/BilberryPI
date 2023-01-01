@@ -57,7 +57,7 @@ wire[14:0] raddr = addr[11:0];
 reg[31:0] memory[blocks * 256 - 1:0];
 reg[31:0] dout_r;
 
-reg[11:0] n;
+integer n;
 
 initial begin 
 	for(n=0;n< blocks * 256 - 1;n = n + 1) begin
@@ -72,7 +72,6 @@ wire[14:0] iraddr = addr[11:0];
 always@(posedge clk) begin
 
 	if(we) memory[iraddr[14:0]] <= din;
-	
 	out <= memory[iraddr[14:0]];
 	
 	readRdyRAM <= 1;

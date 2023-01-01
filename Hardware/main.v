@@ -167,6 +167,7 @@ keyboard keybo(.clk(iclk),
 
 );
 
+wire canRead;
 
 CPU cpu1(.clk(iclk),
 			.rst(irst | wrst),
@@ -208,7 +209,13 @@ CPU cpu1(.clk(iclk),
 			.readrdy(readrdy),
 			.readstart(readstart),
 			
-			.outsel(outsel)
+			.outsel(outsel),
+			
+			// DMA
+			
+			.canRead(canRead),
+			
+		
 	
 );
 
@@ -229,7 +236,14 @@ wire readRdyROM = 1;
 wire startReadROM;
 
 
-bussystem bussystem(
+
+wire startDMA;
+wire[15:0] addrDMA;
+	
+wire[15:0] fromMemDMA;
+wire rdyDMA;
+	
+DMA dma(
 	.clk(iclk),
 	.rst(irst),
 	
@@ -276,7 +290,17 @@ bussystem bussystem(
 	.startReadROM(startReadROM),
 	.startReadRAM(startReadRAM),
 	
-	.saveRdyRAM(saveRdyRAM)
+	.saveRdyRAM(saveRdyRAM),
+	
+	// DMA
+	
+	.canRead(canRead),
+	
+	.startDMA(startDMA),
+	.addrDMA(addrDMA),
+		
+	.fromMemDMA(fromMemDMA),
+	.rdyDMA(rdyDMA)
 );
 
 wire[14:0] xaddr;
@@ -392,7 +416,15 @@ Buzzer16 bz16(.clk(iclk),
 				  .start(stB),
 				  .in(outB),
 	
-				  .sound(sound)
+				  .sound(sound),
+				  
+				  	// DMA
+					
+					.startDMA(startDMA),
+					.addrDMA(addrDMA),
+						
+					.fromMemDMA(fromMemDMA),
+					.rdyDMA(rdyDMA)
 );
 
 wire[23:0] outC;

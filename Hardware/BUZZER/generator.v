@@ -149,12 +149,13 @@ module soundGen(
 	
 );
 
-
+wire ena;
 wire[15:0] soundTime;
 
 soundConverter sC(.clk(clk),
 						.rst(rst),
-	
+						
+						.ena(ena),
 						.start(startT),
 						.soundType(soundType[5:0]),
 	
@@ -265,7 +266,8 @@ wire[15:0] genSound;
 wire genStart;
 
 genSel gs(.gen(genSel),
-		
+			 .ena(ena),
+			 
 		.genSin(genSoundSin),
 		.genStartSin(genStartSin),
 		
@@ -390,6 +392,7 @@ endmodule
 
 module genSel(
 	input[2:0] gen,
+	input ena,
 	
 	input[15:0] genSin,
 	input genStartSin,
@@ -424,18 +427,19 @@ localparam SAMPLE = 5;
 always@(*)begin
 
 	genO = 0;
+	if(ena)
+		case(gen)
+			SINUS: genO = genSin;
+			SQUARE: genO = genSqu;
+			TRIANGLE: genO = genTri;
+			SAWTOOTH: genO = genSaw;
+			NOISE: genO = genNoi;
+			SAMPLE: genO = genSam;
+			default:;
+		endcase
 	
-	case(gen)
-		SINUS: genO = genSin;
-		SQUARE: genO = genSqu;
-		TRIANGLE: genO = genTri;
-		SAWTOOTH: genO = genSaw;
-		NOISE: genO = genNoi;
-		SAMPLE: genO = genSam;
-		default:;
-	endcase
-	
-	genStartO = genStartSin | genStartSqu | genStartTri | genStartSaw |genStartNoi |genStartSam; 
+	if(ena)
+		genStartO = genStartSin | genStartSqu | genStartTri | genStartSaw |genStartNoi |genStartSam; 
 end
 
 endmodule
@@ -447,6 +451,7 @@ module soundConverter(
 	input start,
 	input[5:0] soundType,
 	
+	output reg ena,
 	output reg[15:0] sound
 );
 
@@ -459,6 +464,7 @@ end
 
 always@(*)begin
 	n_sound = sound;
+	ena = (sound != 0);
 	
 	if(start) 
 		case(soundType[5:3])
@@ -471,6 +477,8 @@ always@(*)begin
 			6: n_sound = {2'd1,soundType[2:0],11'd0};
 			7: n_sound = {1'd1,soundType[2:0],12'd0};
 		endcase
+	
+	
 end
 
 endmodule

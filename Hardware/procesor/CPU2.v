@@ -41,7 +41,10 @@ module CPU(
 	
 	output oover,
 	
-	output[1:0] outsel
+	output[1:0] outsel,
+	
+	// DMA
+	output canRead
 );
 
 wire brk;
@@ -177,7 +180,11 @@ memCont mCa(
 	.saverdy(saverdy),
 	.readstart(readstart),
 			
-	.work(work)
+	.work(work),
+	
+	// DMA
+	.canRead(canRead),
+
 );
 
 assign workx = work;

@@ -34,10 +34,10 @@ include Project\main\program.asm
             set ebx 0x1600
                 call sendBuzzer
             set eax 0x5
-            set ebx 0x100
+            set ebx 0x040
                  call sendBuzzer
             set eax 0x9
-            set ebx 0x0
+            set ebx 0x1
                 call sendBuzzer
 
 
