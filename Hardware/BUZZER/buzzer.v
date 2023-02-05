@@ -384,15 +384,17 @@ always@(posedge clk or posedge rst)
 	if(rst) b_start = 0;
 	else b_start = startX | startXX | startXXX | startXXXX;
 
-wire[15:0] sum = f_sound1 + f_sound2 + f_sound3 + f_sound4;
+wire[16:0] sum = f_sound1 + f_sound2 + f_sound3 + f_sound4;
 always@(*)begin
 	
 	soundO = 0;
 	startO = 0;
 	
 	if(b_start) begin
-	
-		soundO = sum;
+		
+		if(sum[16]) soundO = 16'hFFFF;
+		else soundO = sum;
+		
 		startO = 1;
 	
 	end

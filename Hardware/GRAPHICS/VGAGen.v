@@ -367,27 +367,27 @@ module combiner(
 );
 
 reg f_comb = 0;
-reg f_tim;
-reg n_tim;
+reg[1:0] f_tim;
+reg[1:0] n_tim;
 
 always@(posedge clk or posedge rst)begin
 	if(rst) begin
-		comb <= 0;
+		f_comb <= 0;
 		f_tim <= 0;
 	end
 	else begin
-		comb <= f_comb;
+		f_comb <= comb;
 		f_tim <= n_tim;
 		end
 end
 
 always@(*)begin
-	f_comb = comb;
+	comb = f_comb;
 	n_tim = f_tim;
 	
 	if(CounterX == 0 && CounterY == 0)begin
 		n_tim = f_tim+1;
-		if(f_tim == 0) f_comb = ~comb;
+		comb = f_tim[1];
 	end
 end
 

@@ -3,6 +3,7 @@
 module G10k(
 	input clk,
 	input rst,
+	input gclk,
 	
 	input[23:0] in,
 	input start,
@@ -229,7 +230,7 @@ deltaController dca(.clk(clk),
 					 .bg8col4(bg8color4)
 );
 
-wire dclk;
+wire dclk = gclk;
 wire ins;
 
 
@@ -243,7 +244,7 @@ wire[15:0] addrSRAM;
 wire sig;
 
 clkdiv cd(.clk(clk),
-			 .dclk(dclk)
+			 .dclk(dclk1)
 );
 
 hvsync_generator hg(.clk(dclk),

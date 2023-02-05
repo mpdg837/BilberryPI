@@ -329,7 +329,8 @@ reg[2:0] n_irqm14;
 reg[2:0] n_irqm15;
 reg[2:0] n_irqm16;
 
-always@(posedge clk)begin
+
+always@(posedge clk or posedge rst)begin
 	if(rst)begin
 		f_irqm1 <= 0;
 		f_irqm2 <= 0;
@@ -482,23 +483,23 @@ module irqcollector(
 	
 );
 
-reg[2:0] s_r0;
-reg[2:0] s_r1;
-reg[2:0] s_r2;
-reg[2:0] s_r3;
-reg[2:0] s_r4;
-reg[2:0] s_r5;
-reg[2:0] s_r6;
-reg[2:0] s_r7;
+reg s_r0;
+reg s_r1;
+reg s_r2;
+reg s_r3;
+reg s_r4;
+reg s_r5;
+reg s_r6;
+reg s_r7;
 
-reg[2:0] f_r0;
-reg[2:0] f_r1;
-reg[2:0] f_r2;
-reg[2:0] f_r3;
-reg[2:0] f_r4;
-reg[2:0] f_r5;
-reg[2:0] f_r6;
-reg[2:0] f_r7;
+reg f_r0;
+reg f_r1;
+reg f_r2;
+reg f_r3;
+reg f_r4;
+reg f_r5;
+reg f_r6;
+reg f_r7;
 
 reg[2:0] f_t;
 reg[2:0] n_t;
@@ -531,10 +532,9 @@ always@(posedge clk or posedge rst)begin
 		
 end
 
-always@(*)begin
+always@(*) n_t = f_t + 1;
 
-		irq = 0;
-		
+always@(*)begin
 		s_r0 = f_r0;
 		s_r1 = f_r1;
 		s_r2 = f_r2;
@@ -544,73 +544,73 @@ always@(*)begin
 		s_r6 = f_r6;
 		s_r7 = f_r7;
 	
-		n_t = f_t + 1;
-		
-		if(irq1) s_r1 = 3'b001;
-		if(irq2) s_r2 = 3'b010;
-		if(irq3) s_r3 = 3'b011;
-		if(irq4) s_r4 = 3'b100;
-		if(irq5) s_r5 = 3'b101;
-		if(irq6) s_r6 = 3'b110;
-		if(irq7) s_r7 = 3'b111;
+		if(irq1) s_r1 = 1;
+		if(irq2) s_r2 = 1;
+		if(irq3) s_r3 = 1;
+		if(irq4) s_r4 = 1;
+		if(irq5) s_r5 = 1;
+		if(irq6) s_r6 = 1;
+		if(irq7) s_r7 = 1;
+			
+		case(f_t)
+			1: s_r1 = 0;
+			2: s_r2 = 0;
+			3: s_r3 = 0;
+			4: s_r4 = 0;
+			5: s_r5 = 0;
+			6: s_r6 = 0;
+			7: s_r7 = 0;
+			default:;
+		endcase
+end
+
+always@(*)begin
+
+		irq = 0;
 		
 		case(f_t)
 			0: irq = 0;
 			1: if(irq1)begin
 					irq = 3'd1;
-					s_r1 = 0;
 				end else
 				begin
-					irq = f_r1;
-					s_r1 = 0;
+					if(f_r1) irq = 3'd1;
 				end
 			2: if(irq2)begin
 					irq = 3'd2;
-					s_r2 = 0;
 				end else
 				begin
-					irq = f_r2;
-					s_r2 = 0;
+					if(f_r2) irq = 3'd2;
 				end
 			3: if(irq3)begin
 					irq = 3'd3;
-					s_r3 = 0;
 				end else
 				begin
-					irq = f_r3;
-					s_r3 = 0;
+					if(f_r3) irq = 3'd3;
 				end
 			4: if(irq4)begin
 					irq = 3'd4;
-					s_r4 = 0;
 				end else
 				begin
-					irq = f_r4;
-					s_r4 = 0;
+					if(f_r4) irq = 3'd4;
 				end
 			5: if(irq5)begin
 					irq = 3'd5;
-					s_r5 = 0;
 				end else
 				begin
-					irq = f_r5;
-					s_r5 = 0;
+					if(f_r5) irq = 3'd5;
 				end
 			6: if(irq6)begin
 					irq = 3'd6;
-					s_r6 = 0;
 				end else
 				begin
-					irq = f_r6;
-					s_r6 = 0;
+					if(f_r6) irq = 3'd6;
 				end
 			7: if(irq7)begin
 					irq = 3'd7;
-					s_r7 = 0;
 				end else
 				begin
-					irq = f_r7;
-					s_r7 = 0;
+					if(f_r7) irq = 3'd7;
 				end
 			default:;
 		endcase

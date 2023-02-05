@@ -429,8 +429,9 @@ always@(posedge clk or posedge rst)begin
 	else f_int <= n_int;
 end
 
-always@(posedge clk)
-	stack2 <= stack1;
+always@(posedge clk or posedge rst)
+	if(rst) stack2 <= 0;
+	else stack2 <= stack1;
 	
 always@(*) begin
 	

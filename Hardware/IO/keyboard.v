@@ -49,8 +49,8 @@ reg[31:0] f_out;
 reg[7:0] mem;
 reg[7:0] f_mem;
 
-reg[3:0] tim;
-reg[3:0] f_tim;
+reg[2:0] tim;
+reg[2:0] f_tim;
 
 always@(posedge clk or posedge rst)
 	if(rst) f_mem <= 0;
@@ -86,7 +86,7 @@ always@(*)begin
 				end
 		
 		
-		tim = 15;
+		tim = 7;
 	end
 	
 	if(tim!=0)begin
@@ -113,7 +113,7 @@ parameter ready   = 2'b11;
 
 
 reg [1:0]  state=idle;
-reg [15:0] rxtimeout=16'b0000000000000000;
+reg [16:0] rxtimeout=17'b0000000000000000;
 reg [10:0] rxregister=11'b11111111111;
 reg [1:0]  datasr=2'b11;
 reg [1:0]  clksr=2'b11;
@@ -167,7 +167,7 @@ begin
 			 
 			 receive:
 			 begin
-				if(rxtimeout==50000)
+				if(rxtimeout==90000)
 				  state<=idle;
 				else if(rxregister[0]==0)
 				begin

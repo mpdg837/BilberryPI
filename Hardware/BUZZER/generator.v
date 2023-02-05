@@ -490,8 +490,8 @@ module sampling_freq(
 	output reg freq
 );
 
-reg[11:0] f_tim;
-reg[11:0] n_tim;
+reg[12:0] f_tim;
+reg[12:0] n_tim;
 
 always@(posedge clk or posedge rst)
 	if(rst) f_tim <= 0;
@@ -501,7 +501,7 @@ always@(*)begin
 	n_tim = f_tim + 1;
 	freq = 0;
 	
-	if(f_tim == 3125)begin
+	if(f_tim == 5632)begin
 		n_tim = 0;
 		freq = 1;
 	end

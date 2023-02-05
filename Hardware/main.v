@@ -1,4 +1,39 @@
 
+module gClkDiv(
+	input clk,
+	output reg gclk
+);
+
+reg[1:0] f_tim;
+reg[1:0] n_tim;
+
+reg f_gclk;
+
+always@(posedge clk)begin
+	f_tim = n_tim;
+end
+
+always@(*)begin
+	n_tim = f_tim + 1;
+	f_gclk = 0;
+	
+	if(f_tim == 2) begin
+		n_tim = 0;
+	end
+	
+	case(f_tim)
+		0:	f_gclk = 0;
+		1: f_gclk = 1;
+		2: f_gclk = 1;
+		default:;
+	endcase
+end
+
+always@(posedge clk)
+	gclk <= f_gclk;
+
+endmodule
+
 module main(
 	input clk,
 	
@@ -43,9 +78,13 @@ module main(
 	
 );
 
-wire iclk = clk;
+wire gclk;
 
-sm_altpll altpll(clk1, clk1);
+sm_altpll altpll(clk, iclk);
+sm_altpll1 altpll1(clk, gclki);
+
+gClkDiv gcd(.clk(iclk),.gclk(gclk));
+
 
 wire inclk;
 
@@ -381,6 +420,7 @@ connectorGraphics cGA(.clk(iclk),
 G10k graphics(.clk(iclk),
 				  .rst(irst),
 					
+				  .gclk(gclk),
 				  .in(outG),
 				  .start(stG),
 					

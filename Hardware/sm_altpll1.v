@@ -4,7 +4,7 @@
 // MODULE: altpll 
 
 // ============================================================
-// File Name: sm_altpll_bb.v
+// File Name: sm_altpll1.v
 // Megafunction Name(s):
 // 			altpll
 //
@@ -36,7 +36,7 @@
 // synopsys translate_off
 `timescale 1 ps / 1 ps
 // synopsys translate_on
-module sm_altpll_bb (
+module sm_altpll1 (
 	inclk0,
 	c0);
 
@@ -90,14 +90,14 @@ module sm_altpll_bb (
 				.vcounderrange ());
 	defparam
 		altpll_component.bandwidth_type = "AUTO",
-		altpll_component.clk0_divide_by = 5,
+		altpll_component.clk0_divide_by = 2,
 		altpll_component.clk0_duty_cycle = 50,
-		altpll_component.clk0_multiply_by = 9,
+		altpll_component.clk0_multiply_by = 1,
 		altpll_component.clk0_phase_shift = "0",
 		altpll_component.compensate_clock = "CLK0",
 		altpll_component.inclk0_input_frequency = 20000,
 		altpll_component.intended_device_family = "Cyclone IV E",
-		altpll_component.lpm_hint = "CBX_MODULE_PREFIX=sm_altpll_bb",
+		altpll_component.lpm_hint = "CBX_MODULE_PREFIX=sm_altpll1",
 		altpll_component.lpm_type = "altpll",
 		altpll_component.operation_mode = "NORMAL",
 		altpll_component.pll_type = "AUTO",
@@ -166,9 +166,9 @@ endmodule
 // Retrieval info: PRIVATE: CUR_DEDICATED_CLK STRING "c0"
 // Retrieval info: PRIVATE: CUR_FBIN_CLK STRING "c0"
 // Retrieval info: PRIVATE: DEVICE_SPEED_GRADE STRING "Any"
-// Retrieval info: PRIVATE: DIV_FACTOR0 NUMERIC "3"
+// Retrieval info: PRIVATE: DIV_FACTOR0 NUMERIC "2"
 // Retrieval info: PRIVATE: DUTY_CYCLE0 STRING "50.00000000"
-// Retrieval info: PRIVATE: EFF_OUTPUT_FREQ_VALUE0 STRING "90.000000"
+// Retrieval info: PRIVATE: EFF_OUTPUT_FREQ_VALUE0 STRING "25.000000"
 // Retrieval info: PRIVATE: EXPLICIT_SWITCHOVER_COUNTER STRING "0"
 // Retrieval info: PRIVATE: EXT_FEEDBACK_RADIO STRING "0"
 // Retrieval info: PRIVATE: GLOCKED_COUNTER_EDIT_CHANGED STRING "1"
@@ -191,9 +191,9 @@ endmodule
 // Retrieval info: PRIVATE: LVDS_PHASE_SHIFT_UNIT0 STRING "deg"
 // Retrieval info: PRIVATE: MIG_DEVICE_SPEED_GRADE STRING "Any"
 // Retrieval info: PRIVATE: MIRROR_CLK0 STRING "0"
-// Retrieval info: PRIVATE: MULT_FACTOR0 NUMERIC "10"
+// Retrieval info: PRIVATE: MULT_FACTOR0 NUMERIC "1"
 // Retrieval info: PRIVATE: NORMAL_MODE_RADIO STRING "1"
-// Retrieval info: PRIVATE: OUTPUT_FREQ0 STRING "90.00000000"
+// Retrieval info: PRIVATE: OUTPUT_FREQ0 STRING "25.00000000"
 // Retrieval info: PRIVATE: OUTPUT_FREQ_MODE0 STRING "1"
 // Retrieval info: PRIVATE: OUTPUT_FREQ_UNIT0 STRING "MHz"
 // Retrieval info: PRIVATE: PHASE_RECONFIG_FEATURE_ENABLED STRING "1"
@@ -232,9 +232,9 @@ endmodule
 // Retrieval info: PRIVATE: ZERO_DELAY_RADIO STRING "0"
 // Retrieval info: LIBRARY: altera_mf altera_mf.altera_mf_components.all
 // Retrieval info: CONSTANT: BANDWIDTH_TYPE STRING "AUTO"
-// Retrieval info: CONSTANT: CLK0_DIVIDE_BY NUMERIC "5"
+// Retrieval info: CONSTANT: CLK0_DIVIDE_BY NUMERIC "2"
 // Retrieval info: CONSTANT: CLK0_DUTY_CYCLE NUMERIC "50"
-// Retrieval info: CONSTANT: CLK0_MULTIPLY_BY NUMERIC "9"
+// Retrieval info: CONSTANT: CLK0_MULTIPLY_BY NUMERIC "1"
 // Retrieval info: CONSTANT: CLK0_PHASE_SHIFT STRING "0"
 // Retrieval info: CONSTANT: COMPENSATE_CLOCK STRING "CLK0"
 // Retrieval info: CONSTANT: INCLK0_INPUT_FREQUENCY NUMERIC "20000"
@@ -290,12 +290,12 @@ endmodule
 // Retrieval info: CONNECT: @inclk 0 0 1 1 GND 0 0 0 0
 // Retrieval info: CONNECT: @inclk 0 0 1 0 inclk0 0 0 0 0
 // Retrieval info: CONNECT: c0 0 0 0 0 @clk 0 0 1 0
-// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll_bb.v TRUE
-// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll_bb.ppf TRUE
-// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll_bb.inc FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll_bb.cmp FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll_bb.bsf FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll_bb_inst.v FALSE
-// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll_bb_bb.v TRUE
+// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll1.v TRUE
+// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll1.ppf TRUE
+// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll1.inc FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll1.cmp FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll1.bsf FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll1_inst.v FALSE
+// Retrieval info: GEN_FILE: TYPE_NORMAL sm_altpll1_bb.v TRUE
 // Retrieval info: LIB_FILE: altera_mf
 // Retrieval info: CBX_MODULE_PREFIX: ON
