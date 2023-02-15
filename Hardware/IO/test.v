@@ -109,9 +109,8 @@ always@(*)begin
 					default:;
 				endcase
 	
-			RST: begin
-				wrst = 1;
-			end
+			RST: wrst = 1;
+			
 			default:;
 		endcase
 	end

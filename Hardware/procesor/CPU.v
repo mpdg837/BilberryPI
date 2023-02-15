@@ -7,6 +7,7 @@ module core(
 	input rst,
 	input work,
 	
+	output iinbrk,
 	output eirq,
 	
 	input irq1,
@@ -429,6 +430,8 @@ outputX ouX(.clk(clk),
 
 counter cou(.s(sCOU),
 				
+				.brk(divbrk),
+				
 				.prst(prst),
 				.inter(inter),
 				.offset(progoffset),
@@ -507,6 +510,7 @@ bankManager bMa(.clk(clk),
 					 .inter(inter)
 );
 
+assign iinbrk = divbrk;
 assign outsel = bank;
 endmodule
 

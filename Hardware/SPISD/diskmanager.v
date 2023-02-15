@@ -6,6 +6,8 @@ module mandisk(
 	input[23:0] ini,
 	input starti,
 	
+	output saveresult,
+	
 	output inti,
 	output reg[23:0] outi,
 	output reg rdyi,
@@ -171,44 +173,44 @@ always@(*)begin
 				
 				rrdyx = 1;
 			end
-			OWRITE: begin
-				cmdxx = 24; // OWRITE
-				argxx = ini[15:0];
-				
-				initx = 0;
-				startxx = 0;
-				
-				readitx = 0;
-				start40xx = 1;
-				
-				rrrdyx = 1;
-			end
-			WRITEBYTE:begin // WRITEBYTE
-				cmdxx = 0;
-				argxx = {8'b0,ini[7:0]};
-				
-				initx = 0;
-				startxx = 1;
-				
-				readitx = 0;
-				start40xx =1;
-				
-				rdyx = 1;
-			end
-			CLOSE: begin
-				cmdxx = 0; // CLOSE
-				argxx = 0;
-				
-				initx = 0;
-				startxx = 0;
-				
-				closex = 1;
-				
-				readitx = 0;
-				start40xx =0;
-				
-				rdyx = 1;
-			end
+			// OWRITE: begin
+			//	cmdxx = 24; // OWRITE
+			//	argxx = ini[15:0];
+			//	
+			//	initx = 0;
+			//	startxx = 0;
+			//	
+			//	readitx = 0;
+			//	start40xx = 1;
+			//	
+			//	rrrdyx = 1;
+			// end
+			// WRITEBYTE:begin // WRITEBYTE
+			//	cmdxx = 0;
+			//	argxx = {8'b0,ini[7:0]};
+			//	
+			//	initx = 0;
+			//	startxx = 1;
+			//	
+			//	readitx = 0;
+			//	start40xx =1;
+			//	
+			//	rdyx = 1;
+			// end
+			// CLOSE: begin
+			//	cmdxx = 0; // CLOSE
+			//	argxx = 0;
+			//	
+			//	initx = 0;
+			//	startxx = 0;
+			//	
+			//	closex = 1;
+			//	
+			//	readitx = 0;
+			//	start40xx =0;
+			//	
+			//	rdyx = 1;
+			// end
 		endcase
 end
 
@@ -276,5 +278,6 @@ assign init = initx | initxx;
 assign start40x = start40xx | start40xxx;
 assign readit = readitx | readitxx;
 
-assign inti = inti1 | inti2 | inti3;
+assign saveresult = inti2 | inti3;
+assign inti = inti1;
 endmodule

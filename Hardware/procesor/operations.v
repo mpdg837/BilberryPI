@@ -383,9 +383,6 @@ always@(*)begin
 		
 		n_inselin = 0;
 		
-		if(work) n_sel = ~f_sel;
-		else n_sel = 1;
-
 		n_rstTim = 0;
 		n_saveTim = 0;
 		
@@ -405,7 +402,7 @@ always@(*)begin
 		n_save = 0;
 		n_read = 0;
 		if(~brk)
-			if(f_sel && work) begin
+			if(work) begin
 			
 			f_hlt = 0;
 			

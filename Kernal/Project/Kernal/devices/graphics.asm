@@ -97,7 +97,6 @@
         call regcopyn
 
         set eax 0x12
-
             call sendGraphics
 
         set edx 0x0

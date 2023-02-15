@@ -4,6 +4,7 @@ module diskcontroller(
 	input clk,
 	input rst,
 	
+	output saveresult,
 	
 	input[23:0] inix,
 	input starti,
@@ -97,7 +98,8 @@ mandisk pro(.clk(clk),
 			.startstream(gets),
 			.out(outputstream),
 			
-			.rdy(rdy)
+			.rdy(rdy),
+			.saveresult(saveresult)
 );
 
 

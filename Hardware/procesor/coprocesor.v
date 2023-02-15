@@ -13,6 +13,7 @@ module coprocesor(
 	// to module
 	
 	input mrdy,
+	input nirdy,
 	input[23:0] mout,
 	
 	output reg[23:0] min,
@@ -35,8 +36,9 @@ always@(posedge clk or posedge rst)begin
 	end
 end
 
-always@(posedge clk)begin
-	irq <= n_irq;
+always@(posedge clk or posedge rst)begin
+	if(rst) irq <= 0;
+	else irq <= n_irq;
 end
 
 always@(*)begin
@@ -49,15 +51,12 @@ always@(*)begin
 	
 		mstart = 1;
 		min = in[23:0];
-		
-		
-		
 	end 
 	
-	if(mrdy) begin
+	if(mrdy || nirdy) begin
 		//	POST
 		n_out = {1'b1 , devaddrout, 5'b0,mout};
-		n_irq = 1;
+		if(mrdy) n_irq = 1;
 	end
 	
 end

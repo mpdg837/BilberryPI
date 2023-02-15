@@ -65,7 +65,7 @@ module connectorGraphics(
 );
 
 
-always@(posedge clk)begin
+always@(posedge clk or posedge rst)begin
 	if(rst)begin
 		out <= 0;
 		start <= 0;

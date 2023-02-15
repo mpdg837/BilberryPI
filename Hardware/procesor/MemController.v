@@ -1,6 +1,8 @@
 module memCont(
 	input clk,
 	input rst,
+	
+	input inbrk,
 	output reg brk,
 	
 	// Memory
@@ -82,7 +84,10 @@ localparam loadPro = 4'd6;
 localparam loadRAM = 4'd7;
 localparam saveRAM = 4'd8;
 localparam workMe = 4'd9;
-
+localparam avoid = 4'd10;
+localparam counting = 4'd11;
+localparam precounting = 4'd12;
+localparam aavoid = 4'd13;
 
 reg[3:0] n_stat;
 reg[3:0] f_stat;
@@ -136,18 +141,31 @@ always@(*)begin
 		idle: n_stat = getPro;
 		getPro: n_stat = savPro;
 		savPro: if(readrdy) 
-						if(toCPU[24:20] == 5'd24 || toCPU[24:20] == 5'd6) n_stat = getMem;
-						else n_stat = loadPro;
+						case(toCPU[24:20])
+							READ: n_stat = getMem;
+							SAVE: n_stat = getMem;
+							default: n_stat = loadPro;
+						endcase
 		getMem: n_stat = savMem;
 		savMem: if(readrdy)n_stat = loadPro;
 
 		loadPro: n_stat = workMe;
 		workMe: n_stat = loadRAM;
 					
-		loadRAM: if(dataProg[24:20] == SAVE || dataProg[24:20] == MOL || dataProg[24:20] == MOR) n_stat = saveRAM;
-				else  n_stat = idle;
+		loadRAM: case(dataProg[24:20])
+						MOR: n_stat= avoid;
+						MOL: n_stat= avoid;
+						MUL: n_stat = precounting;
+						DIV: n_stat = precounting;
+						SAVE: n_stat = saveRAM;
+						default: n_stat = idle;
+					endcase
 
 		saveRAM: if(saverdy) n_stat = getPro;
+		avoid: n_stat = aavoid;
+		aavoid: n_stat = idle;
+		precounting: n_stat = counting;
+		counting: if(~inbrk) n_stat = getPro;
 		
 		
 	endcase
@@ -212,11 +230,10 @@ always@(*)begin
 			end
 		loadRAM: begin
 			
-			work = 1;
+			work = 0;
 		end
 		
 		saveRAM: begin
-			
 			addr = {RAMaddr[15:1]}; 
 			wRAM = w;
 			case(RAMaddr[0])

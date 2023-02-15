@@ -141,7 +141,7 @@ always@(*)begin
 	if(in == 0 && f_tim == 0) begin
 		n_key = 0;
 	end
-		
+	
 	if(in != 0) begin
 	
 		if(f_key == in) n_tim = {4'd15,18'b0};
@@ -158,8 +158,9 @@ always@(*)begin
 	
 end
 
-always@(posedge clk)
-	irq <= iirq;
+always@(posedge clk or posedge rst)
+	if(rst) irq <= 0;
+	else irq <= iirq;
 	
 endmodule
 

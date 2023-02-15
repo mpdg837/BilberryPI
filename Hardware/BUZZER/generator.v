@@ -280,8 +280,8 @@ genSel gs(.gen(genSel),
 		.genSaw(genSoundSaw),
 		.genStartSaw(genStartSaw),
 
-		.genNoi(genSoundNoi),
-		.genStartNoi(genStartNoi),
+		.genNoi(genSoundNoi & 0),
+		.genStartNoi(genStartNoi & 0),
 
 		.genSam(genSoundSam),
 		.genStartSam(genStartSam),
@@ -367,9 +367,9 @@ always@(posedge clk or posedge rst)begin
 	end
 	else begin
 		case(volume)
-			0: soundOutx <= s2 + s0;
+			0: soundOutx <= s0;
 			1: soundOutx <= s1;
-			2: soundOutx <= s1 + s2;
+			2: soundOutx <= s2;
 			3: soundOutx <= s3;
 		endcase
 		
@@ -501,7 +501,7 @@ always@(*)begin
 	n_tim = f_tim + 1;
 	freq = 0;
 	
-	if(f_tim == 5632)begin
+	if(f_tim == 4608)begin
 		n_tim = 0;
 		freq = 1;
 	end

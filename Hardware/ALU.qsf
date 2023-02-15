@@ -91,10 +91,10 @@ set_global_assignment -name RESERVE_FLASH_NCE_AFTER_CONFIGURATION "USE AS REGULA
 set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
 set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
 set_global_assignment -name OUTPUT_IO_TIMING_ENDPOINT "FAR END"
-set_instance_assignment -name IO_STANDARD "2.5 V" -to cs_sd
-set_instance_assignment -name IO_STANDARD "2.5 V" -to miso_sd
-set_instance_assignment -name IO_STANDARD "2.5 V" -to mosi_sd
-set_instance_assignment -name IO_STANDARD "2.5 V" -to sck_sd
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to cs_sd
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to miso_sd
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to mosi_sd
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to sck_sd
 set_location_assignment PIN_28 -to cs_sd
 set_location_assignment PIN_31 -to miso_sd
 set_location_assignment PIN_33 -to mosi_sd
@@ -109,9 +109,6 @@ set_location_assignment PIN_76 -to sound[1]
 set_location_assignment PIN_80 -to sound[0]
 set_global_assignment -name OVERRIDE_DEFAULT_ELECTROMIGRATION_PARAMETERS OFF
 set_global_assignment -name RESERVE_DCLK_AFTER_CONFIGURATION "USE AS PROGRAMMING PIN"
-set_instance_assignment -name SLEW_RATE 2 -to miso_sd
-set_instance_assignment -name SLEW_RATE 2 -to cs_sd
-set_instance_assignment -name SLEW_RATE 2 -to sck_sd
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to B
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to G
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to R
@@ -177,4 +174,10 @@ set_global_assignment -name VERILOG_FILE buzzer/buzzer.v
 set_global_assignment -name VERILOG_FILE BUZZER/generator.v
 set_global_assignment -name VERILOG_FILE BUZZER/generators.v
 set_global_assignment -name VERILOG_FILE BUZZER/generatorSimple.v
+set_global_assignment -name VERILOG_FILE procesor/irq.v
+set_instance_assignment -name CURRENT_STRENGTH_NEW 8MA -to vsync
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to sck_sd
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to miso_sd
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MINIMUM CURRENT" -to mosi_sd
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to cs_sd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

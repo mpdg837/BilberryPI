@@ -78,6 +78,7 @@ module main(
 	
 );
 
+wire saveresult;
 wire gclk;
 
 sm_altpll altpll(clk, iclk);
@@ -493,7 +494,8 @@ coprocesor cop2(.clk(iclk),
 					.min(min2),
 					.mstart(mstart2),
 					
-					.irq(irq6)
+					.irq(irq6),
+					.nirdy(saveresult)
 	
 );
 
@@ -511,7 +513,9 @@ diskcontroller dk(
 	
 	.cs(cs_sd),
 	.miso(miso_sd),
-	.sck(sck_sd)
+	.sck(sck_sd),
+	
+	.saveresult(saveresult),
 );
 
 

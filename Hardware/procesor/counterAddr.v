@@ -21,18 +21,18 @@ reg f_oirq3;
 
 reg n_rem;
 
-always@(posedge clk)begin
+always@(posedge clk or posedge rst)begin
 	if(rst) n_rem <= 0;
 	else n_rem <= rem;
 end
 
-always@(posedge clk)begin
+always@(posedge clk or posedge rst)begin
 	if(rst) eirq <= 0;
 	else eirq <= feirq;
 end
 
 
-always@(posedge clk)begin
+always@(posedge clk or posedge rst)begin
 	if(rst) begin
 		f_oirq1 <= 0;
 		f_oirq2 <= 0;
@@ -50,6 +50,12 @@ always@(*)begin
 	oirq1 = f_oirq1;
 	oirq2 = f_oirq2;
 	oirq3 = f_oirq3;
+	
+	if(n_rem)begin
+		oirq1 = 0;
+		oirq2 = 0;
+		oirq3 = 0;
+	end
 		
 	if(irq1 | irq2 | irq3)begin
 		if((~f_oirq1) & (~f_oirq2) & (~f_oirq3))begin
@@ -58,12 +64,8 @@ always@(*)begin
 			oirq3 = irq3;
 		end
 		
-	end else
-		if(n_rem)begin
-			oirq1 = 0;
-			oirq2 = 0;
-			oirq3 = 0;
-		end
+	end
+		
 end
 
 endmodule
@@ -73,6 +75,7 @@ module counter(
 	input clk,
 	input rst,
 	
+	input brk,
 	input prst,
 	
 	input irq1,
@@ -214,6 +217,7 @@ saveAddr sA(.s(s),
 				.offset(offset),
 				.rst(rst),
 				
+				.brk(brk),
 				.prst(prst),
 				
 				.gt(gt),
@@ -353,6 +357,7 @@ endmodule
 module saveAddr(
 	input clk,
 	input rst,
+	input brk,
 	
 	input prst,
 	
@@ -459,16 +464,15 @@ always@(*) begin
 			
 		
 		
-		if((irq1 | irq2 | irq3 | exp) && (~inter) && f_int) begin
+		if((irq1 | irq2 | irq3) && (~inter) && f_int) begin
 			// Realizacja przerwania
 				
 					push = 1;
 					
 					if(save) stack1 = 1;
-					if(mOper != NEX) begin
-						toSave = s_addr;
-					end else
-						toSave = s_addr + 1;
+					if(mOper == NEX) toSave = s_addr + 1;
+					else toSave = s_addr;
+						
 									
 					i_stackAddr = s_stackAddr + 8'b1;
 					i_irq = s_stackAddr + 8'd1;
@@ -484,7 +488,6 @@ always@(*) begin
 						default:;
 					endcase
 					
-					if(exp) i_addr = 16'd8;
 				
 
 			end else
@@ -500,13 +503,9 @@ always@(*) begin
 				JMP: if(dataAddr == 0) i_addr = num;
 						else i_addr = dataAddr;
 				
-				NEX: begin
-						if(hlt) begin
-							i_addr = s_addr;
-						end
+				NEX: if(hlt) i_addr = s_addr;
+						else i_addr = s_addr + 15'b1;
 						
-						if(~(hlt)) i_addr = s_addr + 15'b1;
-						end
 						
 				CALL: begin
 									
@@ -528,16 +527,10 @@ always@(*) begin
 										eirq = 1;
 									end
 		
-									if(dataAddr == 0) begin
-										i_addr = toCont;
-										i_stackAddr = s_stackAddr - 8'b1;
-										pop = 1;
-									end
-									else begin
-										i_addr = num;
-										i_stackAddr = 0;
-										pop = 0;
-									end
+									i_addr = toCont;
+									i_stackAddr = s_stackAddr - 8'b1;
+									pop = 1;
+							
 								end
 								1: begin
 									n_int = 1;

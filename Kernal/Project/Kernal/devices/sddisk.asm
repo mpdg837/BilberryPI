@@ -34,20 +34,13 @@
 
         ret
 
-    diskrdy:
-            ram 0x1ff4
-                save eax // Zapis rejestru a
-
-            sot 0x0
-                in eax 0x0
-                ram 0x2115 // Pole zapisu
-                save eax
+        diskrdy:
+            call regcopyinter // Zapis rejestrow
 
             ram 0x2112
                 savea 0xffff
 
-            ram 0x1ff4
-                 read eax // Zapis rejestru a
+            call regbackinter
             ret
 
         initdisk:
@@ -104,13 +97,18 @@
                     set ebx 0x0
                          call sendDisk
 
-                         call waitforansw
+                         call quickwait
 
                     set edx 0x0
                     diskloaderloopreade: // Ladowanie symboli
                         set eax 0x7
                         set ebx 0x0
                             call sendDisk
+
+                            sot 0x0
+                                in eax 0x0
+                                ram 0x2115 // Pole zapisu
+                                save eax
 
                             ram 0x2114
                                 read eax

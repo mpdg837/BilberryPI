@@ -10,8 +10,10 @@ module keyrst(
 	output rspress
 );
 
-reg[7:0] lic = 0;
-reg[7:0] nlic = 0;
+localparam LEN =4;
+
+reg[LEN - 1:0] lic = 0;
+reg[LEN - 1:0] nlic = 0;
 reg snd = 1'b1;
 reg nsnd = 1'b1;
 
@@ -39,11 +41,11 @@ always@ ( * )begin
 	
 	if(in) begin
 		
-		if(nlic[7:4] < 4'd7) begin
+		if(nlic[LEN - 1:LEN - 4] < 4'd7) begin
 			nlic = lic + 1;
 		end
 	
-		if(nlic[7:4] > 4'd6) begin
+		if(nlic[LEN - 1:LEN - 4] > 4'd6) begin
 			if( ~snd ) begin
 				nswitch = ~switch;
 			end
@@ -54,11 +56,11 @@ always@ ( * )begin
 	
 	end else
 	begin
-		if(nlic[7:4] > 0) begin
+		if(nlic[LEN - 1:LEN - 4] > 0) begin
 			nlic = lic - 1;
 		end
 		
-		if(nlic[7:4] < 4'd2) begin
+		if(nlic[LEN - 1:LEN - 4] < 4'd2) begin
 			nsnd = 0;
 		end
 		
