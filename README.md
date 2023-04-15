@@ -8,3 +8,7 @@
  Układ jest oparty o autorski 16-bitowy procesor (projekt był rodzajem ekspetymentu ile można uzyskać tworząc oprogramowanie na własny układ opaty o własną nigdzie indziej nie wspieraną architekrurę oraz na tym jak bardzo 
  zaawansowany procesor da się "wymyśleć" w warunkach domowych, korzystając z niewielkich zasobów - płytka na którą stworzono układ ma zaledwie 6k bloków logicznych LE's). Roboczo układ nazwano Bilberry a sam 
  układ Bilberry PI, gdyż podobnie jak słynne Raspberry PI jest komputerem umieszczonym w zasadzie na jednym chipie, ładuje on oprogramowanie z karty SD. Projekt jest nadal w fazie Beta, wymaga jeszcze wielu testów.
+ 
+## Opis architektury
+ 
+![Alt text](https://assets.digitalocean.com/articles/alligator/boo.svg "a title")
