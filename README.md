@@ -10,7 +10,7 @@
  układ Bilberry PI, gdyż podobnie jak słynne Raspberry PI jest komputerem umieszczonym w zasadzie na jednym chipie, ładuje on oprogramowanie z karty SD. Projekt jest nadal w fazie Beta, wymaga jeszcze wielu testów.
  
 ## Opis architektury
- 
+ Poniższy schemat opisuje architekurę rozwiązania:
 ![Alt text](https://raw.githubusercontent.com/mpdg837/BilberryPI/main/Architecture.png "a title")
 Tak jak w wstępnym opisie układ posiada kilka komponentów:
 * Procesor 16-bitowy oprty o autorską arrchitekturę obsługujący ponad 40 rozkazów. Posiada odzielną magistralę do obslugi urządzeń oraz odzielną do obsługi pamięci. Kontroler przerwań przyjmuje 7 przerwań pochodzących od komponentów.
@@ -19,16 +19,26 @@ ich znakiem (czyli signed). Procesor ma dostęp do 4 komponentów wejścia i 4 k
 * Układ wspiera DMA, dzieki niemu układ dźwiękowy może czytać próbki bezpośrednio z pamięci RAM.
 * Dostępna jest pamięć 14 kB RAMu oraz 5 kB ROM-u; 4 kB tzw. KERNAL-a, oproramowanie startowe - bootloader posiadaący podstawowe biblioteki do obsługi układu graficznego i dźwiękowego, odpowiada za diagnostykę pamięci RAM oraz
 za ładowanie oprogramowania z karty SD. Odpowiada on też za obsługe przerwań (szczególnie odbiera wciskanie klawiszy na klawiaturze oraz za tzw. timery). Niemniej do poprawnego działania wymagane jest oprogramowanie dostarczone na karcie SD, bez niego komputer się nie uruchomi. Pozostaly 1 kB zawiera podstawowa czcionke systemu. Rozwiazanie to 
-skraca programy ladowane z karty i ułatwia prace podczas pisania oprogramowania.
+skraca programy ladowane z karty i ułatwia prace podczas pisania oprogramowania. Pozostały 1 kB przechowuje podstawową czcionkę systemu:
+![Alt text](https://raw.githubusercontent.com/mpdg837/BilberryPI/main/font.png "Podstawowa systemowa czcionka").
+![Alt text](https://raw.githubusercontent.com/mpdg837/BilberryPI/main/charset.png "Czcionka wyswietlona przez modul graficzny układu").
 * Timer wysyla cykliczne przerwanie co 1 ms - dzieki niemu możliwy jest pomiar czasu przez programy procesora.
 * Moduł graficzny o rozdzielczości 344x256 - obsługuje on 27 kolorów. Obraz generowany przez niego posiada 3 warstwy. Pierwsza sklada sie z znakow których wzorzec jest ladowany do VRAMU oraz na podstawie jego i pozostalych informacji w VRAM o ich polozniu
 generowany jest obraz z znaków o rozdzielczosci 8x8 , co tworzy tablice znaków o wymiarach 43x32. Rodzajów znaków na jednej klatce może być maksymalnie 128. Istnieje możliwość powiekszenia 2x w osi Y znaków. Każdemu znakowi można 
 przyporządkować jedną z 8 4-kolorwych palet. W ten sposób można uzyskać dobrej jakości tło korzystając z małych zasobów. Druga warstwą jest warstwa spriteów - można ich wyświetlać na raz maksymalnie 24 przy czym 8 w jednej linii. Kazdemu takiemu spriteowi
  jest przydzelana paleta kolorów 3-kolorowa (4-kolorowa jezeli uwzględnamy kolor przezroczysty). Spritey te mają rozdzielczość 16x16 mozna je rozciągać i skurczac w osi X i skurczać w osi Y. Obie te warstwy są ruchome można zmieniać ich pozycje względem lewego,
  górnego kąta ekranu. Ostatnią warstwą jest warstwa przednia- jest ona nieruchoma obsługuje zaledwie 16 znaków i tylko jedną 3-kolorwą paletę (4 kolory z przezorcyzstym). Układ korzysta z 6 kB VRAMu.
+![Alt text](https://raw.githubusercontent.com/mpdg837/BilberryPI/main/demo2.png "Przykład grafiki uruchamianej przez układ").
+![Alt text](https://raw.githubusercontent.com/mpdg837/BilberryPI/main/paleta.png "Paleta kolorów obsługiwanych przez układ").
  * Moduł dźwiękowy korzysta on z 3 kanałów umożliwająych odtwarzanie sampli z pamięci oraz jeden kanał umożliwiający generowanie dźwięków za pomocą wbudowanego generatora (umożliwia generowanie sygnału sinusoidalnego, piłokształtnego, trójkątnego , szumu oraz prostokątnego). 
  Dźwięki te są na wyjściu sumowane, moduł jako jedyny korzysta z DMA.
  * Moduł kart SD - umożliwia on odczyt oraz zapis kart SD, dzięki niemu możliwe jest ładowanie oprogramowania na układ.
  * Układy I/O obsługujące przyciski, diody kontrolne oraz klawiaturę PS/2
  
+ 
+ ## Dostarczony kod
+ Dostarczony w tym repozytorium kod zawiera
+ * Kod układu w języku Verilog.
+ * Kod kompilatora oraz konwertera czcionki wykoanego w Javie.
+ * Kod Kernala oraz programu przykładowego (prosty "input" ) wykonanego w assemblerze procesora, możliwy jest on do skomiplowania w dostarczonym kompilatorze.
  
