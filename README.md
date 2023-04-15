@@ -1,2 +1,7 @@
 # BilberryPI
-Project of integrated circuit projected in Verilog HDL, which is System On a Chip with the dedicated processor on its unique 16-bit architecture. This module contains dedicated a low-memory graphics module, a module of the buzzer, and controllers of PS/2 and RS232. Additionally, 14 kB built-in RAM and firmware containing basic libraries are available.
+
+## Czym jest projekt
+ Jest to projekt SOC wykonanym na jednym z układów FPGA - Cyclone IV polegający na implementacji prostego komputera 16-bitowego (w stylu komputera retro), umożliwiający mimo niskich parametrów sprzętowych (14 kB RAMu + 8 VRAM) na 
+ wyświetlanie obrazu (VGA 344x256, 27 kolorów) oraz dźwieku samplowanego (16 kHz 4-kanałowego). Umożliwia proste ładowanie programów poprzez odpowiednio przygotowaną kartę SD (układ posiada moduł obsługi tych kart). Układ posiada też 
+ obsługe interfejsu PS/2 dzieki któremu można podłączyć klawiaturę po tym złaczu.
+ 
