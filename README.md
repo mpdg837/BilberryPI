@@ -13,7 +13,10 @@
  
 ## Opis architektury
  Poniższy schemat opisuje architekurę rozwiązania:
+ 
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/Architecture.png"  width="700" height="400">
+
+
 Tak jak w wstępnym opisie układ posiada kilka komponentów:
 * Procesor 16-bitowy oprty o autorską arrchitekturę obsługujący ponad 40 rozkazów. Posiada odzielną magistralę do obslugi urządzeń oraz odzielną do obsługi pamięci. Kontroler przerwań przyjmuje 7 przerwań pochodzących od komponentów.
 Procesor posiada wbudowaną mnożarkę oraz układ dzielący, ALU obsługujące proste operacje logiczne (AND,OR,XOR) oraz arytmetyczne. Procesor nie rozróżnia trybów signed lub unsigned - wszystkie rejestry 16-bitowe są uwzględniane z 
