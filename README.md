@@ -14,8 +14,9 @@
 ## Opis architektury
  Poniższy schemat opisuje architekurę rozwiązania:
  
+ <p align='center'>
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/Architecture.png"  width="700" height="400">
-
+</p>
 
 Tak jak w wstępnym opisie układ posiada kilka komponentów:
 * Procesor 16-bitowy oprty o autorską arrchitekturę obsługujący ponad 40 rozkazów. Posiada odzielną magistralę do obslugi urządzeń oraz odzielną do obsługi pamięci. Kontroler przerwań przyjmuje 7 przerwań pochodzących od komponentów.
