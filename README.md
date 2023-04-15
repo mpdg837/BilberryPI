@@ -15,7 +15,7 @@
  Poniższy schemat opisuje architekurę rozwiązania:
  
  <p align='center'>
-<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/Architecture.png"  width="700" height="400">
+<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/Architecture.png"  width="700" height="500">
 </p>
 
 Tak jak w wstępnym opisie układ posiada kilka komponentów:
