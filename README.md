@@ -95,5 +95,19 @@ Podlaczenie na plytce.
 
 </p>
 
+PWM-y znajdują się w pinach 64,66,68,70,72,74,76,80 zaś interfejs SPI kolejno piny : CS : 28, MISO : 31, MOSI : 33, SCK 38/
+
+# Kompilacja i uruchomienie projektu.
+
+* Należy uruchomić w środowisku IntelliJ IDEA kompilator i skompilować dostarczony wraz z tym kompilatorem w projekcie środowiska IntelliJ program.
+* Należy uruchomić za pomocą programu HxD wygenerowany plik binarny (program.bin). Jeżeli modyfikowano KERNAL należy wymienić również pliki w folderze Hardware/software na te które wygeneruje kompilator (pliki *.hex).
+* Należy nadpisać pierwsze 16 sektrorów karty SD zawartością pliku SD. Nie używaj do tego karty z ważnymi danymi - nadpisanie to z perspketywy systemu pliku "normalnego" komputera uszkodzi kartę, a do normalnego 
+ponownego użytkowana będzie wymagała sformwatowania.
+* Należy przełożyć kartę a następnie włożyć do złącza SD.
+* Należy wgrać projekt na płytkę (za pomocą pliku SOF, który zostanie wygenerowany po skompilowaniu porjektu Verilogowego) wraz z włożoną kartą. Kartę można włożyć później ale będzie to wymagać resetu ukłądu (za pomocą 
+przycisku RESET).
+* Program powinien się uruchomić (prosty input). W przypadku problemów należy wyjąć i włożyć kartę a następnie zresetować.
+
+UWAGA! Układ ma problem z kartami Samsung-a. Testowałem na kartach GoodRAM-u i działały na ogół dobrze.
 
  
