@@ -62,7 +62,9 @@ Paleta dostepnych 27 kolorów.
 </p>
 
  * Moduł dźwiękowy korzysta on z 3 kanałów umożliwająych odtwarzanie sampli z pamięci oraz jeden kanał umożliwiający generowanie dźwięków za pomocą wbudowanego generatora (umożliwia generowanie sygnału sinusoidalnego, piłokształtnego, trójkątnego , szumu oraz prostokątnego). 
- Dźwięki te są na wyjściu sumowane, moduł jako jedyny korzysta z DMA.
+ Dźwięki te są na wyjściu sumowane, moduł jako jedyny korzysta z DMA.Dźwięk jest generowany za pomocą 8 wyjść PWM, głośność jest ustalana na podstawie tego ile danych PWM-ów generuje w danym momencie sygnał. PWM-y są podłączane do jednego węłza a ten węzeł jest
+ podłączany do jednego z wyjść głośnika zaś drugie wyjście głośnika jest podłączone do masy.
+ 
  * Moduł kart SD - umożliwia on odczyt oraz zapis kart SD, dzięki niemu możliwe jest ładowanie oprogramowania na układ.
  * Układy I/O obsługujące przyciski, diody kontrolne oraz klawiaturę PS/2
 <p align='center'>
@@ -81,4 +83,17 @@ Możliwość edycji teksu.
  * Kod układu w języku Verilog.
  * Kod kompilatora oraz konwertera czcionki wykoanego w Javie.
  * Kod Kernala oraz programu przykładowego (prosty "input" ) wykonanego w assemblerze procesora, możliwy jest on do skomiplowania w dostarczonym kompilatorze.
+ 
+# Podlaczenie komponentów.
+Projekt był tworzony na układ EP4CE6E22C8. Na dosyc dobrze rozpowszechnionej płytce (min na EBay-u <a href = "https://www.ebay.com/itm/223546638831">link</a>), należało dodatkowo użyć własnego
+modułu złącza kart SD (Najlepszy dla tego układu będzie moduł będzie moduł bez dodatkowego mikrokontrolera, projekt obsługuje jedynie tryb SPI)oraz odpowiednio podłączonego głośnika. Do jednej z nóg głośnika należało podłączyć wszystkie PWM-y a do drugiej masę tak jak na poniższym schemacie:
+<p align='center'>
+<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/plytka.jpg"  width="700" height="400">
+</p>
+<p align='center'>
+Podlaczenie na plytce.
+
+</p>
+
+
  
