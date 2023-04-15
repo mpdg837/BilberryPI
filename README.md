@@ -25,11 +25,14 @@ skraca programy ladowane z karty i ułatwia prace podczas pisania oprogramowania
 
 <p align='center'>
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/font.png"  width="160" height="160">
-
+</p>
+<p align='center'>
 Wzorzec czcionki systemowej.
-
+</p>
+<p align='center'>
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/charset.jpg"  width="700" height="400">
-
+</p>
+<p align='center'>
 Czcionka systemowa wyswietlona przez uklad.
 
 </p>
@@ -43,11 +46,14 @@ przyporządkować jedną z 8 4-kolorwych palet. W ten sposób można uzyskać do
 
 <p align='center'>
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/demo2.jpg"  width="700" height="400">
-
+</p>
+<p align='center'>
 Przykladowe obrazy mozliwe do wyswietlenia na ukladzie.
-
+</p>
+<p align='center'>
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/paleta.jpg"  width="400" height="300">
-
+</p>
+<p align='center'>
 Paleta dostepnych 27 kolorów.
 </p>
 
@@ -57,8 +63,11 @@ Paleta dostepnych 27 kolorów.
  * Układy I/O obsługujące przyciski, diody kontrolne oraz klawiaturę PS/2
 <p align='center'>
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/testtekstu1.jpg"  width="700" height="400">
+</p>
+<p align='center'>
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/testtekstu2.jpg"  width="700" height="400">
-
+</p>
+<p align='center'>
 Możliwość edycji teksu.
 
 </p>
