@@ -24,9 +24,10 @@ za ładowanie oprogramowania z karty SD. Odpowiada on też za obsługe przerwań
 skraca programy ladowane z karty i ułatwia prace podczas pisania oprogramowania. Pozostały 1 kB przechowuje podstawową czcionkę systemu:
 
 <p align='center'>
-<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/font.png"  width="320" height="320">
-
+<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/font.png"  width="160" height="160">
+Wzorzec czcionki systemowej.
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/charset.jpg"  width="700" height="400">
+Czcionka systemowa wyswietlona przez uklad.
 </p>
 
 * Timer wysyla cykliczne przerwanie co 1 ms - dzieki niemu możliwy jest pomiar czasu przez programy procesora.
@@ -38,8 +39,9 @@ przyporządkować jedną z 8 4-kolorwych palet. W ten sposób można uzyskać do
 
 <p align='center'>
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/demo2.jpg"  width="700" height="400">
-
+Przykladowe obrazy mozliwe do wyswietlenia na ukladzie.
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/paleta.jpg"  width="400" height="300">
+Paleta dostepnych 27 kolorów.
 </p>
 
  * Moduł dźwiękowy korzysta on z 3 kanałów umożliwająych odtwarzanie sampli z pamięci oraz jeden kanał umożliwiający generowanie dźwięków za pomocą wbudowanego generatora (umożliwia generowanie sygnału sinusoidalnego, piłokształtnego, trójkątnego , szumu oraz prostokątnego). 
@@ -49,6 +51,7 @@ przyporządkować jedną z 8 4-kolorwych palet. W ten sposób można uzyskać do
 <p align='center'>
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/testtekstu1.jpg"  width="700" height="400">
 <img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/testtekstu2.jpg"  width="700" height="400">
+Możliwość edycji teksu.
 </p>
  
  ## Dostarczony kod
