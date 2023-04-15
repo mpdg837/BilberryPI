@@ -1,4 +1,6 @@
-module keyrst(
+module keyrst#(
+	parameter LEN =4
+)(
 	input mode,
 	input in,
 	
@@ -10,7 +12,7 @@ module keyrst(
 	output rspress
 );
 
-localparam LEN =4;
+
 
 reg[LEN - 1:0] lic = 0;
 reg[LEN - 1:0] nlic = 0;

@@ -172,7 +172,8 @@ module keyrstmodule(
 	output rst
 );
 
-keyrst k1(.mode(0),
+keyrst#( .LEN(8)
+			)k1(.mode(0),
 			.in(in),
 			.clk(tclk),
 			.rspress(irst)

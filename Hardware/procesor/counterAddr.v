@@ -15,57 +15,19 @@ module przebuffer(
 	output reg oirq3
 );
 
-reg f_oirq1;
-reg f_oirq2;
-reg f_oirq3;
-
-reg n_rem;
-
-always@(posedge clk or posedge rst)begin
-	if(rst) n_rem <= 0;
-	else n_rem <= rem;
-end
-
-always@(posedge clk or posedge rst)begin
-	if(rst) eirq <= 0;
-	else eirq <= feirq;
-end
-
-
-always@(posedge clk or posedge rst)begin
-	if(rst) begin
-		f_oirq1 <= 0;
-		f_oirq2 <= 0;
-		f_oirq3 <= 0;
-
-	end else begin
-		f_oirq1 <= oirq1;
-		f_oirq2 <= oirq2;
-		f_oirq3 <= oirq3;
-	end
-end
 
 always@(*)begin
-		
-	oirq1 = f_oirq1;
-	oirq2 = f_oirq2;
-	oirq3 = f_oirq3;
+	eirq <= feirq;
+end
+
+
+
+always@(*)begin
 	
-	if(n_rem)begin
-		oirq1 = 0;
-		oirq2 = 0;
-		oirq3 = 0;
-	end
-		
-	if(irq1 | irq2 | irq3)begin
-		if((~f_oirq1) & (~f_oirq2) & (~f_oirq3))begin
-			oirq1 = irq1;
-			oirq2 = irq2;
-			oirq3 = irq3;
-		end
-		
-	end
-		
+	oirq1 <= irq1;
+	oirq2 <= irq2;
+	oirq3 <= irq3;
+	
 end
 
 endmodule
@@ -457,26 +419,27 @@ always@(*) begin
 	inter = 0;
 	
 	if(s_irq != 0) 
-		if(~stack2) inter = 1;
-		
+		if(stack2) eirq = 1;
+		else inter = 1;
+	
 	if(s) begin
-		
-			
-		
-		
-		if((irq1 | irq2 | irq3) && (~inter) && f_int) begin
+	
+		if(({irq3,irq2,irq1}!=0) && (~inter) && f_int) begin
 			// Realizacja przerwania
-				
+					
 					push = 1;
 					
+					
 					if(save) stack1 = 1;
+					else eirq = 1;
+					
 					if(mOper == NEX) toSave = s_addr + 1;
 					else toSave = s_addr;
 						
 									
 					i_stackAddr = s_stackAddr + 8'b1;
 					i_irq = s_stackAddr + 8'd1;
-					
+				
 					case({irq3,irq2,irq1})
 						1: i_addr = 16'd2;
 						2: i_addr = 16'd3;
@@ -524,7 +487,7 @@ always@(*) begin
 								default: begin
 									if(s_stackAddr == s_irq && (inter)) begin
 										i_irq = 0;
-										eirq = 1;
+										
 									end
 		
 									i_addr = toCont;
@@ -547,7 +510,7 @@ always@(*) begin
 				
 			endcase
 		
-		rem = 1;
+		
 				
 	end
 end
@@ -587,10 +550,10 @@ module stackAddr(
 	
 );
 
-reg[12:0] memory[511:0];
+reg[12:0] memory[255:0];
 
-reg[8:0] f_numStack = 0;
-reg[8:0] numStack = 0;
+reg[7:0] f_numStack = 0;
+reg[7:0] numStack = 0;
 
 always@(posedge clk or posedge rst)begin
 	if(rst) begin

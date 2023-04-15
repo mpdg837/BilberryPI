@@ -11,7 +11,7 @@ module interCont(
 	output reg irq3
 );
 
-localparam LEN = 34;
+localparam LEN = 14;
 
 reg started;
 reg f_started;
@@ -21,6 +21,13 @@ reg[2:0] n_irqm[LEN-1:0];
 
 reg[2:0] imem;
 integer n = 0;
+
+reg[2:0] f_irq;
+
+always@(posedge clk or posedge rst) begin
+	if(rst) f_irq <= 0;
+	else f_irq <= irq;
+end
 
 always@(posedge clk or posedge rst)begin
 	if(rst)begin
@@ -38,71 +45,65 @@ always@(*)begin
 	
 	started = f_started;
 	
-	imem = 0;
+	imem = f_irqm[0];
+	irq1 = imem[0];
+	irq2 = imem[1];
+	irq3 = imem[2];
 	
-	irq1 = 0;
-	irq2 = 0;
-	irq3 = 0;
 	
-
-	if(eirq | (~f_started))begin
+	if(eirq)begin
+		
+		
+		n_irqm[0] = f_irqm[1];
+		n_irqm[1] = f_irqm[2];
+		n_irqm[2] = f_irqm[3];
+		n_irqm[3] = f_irqm[4];
+		n_irqm[4] = f_irqm[5];
+		n_irqm[5] = f_irqm[6];
+		n_irqm[6] = f_irqm[7];
+		n_irqm[7] = f_irqm[8];
+		n_irqm[8] = f_irqm[9];
+		n_irqm[9] = f_irqm[10];
+		n_irqm[10] = f_irqm[11];
+		n_irqm[11] = 0;
+		
 	
-		if(f_irqm[0] == 0)begin
-			if(irq==0) started = 0;
-			else started = 1;
+			if(f_irqm[1] == 0) n_irqm[0] = f_irq; 
+			else if(f_irqm[2] == 0) n_irqm[1] = f_irq; 
+			else if(f_irqm[3] == 0) n_irqm[2] = f_irq; 
+			else if(f_irqm[4] == 0) n_irqm[3] = f_irq; 
+			else if(f_irqm[5] == 0) n_irqm[4] = f_irq; 
+			else if(f_irqm[6] == 0) n_irqm[5] = f_irq; 
+			else if(f_irqm[7] == 0) n_irqm[6] = f_irq; 
+			else if(f_irqm[8] == 0) n_irqm[7] = f_irq; 
+			else if(f_irqm[9] == 0) n_irqm[8] = f_irq; 
+			else if(f_irqm[10] == 0) n_irqm[9] = f_irq; 
+			else if(f_irqm[11] == 0) n_irqm[10] = f_irq;
+			else n_irqm[11] = f_irq;
 		
-			irq1 = irq[0];
-			irq2 = irq[1];
-			irq3 = irq[2];
-			
-		end else
-		begin
-			if(f_irqm[1]==0) started = 0;
-			else started = 1;
-			
-			imem = f_irqm[0];
-			
-			irq1 = imem[0];
-			irq2 = imem[1];
-			irq3 = imem[2];
-		end
-		
-		
-		for(n = 0; n < LEN - 1; n = n + 1) n_irqm[n] = f_irqm[n + 1];
-		n_irqm[LEN - 1] = 0;
-		
-		if(irq != 0)begin
-			
-			if(f_irqm[0] == 0) n_irqm[0] = 0;
-			else
-				begin: LooperAdd
-					for(n = 1; n < LEN; n = n + 1) begin
-						if(f_irqm[n] == 0 ) begin	
-							n_irqm[n - 1] = irq;
-							
-							disable LooperAdd;
-						end
-					end
-				end
-		end 
 		
 	end else
-		begin
-			if(irq != 0)begin
-			
-				begin: LooperAdd1
-					for(n = 1; n < LEN; n = n + 1) begin
-						if(f_irqm[n] == 0 ) begin	
-							n_irqm[n] = irq;
-							
-							disable LooperAdd1;
-						end
-
-					end
-				end
-				
-			end 
-		end
+	begin
+			if(f_irqm[0] == 0) n_irqm[0] = f_irq; 
+			else if(f_irqm[1] == 0) n_irqm[1] = f_irq; 
+			else if(f_irqm[2] == 0) n_irqm[2] = f_irq; 
+			else if(f_irqm[3] == 0) n_irqm[3] = f_irq; 
+			else if(f_irqm[4] == 0) n_irqm[4] = f_irq; 
+			else if(f_irqm[5] == 0) n_irqm[5] = f_irq; 
+			else if(f_irqm[6] == 0) n_irqm[6] = f_irq; 
+			else if(f_irqm[7] == 0) n_irqm[7] = f_irq; 
+			else if(f_irqm[8] == 0) n_irqm[8] = f_irq; 
+			else if(f_irqm[9] == 0) n_irqm[9] = f_irq; 
+			else if(f_irqm[10] == 0) n_irqm[10] = f_irq; 
+			else if(f_irqm[11] == 0) n_irqm[11] = f_irq;
+		
+		
+		
+	end
+	
+	
+	
+	
 	
 	
 end
@@ -127,6 +128,8 @@ module irqcollector(
 	
 );
 
+
+
 reg s_r0;
 reg s_r1;
 reg s_r2;
@@ -147,6 +150,9 @@ reg f_r7;
 
 reg[2:0] f_t;
 reg[2:0] n_t;
+
+
+
 
 always@(posedge clk or posedge rst)begin
 	if(rst)begin
@@ -187,15 +193,8 @@ always@(*)begin
 		s_r5 = f_r5;
 		s_r6 = f_r6;
 		s_r7 = f_r7;
-	
-		if(irq1) s_r1 = 1;
-		if(irq2) s_r2 = 1;
-		if(irq3) s_r3 = 1;
-		if(irq4) s_r4 = 1;
-		if(irq5) s_r5 = 1;
-		if(irq6) s_r6 = 1;
-		if(irq7) s_r7 = 1;
-			
+		
+
 		case(f_t)
 			1: s_r1 = 0;
 			2: s_r2 = 0;
@@ -206,6 +205,16 @@ always@(*)begin
 			7: s_r7 = 0;
 			default:;
 		endcase
+		
+		if(irq1) s_r1 = 1;
+		if(irq2) s_r2 = 1;
+		if(irq3) s_r3 = 1;
+		if(irq4) s_r4 = 1;
+		if(irq5) s_r5 = 1;
+		if(irq6) s_r6 = 1;
+		if(irq7) s_r7 = 1;
+			
+
 end
 
 always@(*)begin
@@ -214,48 +223,13 @@ always@(*)begin
 		
 		case(f_t)
 			0: irq = 0;
-			1: if(irq1)begin
-					irq = 3'd1;
-				end else
-				begin
-					if(f_r1) irq = 3'd1;
-				end
-			2: if(irq2)begin
-					irq = 3'd2;
-				end else
-				begin
-					if(f_r2) irq = 3'd2;
-				end
-			3: if(irq3)begin
-					irq = 3'd3;
-				end else
-				begin
-					if(f_r3) irq = 3'd3;
-				end
-			4: if(irq4)begin
-					irq = 3'd4;
-				end else
-				begin
-					if(f_r4) irq = 3'd4;
-				end
-			5: if(irq5)begin
-					irq = 3'd5;
-				end else
-				begin
-					if(f_r5) irq = 3'd5;
-				end
-			6: if(irq6)begin
-					irq = 3'd6;
-				end else
-				begin
-					if(f_r6) irq = 3'd6;
-				end
-			7: if(irq7)begin
-					irq = 3'd7;
-				end else
-				begin
-					if(f_r7) irq = 3'd7;
-				end
+			1: if(f_r1) irq = 3'd1;
+			2: if(f_r2) irq = 3'd2;
+			3: if(f_r3) irq = 3'd3;
+			4: if(f_r4) irq = 3'd4;
+			5: if(f_r5) irq = 3'd5;
+			6: if(f_r6) irq = 3'd6;
+			7: if(f_r7) irq = 3'd7;
 			default:;
 		endcase
 end

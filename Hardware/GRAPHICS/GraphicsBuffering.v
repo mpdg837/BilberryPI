@@ -167,10 +167,10 @@ always@(*)begin
 			
 		end else n_c_x = f_c_x + 1;
 		
-		if(f_c_y == 23) begin
+		if(f_c_y == 31) begin
 			n_block = 0;
 			irq = 1;
-			end
+		end
 			
 		raddr = {1'b0,n_c_x,n_c_y};
 		
@@ -214,17 +214,23 @@ module clearer(
 
 
 
-always@(posedge clk)begin
+always@(posedge clk or posedge rst)begin
 	
-	irq = 0;
+	irq <= 0;
 	
 	
-	clearx = 0;
-	cleary = 0;
+	clearx <= 0;
+	cleary <= 0;
+	
+	if(rst) begin
+		nstart <= 0;
+		nin <= 0;
 
-	nstart = start;
-	nin = in;
-		
+	end else
+	begin
+		nstart <= start;
+		nin <= in;
+	end
 		
 end
 

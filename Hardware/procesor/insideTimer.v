@@ -31,7 +31,7 @@ always@(*)begin
 	n_licz = f_licz + 15'b1;
 	clkm = 0;
 	
-	if(f_licz == 90001)begin
+	if(f_licz == 75000)begin
 		n_licz = 0;
 		clkm = 1;
 	end

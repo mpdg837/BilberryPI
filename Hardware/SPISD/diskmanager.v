@@ -32,6 +32,7 @@ module mandisk(
 localparam NOP = 8'd0;
 localparam INIT = 8'd1;
 localparam BLOCK = 8'd2;
+localparam BIGBLOCK = 8'd9;
 localparam OREAD = 8'd3;
 localparam OWRITE = 8'd4;
 localparam READ = 8'd5;
@@ -46,8 +47,8 @@ reg rdyix = 0;
 reg f_rdyix = 0;
 
 reg[23:0] f_outi = 0;
-reg[15:0] f_block;
-reg[15:0] n_block;
+reg[23:0] f_block;
+reg[23:0] n_block;
 
 reg f_rrdyx = 0;
 reg f_rrrdyx = 0;
@@ -136,7 +137,10 @@ always@(*)begin
 				rdyix = 1;
 			end
 			BLOCK: begin
-				n_block = ini[15:0];
+				n_block = {f_block[23:16],ini[15:0]};
+			end
+			BIGBLOCK: begin
+				n_block = {ini[7:0],f_block[15:0]};
 			end
 			OREAD: begin
 				cmdxx = 17; // OSTREAM
@@ -173,44 +177,44 @@ always@(*)begin
 				
 				rrdyx = 1;
 			end
-			// OWRITE: begin
-			//	cmdxx = 24; // OWRITE
-			//	argxx = ini[15:0];
-			//	
-			//	initx = 0;
-			//	startxx = 0;
-			//	
-			//	readitx = 0;
-			//	start40xx = 1;
-			//	
-			//	rrrdyx = 1;
-			// end
-			// WRITEBYTE:begin // WRITEBYTE
-			//	cmdxx = 0;
-			//	argxx = {8'b0,ini[7:0]};
-			//	
-			//	initx = 0;
-			//	startxx = 1;
-			//	
-			//	readitx = 0;
-			//	start40xx =1;
-			//	
-			//	rdyx = 1;
-			// end
-			// CLOSE: begin
-			//	cmdxx = 0; // CLOSE
-			//	argxx = 0;
-			//	
-			//	initx = 0;
-			//	startxx = 0;
-			//	
-			//	closex = 1;
-			//	
-			//	readitx = 0;
-			//	start40xx =0;
-			//	
-			//	rdyx = 1;
-			// end
+			OWRITE: begin
+				cmdxx = 24; // OWRITE
+				argxx = ini[15:0];
+
+				initx = 0;
+				startxx = 0;
+
+				readitx = 0;
+				start40xx = 1;
+				
+				rrrdyx = 1;
+			 end
+			 WRITEBYTE:begin // WRITEBYTE
+				cmdxx = 0;
+				argxx = {8'b0,ini[7:0]};
+				
+				initx = 0;
+				startxx = 1;
+				
+				readitx = 0;
+				start40xx =1;
+				
+				rdyx = 1;
+			 end
+			 CLOSE: begin
+				cmdxx = 0;  // CLOSE
+				argxx = 0;
+				
+				initx = 0;
+				startxx = 0;
+				
+				closex = 1;
+				
+				readitx = 0;
+				start40xx =0;
+				
+				rdyx = 1;
+			 end
 		endcase
 end
 

@@ -259,7 +259,7 @@ hvsync_generator hg(.clk(dclk),
 						 );
 
 		 
-nextA n(.clk(clk),
+nextB n(.clk(clk),
 		  .rst(rst),
 			.dec((CounterX ==0) && (CounterY ==0)),
 		   .out(irq)
@@ -483,7 +483,49 @@ sprites sprT(.clk(clk),
 	
 );
 
-assign irqc = irq3;
+nextB c(.clk(clk),
+		  .rst(rst),
+			.dec(irq3),
+		   .out(irqc)
+);
+
+endmodule
+
+module nextB(
+	input clk,
+	input rst,
+	input dec,
+	output reg out
+);
+
+reg f_out;
+reg n_out;
+
+reg p_out;
+
+always@(posedge clk or posedge rst)begin
+	if(rst) f_out <= 0;
+	else f_out <= n_out;
+end
+
+always@(*)begin
+	n_out = f_out;
+	p_out = 0;
+	
+	if((f_out & ~dec) | (~f_out & dec)) begin
+		n_out = dec;
+		p_out = dec;
+		
+	end
+	
+	
+end
+
+always@(posedge clk or posedge rst)
+	if(rst) out <= 0;
+	else out <= p_out;
+
+
 endmodule
 
 module nextA(
