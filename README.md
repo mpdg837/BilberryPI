@@ -55,7 +55,7 @@ przyporządkować jedną z 8 4-kolorwych palet. W ten sposób można uzyskać do
 Przykladowe obrazy mozliwe do wyswietlenia na ukladzie.
 </p>
 <p align='center'>
-<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/paleta.jpg"  width="400" height="300">
+<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/paleta.jpg"  width="200" height="350">
 </p>
 <p align='center'>
 Paleta dostepnych 27 kolorów.
