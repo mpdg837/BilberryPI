@@ -32,9 +32,10 @@ przyporządkować jedną z 8 4-kolorwych palet. W ten sposób można uzyskać do
  jest przydzelana paleta kolorów 3-kolorowa (4-kolorowa jezeli uwzględnamy kolor przezroczysty). Spritey te mają rozdzielczość 16x16 mozna je rozciągać i skurczac w osi X i skurczać w osi Y. Obie te warstwy są ruchome można zmieniać ich pozycje względem lewego,
  górnego kąta ekranu. Ostatnią warstwą jest warstwa przednia- jest ona nieruchoma obsługuje zaledwie 16 znaków i tylko jedną 3-kolorwą paletę (4 kolory z przezorcyzstym). Układ korzysta z 6 kB VRAMu.
 
-![Alt text](https://raw.githubusercontent.com/mpdg837/BilberryPI/main/demo2.jpg "Przykład grafiki uruchamianej przez układ").
+<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/demo2.jpg"  width="600" height="400">
 
-![Alt text](https://raw.githubusercontent.com/mpdg837/BilberryPI/main/paleta.jpg "Paleta kolorów obsługiwanych przez układ").
+<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/paleta.jpg"  width="400" height="300">
+
 
  * Moduł dźwiękowy korzysta on z 3 kanałów umożliwająych odtwarzanie sampli z pamięci oraz jeden kanał umożliwiający generowanie dźwięków za pomocą wbudowanego generatora (umożliwia generowanie sygnału sinusoidalnego, piłokształtnego, trójkątnego , szumu oraz prostokątnego). 
  Dźwięki te są na wyjściu sumowane, moduł jako jedyny korzysta z DMA.
