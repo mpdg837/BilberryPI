@@ -1,6 +1,6 @@
 # BilberryPI
 <p align='center'>
-<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/Komputer.jpg"  width="700" height="400">
+<img src="https://raw.githubusercontent.com/mpdg837/BilberryPI/main/Komputer.png"  width="700" height="400">
 </p>
 ## Czym jest projekt
  Jest to projekt SOC wykonanym na jednym z układów FPGA - Cyclone IV polegający na implementacji prostego komputera 16-bitowego (w stylu komputera retro), umożliwiający mimo niskich parametrów sprzętowych (14 kB RAMu + 6 VRAM) na 
